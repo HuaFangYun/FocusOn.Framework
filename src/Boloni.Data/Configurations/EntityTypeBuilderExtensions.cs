@@ -1,9 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
+﻿using Boloni.Data.Entities;
+using Boloni.Data.Entities.Abstractions;
+
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Boloni.Data.Configurations;
 public static class EntityTypeBuilderExtensions
 {
-    public static EntityTypeBuilder<TEntity> ConfigureTenant<TEntity>(this EntityTypeBuilder<TEntity> builder) where TEntity : EntityBase
+    public static EntityTypeBuilder<TEntity> ConfigureTenant<TEntity>(this EntityTypeBuilder<TEntity> builder) where TEntity :class, IHasMultiTenancy
     {
         builder.Property(m => m.TenantId);
         builder.HasQueryFilter(m => m.TenantId.HasValue);

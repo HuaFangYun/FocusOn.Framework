@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.2.32526.322
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Boloni.Data", "src\Boloni.Data\Boloni.Data.csproj", "{C57EAF45-A185-4667-B35B-AE99BEE582D0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Boloni.Data", "src\Boloni.Data\Boloni.Data.csproj", "{C57EAF45-A185-4667-B35B-AE99BEE582D0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Boloni.Services", "src\Boloni.Services\Boloni.Services.csproj", "{E7C65480-6B03-4B00-BAD0-6B1987A2AC7D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Boloni.Services", "src\Boloni.Services\Boloni.Services.csproj", "{E7C65480-6B03-4B00-BAD0-6B1987A2AC7D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Boloni.HttpApi", "src\Boloni.HttpApi\Boloni.HttpApi.csproj", "{FB1CE106-F906-48C5-A553-0F8BEB33C532}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Boloni.HttpApi", "src\Boloni.HttpApi\Boloni.HttpApi.csproj", "{FB1CE106-F906-48C5-A553-0F8BEB33C532}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Boloni.DataTransfers", "src\Boloni.DataTransfers\Boloni.DataTransfers.csproj", "{819D663C-8D36-4097-AE65-03B2E6E98805}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Boloni.DataTransfers", "src\Boloni.DataTransfers\Boloni.DataTransfers.csproj", "{819D663C-8D36-4097-AE65-03B2E6E98805}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

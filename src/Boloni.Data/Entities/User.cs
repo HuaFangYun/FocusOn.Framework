@@ -1,5 +1,7 @@
-﻿namespace Boloni.Data;
-public class User : EntityBase
+﻿using Boloni.Data.Entities.Abstractions;
+
+namespace Boloni.Data.Entities;
+public class User : EntityBase,IHasMultiTenancy
 {
     /// <summary>
     /// 用户名
@@ -18,7 +20,12 @@ public class User : EntityBase
     /// </summary>
     public string? Mobile { get; set; }
 
-    public string HashedPassword { get; set; }
+    public string HashedPassword { get;private set; }
 
     public virtual ICollection<Role> Roles { get; set; } = new HashSet<Role>();
+
+
+    public Guid? TenantId { get; set; }
+
+    public void SetPassword(string hashedPwd) => HashedPassword = hashedPwd;
 }

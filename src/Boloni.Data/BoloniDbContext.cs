@@ -13,6 +13,7 @@ public class BoloniDbContext : DbContext
         modelBuilder
             .ApplyConfiguration(new UserConfiguration())
             .ApplyConfiguration(new RoleConfiguration())
+            .ApplyConfiguration(new PermissionConfiguration())
             ;
     }
 }

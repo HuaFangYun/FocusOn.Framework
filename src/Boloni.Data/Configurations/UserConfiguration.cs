@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Boloni.Data.Entities;
+
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Boloni.Data.Configurations;
@@ -17,9 +19,9 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
 
         builder.HasMany(m => m.Roles).WithMany(m => m.Users).UsingEntity(builder =>
         {
-            builder.HasKey("UserId", "RoleId");
             builder.ToTable("UserRoles");
         });
+
         builder.ToTable("Users");
     }
 }

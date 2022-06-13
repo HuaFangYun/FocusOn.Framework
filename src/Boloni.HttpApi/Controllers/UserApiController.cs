@@ -1,4 +1,5 @@
-﻿using Boloni.Data.Entities;
+﻿using Boloni.Data;
+using Boloni.Data.Entities;
 using Boloni.DataTransfers;
 using Boloni.DataTransfers.Localizations;
 using Boloni.DataTransfers.Users;
@@ -7,10 +8,11 @@ using Boloni.Services.Abstractions;
 using Boloni.Services.Users;
 
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Boloni.HttpApi.Controllers;
 [Route("api/users")]
-public class UserApiController : BoloniControllerBase
+public class UserApiController : BoloniControllerBase<BoloniDbContext, User, Guid>
 {
     private readonly UserAppService _userAppService;
 
@@ -20,17 +22,17 @@ public class UserApiController : BoloniControllerBase
     }
 
     [HttpPost]
-    [ProducesResponseType(200,Type =typeof(OutputModel<>))]
-    [ProducesResponseType(400,Type= typeof(OutputModel))]
-    public async Task<IResult> CreateUserAsync([FromBody]CreateUserInputDto model)
+    [ProducesResponseType(200, Type = typeof(OutputModel<>))]
+    [ProducesResponseType(400, Type = typeof(OutputModel))]
+    public async Task<IResult> CreateUserAsync([FromBody] CreateUserInputDto model)
     {
-        var valid = await _userAppService.GetUserNameExists(model.UserName);
+        var valid = await Set.AnyAsync(CancellationToken);
         if (valid)
         {
             return ApplicationResult.Failed(Locale.Message_UserNameDuplicate).ToResult(400);
         }
 
-        var entity=Mapper.Map<CreateUserInputDto,User>(model);
+        var entity = Mapper.Map<CreateUserInputDto, User>(model);
         var result = await _userAppService.CreateAsync(entity, model.Password);
         return result.ToResult();
     }

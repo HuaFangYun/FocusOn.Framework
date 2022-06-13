@@ -1,6 +1,4 @@
-﻿using System.Reflection.Metadata.Ecma335;
-
-using Boloni.Data;
+﻿using Boloni.Data;
 using Boloni.Data.Entities;
 using Boloni.Services.Abstractions;
 
@@ -8,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Boloni.Services.Users;
-public class UserAppService : CrudApplicationServiceBase<BoloniDbContext, User,Guid>
+public class UserAppService : CrudApplicationServiceBase<BoloniDbContext, User, Guid>
 {
     public UserAppService(IServiceProvider serviceProvider) : base(serviceProvider)
     {
@@ -28,7 +26,7 @@ public class UserAppService : CrudApplicationServiceBase<BoloniDbContext, User,G
             throw new ArgumentException($"'{nameof(password)}' cannot be null or empty.", nameof(password));
         }
 
-        var hashedPassword= PasswordHasher.HashPassword(password);
+        var hashedPassword = PasswordHasher.HashPassword(password);
 
         user.SetPassword(hashedPassword);
 
@@ -37,8 +35,9 @@ public class UserAppService : CrudApplicationServiceBase<BoloniDbContext, User,G
         return ApplicationResult<Guid>.Success(user.Id);
     }
 
-    public Task<bool> GetUserNameExists(string userName)
+
+    public Task<User?> GetByUserNameAsync(string userName)
     {
-        return Query.AnyAsync(m => m.UserName == userName);
+        return Query.SingleOrDefaultAsync(m => m.UserName == userName, CancellationToken);
     }
 }

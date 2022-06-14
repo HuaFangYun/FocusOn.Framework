@@ -45,5 +45,5 @@ public interface ICrudApplicationService<TEntity,TKey,TGetOutput,TGetListOutput,
     ValueTask<ApplicationResult> DeleteAsync(TKey id);
     ValueTask<TGetOutput> GetAsync(TKey id);
     Task<IReadOnlyList<TGetListOutput>> GetListAsync(TGetListInput model);
-    Task<(IReadOnlyList<TGetListOutput> Data, long Total)> GetPagedListAsync(int page, int size, TGetListInput model);
+    Task<(IReadOnlyList<TGetListOutput> Data, long Total)> GetPagedListAsync(int page, int size, TGetListInput model=default);
 }

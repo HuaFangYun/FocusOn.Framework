@@ -1,22 +1,14 @@
-using Boloni.Data;
-using Boloni.Services;
+using Boloni.Data.Entities;
+using Boloni.DataTransfers.Users;
+using Boloni.HttpApi;
+using Boloni.Services.Abstractions;
+using Boloni.Services.Users;
 
-using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-builder.Services.AddApplicationServices();
-builder.Services.AddAutoMapper(typeof(Program).Assembly);
-builder.Services.AddDbContext<BoloniDbContext>(options =>
-{
-    options.UseSqlServer(builder.Configuration.GetConnectionString("Default"));
-});
+builder.Services.AddHttpApi(builder.Configuration);
 
 var app = builder.Build();
 
@@ -29,6 +21,8 @@ if (app.Environment.IsDevelopment())
 
 app.UseAuthorization();
 
-app.MapControllers();
+//app.MapControllers();
+
+app.MapCrud<UserAppService, User, Guid, GetUserOutputDto, GetUserListOutputDto, GetUserListInputDto, CreateUserInputDto, UpdateUserInputDto>("users","User Manage");
 
 app.Run();

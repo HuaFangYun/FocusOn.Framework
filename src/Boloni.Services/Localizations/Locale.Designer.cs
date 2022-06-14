@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Boloni.DataTransfers.Localizations {
+namespace Boloni.Services.Localizations {
     using System;
     
     
@@ -22,7 +22,7 @@ namespace Boloni.DataTransfers.Localizations {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class Locale {
+    internal class Locale {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,10 +36,10 @@ namespace Boloni.DataTransfers.Localizations {
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        public static global::System.Resources.ResourceManager ResourceManager {
+        internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Boloni.DataTransfers.Localizations.Locale", typeof(Locale).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Boloni.Services.Localizations.Locale", typeof(Locale).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -51,7 +51,7 @@ namespace Boloni.DataTransfers.Localizations {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        public static global::System.Globalization.CultureInfo Culture {
+        internal static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -61,74 +61,74 @@ namespace Boloni.DataTransfers.Localizations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 邮箱.
+        ///   Looks up a localized string similar to 实体 &apos;{0}&apos; 没有找到.
         /// </summary>
-        public static string Display_User_Email {
+        internal static string Message_EntityNotFound {
             get {
-                return ResourceManager.GetString("Display_User_Email", resourceCulture);
+                return ResourceManager.GetString("Message_EntityNotFound", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 手机号.
+        ///   Looks up a localized string similar to 数据库保存失败.
         /// </summary>
-        public static string Display_User_Mobile {
+        internal static string Message_SaveChangesFailed {
             get {
-                return ResourceManager.GetString("Display_User_Mobile", resourceCulture);
+                return ResourceManager.GetString("Message_SaveChangesFailed", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 姓名.
+        ///   Looks up a localized string similar to 数据库保存返回行数是 0.
         /// </summary>
-        public static string Display_User_Name {
+        internal static string Message_SaveChangesRowIsZero {
             get {
-                return ResourceManager.GetString("Display_User_Name", resourceCulture);
+                return ResourceManager.GetString("Message_SaveChangesRowIsZero", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 密码.
+        ///   Looks up a localized string similar to 数据库保存成功.
         /// </summary>
-        public static string Display_User_Password {
+        internal static string Message_SaveChangesSuccessfully {
             get {
-                return ResourceManager.GetString("Display_User_Password", resourceCulture);
+                return ResourceManager.GetString("Message_SaveChangesSuccessfully", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 用户名.
+        ///   Looks up a localized string similar to 用户 &apos;{0}&apos; 创建成功.
         /// </summary>
-        public static string Display_User_UserName {
+        internal static string Message_User_Created {
             get {
-                return ResourceManager.GetString("Display_User_UserName", resourceCulture);
+                return ResourceManager.GetString("Message_User_Created", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {0} 是必填项.
+        ///   Looks up a localized string similar to 邮箱 &apos;{0}&apos; 重复.
         /// </summary>
-        public static string Message_FieldIsRequired {
+        internal static string Message_User_EmailDuplicate {
             get {
-                return ResourceManager.GetString("Message_FieldIsRequired", resourceCulture);
+                return ResourceManager.GetString("Message_User_EmailDuplicate", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 用户名已经存在.
+        ///   Looks up a localized string similar to 手机号 &apos;{0}&apos; 重复.
         /// </summary>
-        public static string Message_UserNameDuplicate {
+        internal static string Message_User_MobileDuplicate {
             get {
-                return ResourceManager.GetString("Message_UserNameDuplicate", resourceCulture);
+                return ResourceManager.GetString("Message_User_MobileDuplicate", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 用户名或密码错误.
+        ///   Looks up a localized string similar to 用户名 &apos;{0}&apos; 重复.
         /// </summary>
-        public static string Message_UserSignInFailed {
+        internal static string Message_User_UserNameDuplicate {
             get {
-                return ResourceManager.GetString("Message_UserSignInFailed", resourceCulture);
+                return ResourceManager.GetString("Message_User_UserNameDuplicate", resourceCulture);
             }
         }
     }

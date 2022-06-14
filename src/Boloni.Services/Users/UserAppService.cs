@@ -1,12 +1,15 @@
 ﻿using Boloni.Data;
 using Boloni.Data.Entities;
+using Boloni.Services.Localizations;
+using Boloni.DataTransfers.Users;
 using Boloni.Services.Abstractions;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace Boloni.Services.Users;
-public class UserAppService : CrudApplicationServiceBase<BoloniDbContext, User, Guid>
+public class UserAppService : CrudApplicationServiceBase<BoloniDbContext, User, Guid,GetUserOutputDto,GetUserListOutputDto,GetUserListInputDto,CreateUserInputDto,UpdateUserInputDto>
 {
     public UserAppService(IServiceProvider serviceProvider) : base(serviceProvider)
     {
@@ -14,30 +17,44 @@ public class UserAppService : CrudApplicationServiceBase<BoloniDbContext, User, 
 
     protected IPasswordHasher PasswordHasher => Services.GetRequiredService<IPasswordHasher>();
 
-    public async Task<ApplicationResult<Guid>> CreateAsync(User user, string password)
+    /// <summary>
+    /// 创建有密码的用户。
+    /// </summary>
+    /// <param name="model">密码用户输入模型。</param>
+    /// <exception cref="ArgumentNullException"><paramref name="model"/> 是 null。</exception>
+    public override async ValueTask<ApplicationResult> CreateAsync(CreateUserInputDto model)
     {
-        if (user is null)
+        if (model is null)
         {
-            throw new ArgumentNullException(nameof(user));
+            throw new ArgumentNullException(nameof(model));
         }
 
-        if (string.IsNullOrEmpty(password))
+        if(await Query.AnyAsync(m => m.UserName == model.UserName))
         {
-            throw new ArgumentException($"'{nameof(password)}' cannot be null or empty.", nameof(password));
+            var message = string.Format(Locale.Message_User_UserNameDuplicate, model.UserName);
+            Logger.LogError(message);
+            return ApplicationResult.Failed(message);
         }
 
-        var hashedPassword = PasswordHasher.HashPassword(password);
+        if(!string.IsNullOrEmpty(model.Email) && await Query.AnyAsync(m => m.Email == model.Email))
+        {
+            var message = string.Format(Locale.Message_User_EmailDuplicate, model.Email);
+            Logger.LogError(message);
+            return ApplicationResult.Failed(message);
+        }
 
+        if (!string.IsNullOrEmpty(model.Mobile) && await Query.AnyAsync(m => m.Mobile == model.Mobile))
+        {
+            var message = string.Format(Locale.Message_User_MobileDuplicate, model.Mobile);
+            Logger.LogError(message);
+            return ApplicationResult.Failed(message);
+        }
+
+        var hashedPassword = PasswordHasher.HashPassword(model.Password);
+        var user = Mapper.Map<CreateUserInputDto?, User>(model);
         user.SetPassword(hashedPassword);
 
         Set.Add(user);
-        await SaveChangesAsync();
-        return ApplicationResult<Guid>.Success(user.Id);
-    }
-
-
-    public Task<User?> GetByUserNameAsync(string userName)
-    {
-        return Query.SingleOrDefaultAsync(m => m.UserName == userName, CancellationToken);
+        return await SaveChangesAsync();
     }
 }

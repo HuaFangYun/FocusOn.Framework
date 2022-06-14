@@ -11,7 +11,23 @@
 	  <PackageReference Include="AutoMapper.Collection.EntityFrameworkCore" Version="8.0.0" />
 	  <PackageReference Include="AutoMapper.Extensions.ExpressionMapping" Version="5.0.2" />
 	  <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
+	  <ProjectReference Include="..\Boloni.DataTransfers\Boloni.DataTransfers.csproj" />
     <ProjectReference Include="..\Boloni.Data\Boloni.Data.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Localizations\Locale.Designer.cs">
+      <DependentUpon>Locale.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Localizations\Locale.resx">
+      <LastGenOutput>Locale.Designer.cs</LastGenOutput>
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
   </ItemGroup>
 
 </Project>

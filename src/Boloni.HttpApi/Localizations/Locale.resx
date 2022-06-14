@@ -117,28 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Display_User_Email" xml:space="preserve">
-    <value>邮箱</value>
-  </data>
-  <data name="Display_User_Mobile" xml:space="preserve">
-    <value>手机号</value>
-  </data>
-  <data name="Display_User_Name" xml:space="preserve">
-    <value>姓名</value>
-  </data>
-  <data name="Display_User_Password" xml:space="preserve">
-    <value>密码</value>
-  </data>
-  <data name="Display_User_UserName" xml:space="preserve">
-    <value>用户名</value>
-  </data>
-  <data name="Message_FieldIsRequired" xml:space="preserve">
-    <value>{0} 是必填项</value>
-  </data>
-  <data name="Message_UserNameDuplicate" xml:space="preserve">
-    <value>用户名已经存在</value>
-  </data>
-  <data name="Message_UserSignInFailed" xml:space="preserve">
-    <value>用户名或密码错误</value>
+  <data name="Message_EntityNotFound" xml:space="preserve">
+    <value>实体 '{0}' 没有找到</value>
   </data>
 </root>

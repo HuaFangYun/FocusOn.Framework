@@ -1,116 +1,106 @@
-﻿using AutoMapper;
+﻿
+using System.ComponentModel.DataAnnotations;
 
 using Boloni.Data.Entities;
 using Boloni.DataTransfers;
-using Boloni.Services.Abstractions;
+using Boloni.HttpApi.Localizations;
 
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Boloni.HttpApi.Controllers.Abstrations;
-public abstract class BoloniCrudControllerBase<TAppService, TEntity, TKey> : BoloniCrudControllerBase<TAppService, TEntity, TKey, TEntity, TEntity, TEntity, TEntity>
-   where TAppService : ICrudApplicationService<TEntity, TKey>
+
+public abstract class BoloniCrudControllerBase<TContext, TEntity, TKey, TGetOutputDto, TGetListOutputDto, TGetListInputDto, TCreateInputDto, TUpdateInputDto>
+    : BoloniControllerBase<TContext, TEntity, TKey>
+     where TContext:DbContext
     where TEntity : EntityBase<TKey>
+    where TCreateInputDto:class
+    where TGetListInputDto:class
+    where TGetListOutputDto:class
+    where TGetOutputDto:class
 {
-
-}
-
-public abstract class BoloniCrudControllerBase<TAppService, TEntity, TKey, TGetOutputDto, TGetListOutputDto, TGetListInputDto, TCreateOrUpdateInputDto>
-    : BoloniCrudControllerBase<TAppService, TEntity, TKey, TGetOutputDto, TGetListOutputDto, TGetListInputDto, TCreateOrUpdateInputDto, TCreateOrUpdateInputDto>
-   where TAppService : ICrudApplicationService<TEntity, TKey, TGetOutputDto, TGetListOutputDto, TGetListInputDto, TCreateOrUpdateInputDto>
-    where TEntity : EntityBase<TKey>
-     where TGetOutputDto : class
-    where TGetListInputDto : class
-    where TGetListOutputDto : class
-    where TCreateOrUpdateInputDto : class
-{
-
-}
-
-
-public abstract class BoloniCrudControllerBase<TAppService, TEntity, TKey, TGetOutputDto, TGetListOutputDto, TGetListInputDto, TCreateInputDto, TUpdateInputDto>
-    : BoloniControllerBase
-   where TAppService : ICrudApplicationService<TEntity, TKey, TGetOutputDto, TGetListOutputDto, TGetListInputDto, TCreateInputDto, TUpdateInputDto>
-    where TEntity : EntityBase<TKey>
-     where TGetOutputDto : class
-    where TGetListInputDto : class
-    where TGetListOutputDto : class
-    where TCreateInputDto : class
-    where TUpdateInputDto : class
-{
-    protected TAppService AppService => ServiceProvider.GetRequiredService<TAppService>();
-
     [HttpPost]
-    public virtual async Task<IActionResult> CreateAsync([FromBody] TCreateInputDto model)
+    public virtual async Task<IResult> CreateAsync([FromBody]TCreateInputDto model)
     {
         if (model is null)
         {
             throw new ArgumentNullException(nameof(model));
         }
 
-        var result = await AppService.CreateAsync(model);
-        if (result.Succeed)
-        {
-            return Ok();
-        }
-        return BadRequest(result.Errors);
+        var entity = Mapper.Map<TCreateInputDto, TEntity>(model);
+
+        Set.Add(entity);
+        await SaveChangesAsync();
+        return OutputResult.Success().ToResult();
     }
+
     [HttpPut("{id}")]
-    public virtual async Task<IActionResult> UpdateAsync(TKey id, [FromBody] TUpdateInputDto model)
+    public virtual async Task<IResult> UpdateAsync(TKey id, [FromBody] TUpdateInputDto model)
     {
-        if (model is null)
+        var entity = await Set.FindAsync(id);
+
+        if(entity is null)
         {
-            throw new ArgumentNullException(nameof(model));
+            return OutputResult.Failed(string.Format(Locale.Message_EntityNotFound, id)).ToResult();
         }
 
+        Mapper.Map(model,entity);
 
-        var result = await AppService.UpdateAsync(id, model);
+        await SaveChangesAsync();
 
-        if (result.Succeed)
-        {
-            return Ok();
-        }
-        return BadRequest(result.Errors);
+        return OutputResult.Success().ToResult();
     }
 
     [HttpDelete("{id}")]
-    public virtual async Task<IActionResult> DeleteAsync(TKey id)
+    public virtual async Task<IResult> DeleteAsync(TKey id)
     {
-        var result = await AppService.DeleteAsync(id);
-        if (result.Succeed)
+        var entity=await Set.FindAsync(id);
+
+        if (entity is null)
         {
-            return Ok();
+            return OutputResult.Failed(string.Format(Locale.Message_EntityNotFound, id)).ToResult();
         }
-        return BadRequest(result.Errors);
+
+        Set.Remove(entity);
+
+        await SaveChangesAsync();
+
+        return OutputResult.Success().ToResult();
     }
 
     [HttpGet("{id}")]
-    public virtual async Task<IActionResult> GetAsync(TKey id)
+    public virtual async Task<IResult> GetAsync(TKey id)
     {
-        var result = await AppService.GetAsync(id);
+        var entity = await Set.FindAsync(id);
 
-        if (result is null)
+        if (entity is null)
         {
-            return NotFound(id);
+            return OutputResult.Failed(string.Format(Locale.Message_EntityNotFound, id)).ToResult();
         }
-        return Ok(result);
+
+        var model = Mapper.Map<TEntity, TGetOutputDto>(entity);
+
+        return OutputModel<TGetOutputDto>.Success(model).ToResult();
     }
 
     [HttpGet]
-    public virtual async Task<IActionResult> GetListAsync([FromBody] TGetListInputDto model)
+    public virtual async Task<IResult> GetListAsync([FromQuery] TGetListInputDto? model, [FromQuery]int page=1, [FromQuery]int size=10)
     {
-        var result = await AppService.GetListAsync(model);
-        return Ok(result);
+        var query = Query;
+
+        query = CreateQuery(query);
+
+        query = query.Skip((page - 1) * size).Take(page * size);
+
+        var data = await Mapper.ProjectTo<TGetListOutputDto>(query).ToListAsync(CancellationToken);
+
+        var total = await query.CountAsync(CancellationToken);
+
+        return OutputModel<PagedOutputDto<TGetListOutputDto>>.Success(new PagedOutputDto<TGetListOutputDto>(data, total)).ToResult();
     }
 
-    [HttpGet("{page}")]
-    public virtual async Task<IActionResult> GetListAsync([FromBody] TGetListInputDto model, int page, [FromQuery] int size = 10)
+    protected virtual IQueryable<TEntity> CreateQuery(IQueryable<TEntity> source)
     {
-        var result = await AppService.GetPagedListAsync(page, size, model);
-
-        return Ok(new
-        {
-            result.Data,
-            result.Total
-        });
+        return source;
     }
 }

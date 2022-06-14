@@ -4,6 +4,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Boloni.Data.Entities;
 using AutoMapper;
 using Boloni.Services.Abstractions.Models;
+using Boloni.Services.Localizations;
+using Boloni.Data.Migrations;
 
 namespace Boloni.Services.Abstractions;
 public abstract class CrudApplicationServiceBase<TContext, TEntity, TKey>
@@ -76,40 +78,53 @@ public abstract class CrudApplicationServiceBase<TContext, TEntity,TKey, TGetOut
 
     protected IQueryable<TEntity> Query => Set.AsNoTracking();
 
-    public async ValueTask<ApplicationResult> CreateAsync(TCreateInput model)
+    public virtual async ValueTask<ApplicationResult> CreateAsync(TCreateInput model)
     {
         if (model is null)
         {
             throw new ArgumentNullException(nameof(model));
         }
 
-        var entity = MapToEntity(model);
+        
+        var entity = Mapper.Map<TCreateInput, TEntity>(model);
         Set.Add(entity);
-        await SaveChangesAsync();
-
-        return ApplicationResult.Success();
+        return await SaveChangesAsync();
     }
 
-    protected virtual Task<int> SaveChangesAsync()
-    {
-        return Context.SaveChangesAsync(CancellationToken);
-    }
-
-    public async ValueTask<ApplicationResult> DeleteAsync(TKey id)
+    public virtual async ValueTask<ApplicationResult> DeleteAsync(TKey id)
     {
         var entity = await FindAsync(id);
+        if (entity is null)
+        {
+            return ApplicationResult.Failed(string.Format(Locale.Message_EntityNotFound, id));
+        }
         Set.Remove(entity);
-        await SaveChangesAsync();
-        return ApplicationResult.Success();
+        return await SaveChangesAsync();
     }
 
-    public async ValueTask<TGetOutput> GetAsync(TKey id)
+    public async ValueTask<ApplicationResult> UpdateAsync(TKey id, TUpdateInput model)
     {
         var entity = await FindAsync(id);
-        return Mapper.Map<TEntity, TGetOutput>(entity);
+        if (entity is null)
+        {
+            return ApplicationResult.Failed(string.Format(Locale.Message_EntityNotFound, id));
+        }
+
+        Mapper.Map(model, entity);
+        return await SaveChangesAsync();
     }
 
-    public async Task<IReadOnlyList<TGetListOutput>> GetListAsync(TGetListInput model)
+    public virtual async ValueTask<TGetOutput?> GetAsync(TKey id)
+    {
+        var entity = await FindAsync(id);
+        if (entity is not null)
+        {
+            return Mapper.Map<TEntity?, TGetOutput>(entity);
+        }
+        return default;
+    }
+
+    public virtual async Task<IReadOnlyList<TGetListOutput>> GetListAsync(TGetListInput model)
     {
         var query = Query;
 
@@ -122,7 +137,7 @@ public abstract class CrudApplicationServiceBase<TContext, TEntity,TKey, TGetOut
         return  await  Mapper.ProjectTo<TGetListOutput>(query).ToListAsync(CancellationToken);
     }
 
-    public async Task<(IReadOnlyList<TGetListOutput> Data, long Total)> GetPagedListAsync(int page, int size, TGetListInput model)
+    public virtual async Task<(IReadOnlyList<TGetListOutput> Data, long Total)> GetPagedListAsync(int page, int size, TGetListInput model)
     {
         var query = Query;
 
@@ -140,22 +155,6 @@ public abstract class CrudApplicationServiceBase<TContext, TEntity,TKey, TGetOut
         return (data, total);
     }
 
-    public async ValueTask<ApplicationResult> UpdateAsync(TKey id, TUpdateInput model)
-    {
-        try
-        {
-            var entity = await FindAsync(id);
-
-            MapToEntity(model, entity);
-            await SaveChangesAsync();
-
-            return ApplicationResult.Success();
-        }catch(Exception ex)
-        {
-            Logger.LogError(ex, ex.Message);
-            return ApplicationResult.Failed(ex.Message);
-        }
-    }
 
     /// <summary>
     /// 
@@ -164,30 +163,36 @@ public abstract class CrudApplicationServiceBase<TContext, TEntity,TKey, TGetOut
     /// <param name="throwIfError"></param>
     /// <returns></returns>
     /// <exception cref="InvalidOperationException"></exception>
-    protected async ValueTask<TEntity?> FindAsync(TKey id, bool throwIfError = true)
-    {
-        var entity = await Set.FindAsync(id);
-
-        if (throwIfError && entity is null)
-        {
-            throw new InvalidOperationException($"Entity with '{id}' not found");
-        }
-        return entity;
-    }
+    protected ValueTask<TEntity?> FindAsync(TKey id) => Set.FindAsync(id);
 
     protected virtual IQueryable<TEntity> CreateQuery(IQueryable<TEntity> source)
     {
         return source;
     }
 
-    protected virtual TEntity MapToEntity(TCreateInput input)
-    {
-        return Mapper.Map<TCreateInput, TEntity>(input);
-    }
 
-    protected virtual TEntity MapToEntity(TUpdateInput input,TEntity entity)
-    {
-        return Mapper.Map(input, entity);
-    }
 
+    /// <summary>
+    /// 保存数据库。
+    /// </summary>
+    /// <returns></returns>
+    protected virtual async Task<ApplicationResult> SaveChangesAsync()
+    {
+        try
+        {
+            var rows = await Context.SaveChangesAsync(CancellationToken);
+            if (rows > 0)
+            {
+                Logger.LogInformation("Save changes successfully");
+                return ApplicationResult.Success();
+            }
+            Logger.LogWarning("Save changes failed because affected row is 0");
+            return ApplicationResult.Failed("Save changes failed");
+        }
+        catch (AggregateException ex)
+        {
+            Logger.LogError(ex, string.Join(";", ex.InnerExceptions.Select(m => m.Message)));
+            return ApplicationResult.Failed("Exceptions occured when saving changes, see log for details");
+        }
+    }
 }

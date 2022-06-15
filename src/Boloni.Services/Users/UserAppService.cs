@@ -7,6 +7,7 @@ using Boloni.Services.Abstractions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Boloni.DataTransfers;
 
 namespace Boloni.Services.Users;
 public class UserAppService : CrudApplicationServiceBase<BoloniDbContext, User, Guid,GetUserOutputDto,GetUserListOutputDto,GetUserListInputDto,CreateUserInputDto,UpdateUserInputDto>
@@ -22,7 +23,7 @@ public class UserAppService : CrudApplicationServiceBase<BoloniDbContext, User, 
     /// </summary>
     /// <param name="model">密码用户输入模型。</param>
     /// <exception cref="ArgumentNullException"><paramref name="model"/> 是 null。</exception>
-    public override async ValueTask<ApplicationResult> CreateAsync(CreateUserInputDto model)
+    public override async ValueTask<OutputResult> CreateAsync(CreateUserInputDto model)
     {
         if (model is null)
         {
@@ -33,21 +34,21 @@ public class UserAppService : CrudApplicationServiceBase<BoloniDbContext, User, 
         {
             var message = string.Format(Locale.Message_User_UserNameDuplicate, model.UserName);
             Logger.LogError(message);
-            return ApplicationResult.Failed(message);
+            return OutputResult.Failed(message);
         }
 
         if(!string.IsNullOrEmpty(model.Email) && await Query.AnyAsync(m => m.Email == model.Email))
         {
             var message = string.Format(Locale.Message_User_EmailDuplicate, model.Email);
             Logger.LogError(message);
-            return ApplicationResult.Failed(message);
+            return OutputResult.Failed(message);
         }
 
         if (!string.IsNullOrEmpty(model.Mobile) && await Query.AnyAsync(m => m.Mobile == model.Mobile))
         {
             var message = string.Format(Locale.Message_User_MobileDuplicate, model.Mobile);
             Logger.LogError(message);
-            return ApplicationResult.Failed(message);
+            return OutputResult.Failed(message);
         }
 
         var hashedPassword = PasswordHasher.HashPassword(model.Password);

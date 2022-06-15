@@ -7,6 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Controllers\**" />
+    <Content Remove="Controllers\**" />
+    <EmbeddedResource Remove="Controllers\**" />
+    <None Remove="Controllers\**" />
+  </ItemGroup>
+
+  <ItemGroup>
 	  <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.0">
 		  <PrivateAssets>all</PrivateAssets>
 		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -22,21 +29,6 @@
     <ProjectReference Include="..\Boloni.DataTransfers\Boloni.DataTransfers.csproj" />
     <ProjectReference Include="..\Boloni.Data\Boloni.Data.csproj" />
     <ProjectReference Include="..\Boloni.Services\Boloni.Services.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Update="Localizations\Locale.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Locale.resx</DependentUpon>
-    </Compile>
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Update="Localizations\Locale.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Locale.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
   </ItemGroup>
 
 </Project>

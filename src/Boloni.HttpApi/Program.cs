@@ -1,10 +1,6 @@
-using Boloni.Data.Entities;
 using Boloni.DataTransfers.Users;
 using Boloni.HttpApi;
-using Boloni.Services.Abstractions;
 using Boloni.Services.Users;
-
-using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,6 +19,6 @@ app.UseAuthorization();
 
 //app.MapControllers();
 
-app.MapCrud<UserAppService, User, Guid, GetUserOutputDto, GetUserListOutputDto, GetUserListInputDto, CreateUserInputDto, UpdateUserInputDto>("users","User Manage");
+app.MapCrud<UserAppService,Guid, GetUserOutputDto, GetUserListOutputDto, GetUserListInputDto, CreateUserInputDto, UpdateUserInputDto>("users","User Manage");
 
 app.Run();

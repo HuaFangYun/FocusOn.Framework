@@ -1,5 +1,5 @@
 ﻿using Boloni.Data;
-using Boloni.HttpApi.Users;
+using Boloni.Services;
 
 using Microsoft.EntityFrameworkCore;
 
@@ -20,7 +20,7 @@ public static class HttpApiDependencyInjection
             options.UseSqlServer(configuration.GetConnectionString("Default"));
         });
 
-        services.AddUser();
+        services.AddApplicationServices();
         return services;
     }
 }

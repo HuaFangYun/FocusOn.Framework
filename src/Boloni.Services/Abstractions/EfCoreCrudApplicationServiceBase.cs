@@ -5,21 +5,22 @@ using Boloni.Data.Entities;
 using AutoMapper;
 using Boloni.Services.Abstractions.Models;
 using Boloni.Services.Localizations;
-using Boloni.Data.Migrations;
+using Boloni.DataTransfers;
+using Boloni.Infrastructures;
 
 namespace Boloni.Services.Abstractions;
-public abstract class CrudApplicationServiceBase<TContext, TEntity, TKey>
-    : CrudApplicationServiceBase<TContext, TEntity, TKey, TEntity, TEntity, TEntity>, ICrudApplicationService<TEntity, TKey>
+public abstract class EfCoreCrudApplicationServiceBase<TContext, TEntity, TKey>
+    : CrudApplicationServiceBase<TContext, TEntity, TKey, TEntity, TEntity, TEntity>, ICrudApplicationService<TKey, TEntity, TEntity, TEntity,TEntity>
     where TContext : DbContext
     where TEntity : EntityBase<TKey>
 {
-    public CrudApplicationServiceBase(IServiceProvider serviceProvider) : base(serviceProvider)
+    public EfCoreCrudApplicationServiceBase(IServiceProvider serviceProvider) : base(serviceProvider)
     {
     }
 }
 
 public abstract class CrudApplicationServiceBase<TContext, TEntity, TKey, TGetOutput, TGetListOutput, TGetListInput>
-    : CrudApplicationServiceBase<TContext, TEntity, TKey, TGetOutput, TGetListOutput, TGetListInput, TEntity>, ICrudApplicationService<TEntity, TKey, TGetOutput, TGetListOutput, TGetListInput, TEntity>
+    : CrudApplicationServiceBase<TContext, TEntity, TKey, TGetOutput, TGetListOutput, TGetListInput, TEntity>, ICrudApplicationService<TKey, TGetOutput, TGetListOutput, TGetListInput, TEntity>
     where TContext : DbContext
     where TEntity : EntityBase<TKey>
     where TGetListInput : class
@@ -32,7 +33,7 @@ public abstract class CrudApplicationServiceBase<TContext, TEntity, TKey, TGetOu
 }
 
 public abstract class CrudApplicationServiceBase<TContext, TEntity, TKey, TGetOutput, TGetListOutput, TGetListInput, TCreateOrUpdateInput>
-    : CrudApplicationServiceBase<TContext, TEntity, TKey, TGetOutput, TGetListOutput, TGetListInput, TCreateOrUpdateInput, TCreateOrUpdateInput>, ICrudApplicationService<TEntity, TKey, TGetOutput, TGetListOutput, TGetListInput, TCreateOrUpdateInput>
+    : CrudApplicationServiceBase<TContext, TEntity, TKey, TGetOutput, TGetListOutput, TGetListInput, TCreateOrUpdateInput, TCreateOrUpdateInput>, ICrudApplicationService<TKey, TGetOutput, TGetListOutput, TGetListInput, TCreateOrUpdateInput>
     where TContext : DbContext
     where TEntity : EntityBase<TKey>
     where TGetListInput : class
@@ -46,7 +47,7 @@ public abstract class CrudApplicationServiceBase<TContext, TEntity, TKey, TGetOu
 }
 
 public abstract class CrudApplicationServiceBase<TContext, TEntity,TKey, TGetOutput, TGetListOutput, TGetListInput, TCreateInput, TUpdateInput> 
-    :ApplicationServiceBase, ICrudApplicationService<TEntity, TKey, TGetOutput, TGetListOutput, TGetListInput, TCreateInput, TUpdateInput>
+    :ApplicationServiceBase, ICrudApplicationService<TKey, TGetOutput, TGetListOutput, TGetListInput, TCreateInput, TUpdateInput>
     where TContext : DbContext
     where TEntity : EntityBase<TKey> 
     where TGetListInput : class
@@ -78,66 +79,68 @@ public abstract class CrudApplicationServiceBase<TContext, TEntity,TKey, TGetOut
 
     protected IQueryable<TEntity> Query => Set.AsNoTracking();
 
-    public virtual async ValueTask<ApplicationResult> CreateAsync(TCreateInput model)
+    public virtual async ValueTask<OutputResult> CreateAsync(TCreateInput model)
     {
         if (model is null)
         {
             throw new ArgumentNullException(nameof(model));
         }
 
+        if (!Validator.TryValidate(model,out var errors))
+        {
+            return OutputResult.Failed(errors);
+        }
         
         var entity = Mapper.Map<TCreateInput, TEntity>(model);
         Set.Add(entity);
         return await SaveChangesAsync();
     }
 
-    public virtual async ValueTask<ApplicationResult> DeleteAsync(TKey id)
+    public virtual async ValueTask<OutputResult> DeleteAsync(TKey id)
     {
         var entity = await FindAsync(id);
         if (entity is null)
         {
-            return ApplicationResult.Failed(string.Format(Locale.Message_EntityNotFound, id));
+            return OutputResult.Failed(string.Format(Locale.Message_EntityNotFound, id));
         }
         Set.Remove(entity);
         return await SaveChangesAsync();
     }
 
-    public async ValueTask<ApplicationResult> UpdateAsync(TKey id, TUpdateInput model)
+    public async ValueTask<OutputResult> UpdateAsync(TKey id, TUpdateInput model)
     {
+        if (model is null)
+        {
+            throw new ArgumentNullException(nameof(model));
+        }
+
+        if (!Validator.TryValidate(model, out var errors))
+        {
+            return OutputResult.Failed(errors);
+        }
+
         var entity = await FindAsync(id);
         if (entity is null)
         {
-            return ApplicationResult.Failed(string.Format(Locale.Message_EntityNotFound, id));
+            return OutputResult.Failed(string.Format(Locale.Message_EntityNotFound, id));
         }
 
         Mapper.Map(model, entity);
         return await SaveChangesAsync();
     }
 
-    public virtual async ValueTask<TGetOutput?> GetAsync(TKey id)
+    public virtual async ValueTask<OutputResult<TGetOutput?>> GetAsync(TKey id)
     {
         var entity = await FindAsync(id);
-        if (entity is not null)
+        if (entity is null)
         {
-            return Mapper.Map<TEntity?, TGetOutput>(entity);
+            return OutputResult<TGetOutput?>.Failed(string.Format(Locale.Message_EntityNotFound,id));
         }
-        return default;
+        var output = Mapper.Map<TEntity?, TGetOutput>(entity);
+        return OutputResult<TGetOutput?>.Success(output);
     }
 
-    public virtual async Task<IReadOnlyList<TGetListOutput>> GetListAsync(TGetListInput model)
-    {
-        var query = Query;
-
-        query = CreateQuery(query);
-
-        if (model is QueryableModel<TEntity> queryable)
-        {
-            query = queryable.Query(query);
-        }
-        return  await  Mapper.ProjectTo<TGetListOutput>(query).ToListAsync(CancellationToken);
-    }
-
-    public virtual async Task<(IReadOnlyList<TGetListOutput> Data, long Total)> GetPagedListAsync(int page, int size, TGetListInput model)
+    public virtual async Task<OutputResult<PagedOutputDto<TGetListOutput>>> GetListAsync(int page, int size, TGetListInput? model=default)
     {
         var query = Query;
 
@@ -149,10 +152,17 @@ public abstract class CrudApplicationServiceBase<TContext, TEntity,TKey, TGetOut
         }
 
         query = query.Skip((page - 1) * size).Take(page * size);
-        var data= await Mapper.ProjectTo<TGetListOutput>(query).ToListAsync(CancellationToken);
-
-        var total = await query.CountAsync(CancellationToken);
-        return (data, total);
+        try
+        {
+            var data = await Mapper.ProjectTo<TGetListOutput>(query,model).ToListAsync(CancellationToken);
+            var total = await query.CountAsync(CancellationToken);
+            return OutputResult<PagedOutputDto<TGetListOutput>>.Success(new(data, total));
+        }
+        catch (AggregateException ex)
+        {
+            Logger.LogError(ex, ex.Message);
+            return OutputResult<PagedOutputDto<TGetListOutput>>.Failed(ex.Message);
+        }
     }
 
 
@@ -165,18 +175,13 @@ public abstract class CrudApplicationServiceBase<TContext, TEntity,TKey, TGetOut
     /// <exception cref="InvalidOperationException"></exception>
     protected ValueTask<TEntity?> FindAsync(TKey id) => Set.FindAsync(id);
 
-    protected virtual IQueryable<TEntity> CreateQuery(IQueryable<TEntity> source)
-    {
-        return source;
-    }
-
-
+    protected virtual IQueryable<TEntity> CreateQuery(IQueryable<TEntity> source) => source;
 
     /// <summary>
     /// 保存数据库。
     /// </summary>
     /// <returns></returns>
-    protected virtual async Task<ApplicationResult> SaveChangesAsync()
+    protected virtual async Task<OutputResult> SaveChangesAsync()
     {
         try
         {
@@ -184,15 +189,15 @@ public abstract class CrudApplicationServiceBase<TContext, TEntity,TKey, TGetOut
             if (rows > 0)
             {
                 Logger.LogInformation("Save changes successfully");
-                return ApplicationResult.Success();
+                return OutputResult.Success();
             }
             Logger.LogWarning("Save changes failed because affected row is 0");
-            return ApplicationResult.Failed("Save changes failed");
+            return OutputResult.Failed("Save changes failed");
         }
         catch (AggregateException ex)
         {
             Logger.LogError(ex, string.Join(";", ex.InnerExceptions.Select(m => m.Message)));
-            return ApplicationResult.Failed("Exceptions occured when saving changes, see log for details");
+            return OutputResult.Failed("Exceptions occured when saving changes, see log for details");
         }
     }
 }

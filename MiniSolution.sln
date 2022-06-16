@@ -3,19 +3,25 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.2.32526.322
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MiniSolution.ApplicationServices", "src\MiniSolution.ApplicationServices\MiniSolution.ApplicationServices.csproj", "{E7C65480-6B03-4B00-BAD0-6B1987A2AC7D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MiniSolution.ApplicationServices", "src\framework\MiniSolution.ApplicationServices\MiniSolution.ApplicationServices.csproj", "{E7C65480-6B03-4B00-BAD0-6B1987A2AC7D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MiniSolution.HttpApi", "src\MiniSolution.HttpApi\MiniSolution.HttpApi.csproj", "{FB1CE106-F906-48C5-A553-0F8BEB33C532}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MiniSolution.HttpApi", "src\framework\MiniSolution.HttpApi\MiniSolution.HttpApi.csproj", "{FB1CE106-F906-48C5-A553-0F8BEB33C532}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "framework", "framework", "{5DCBF5AC-79B1-4C20-8441-B4B4C03D6335}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "module", "module", "{1A02ADD5-8E2A-4A97-BA04-6ABAA24E85C4}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MiniSolution.Core", "src\MiniSolution.Core\MiniSolution.Core.csproj", "{945A6462-188E-4594-A990-4DE66CB20D70}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MiniSolution.Core", "src\framework\MiniSolution.Core\MiniSolution.Core.csproj", "{945A6462-188E-4594-A990-4DE66CB20D70}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MiniSolution.ApplicationContracts", "src\MiniSolution.ApplicationContracts\MiniSolution.ApplicationContracts.csproj", "{5A61A515-BDEC-45EB-8825-0DBC50CCD8ED}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MiniSolution.ApplicationContracts", "src\framework\MiniSolution.ApplicationContracts\MiniSolution.ApplicationContracts.csproj", "{5A61A515-BDEC-45EB-8825-0DBC50CCD8ED}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MiniSolution.HttpApi.Client", "src\MiniSolution.HttpApi.Client\MiniSolution.HttpApi.Client.csproj", "{2B6637C1-316B-4148-91C4-0CEB6E97CCAB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MiniSolution.HttpApi.Client", "src\framework\MiniSolution.HttpApi.Client\MiniSolution.HttpApi.Client.csproj", "{2B6637C1-316B-4148-91C4-0CEB6E97CCAB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UserManagement", "UserManagement", "{13941973-B0C6-4559-B30D-ADA10054B708}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiniSolution.UserManagement.ApplicationContracts", "src\module\UserManagement\MiniSolution.UserManagement.ApplicationContracts\MiniSolution.UserManagement.ApplicationContracts.csproj", "{C394565E-174B-4EC7-83BC-614EC8822901}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiniSolution.UserManagement.ApplicationServices", "src\module\UserManagement\MiniSolution.UserManagement.ApplicationServices\MiniSolution.UserManagement.ApplicationServices.csproj", "{4B80E9F4-CA35-47A4-8391-3BC15B74691C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -43,6 +49,14 @@ Global
 		{2B6637C1-316B-4148-91C4-0CEB6E97CCAB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2B6637C1-316B-4148-91C4-0CEB6E97CCAB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2B6637C1-316B-4148-91C4-0CEB6E97CCAB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C394565E-174B-4EC7-83BC-614EC8822901}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C394565E-174B-4EC7-83BC-614EC8822901}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C394565E-174B-4EC7-83BC-614EC8822901}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C394565E-174B-4EC7-83BC-614EC8822901}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4B80E9F4-CA35-47A4-8391-3BC15B74691C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4B80E9F4-CA35-47A4-8391-3BC15B74691C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4B80E9F4-CA35-47A4-8391-3BC15B74691C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4B80E9F4-CA35-47A4-8391-3BC15B74691C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -53,6 +67,9 @@ Global
 		{945A6462-188E-4594-A990-4DE66CB20D70} = {5DCBF5AC-79B1-4C20-8441-B4B4C03D6335}
 		{5A61A515-BDEC-45EB-8825-0DBC50CCD8ED} = {5DCBF5AC-79B1-4C20-8441-B4B4C03D6335}
 		{2B6637C1-316B-4148-91C4-0CEB6E97CCAB} = {5DCBF5AC-79B1-4C20-8441-B4B4C03D6335}
+		{13941973-B0C6-4559-B30D-ADA10054B708} = {1A02ADD5-8E2A-4A97-BA04-6ABAA24E85C4}
+		{C394565E-174B-4EC7-83BC-614EC8822901} = {13941973-B0C6-4559-B30D-ADA10054B708}
+		{4B80E9F4-CA35-47A4-8391-3BC15B74691C} = {13941973-B0C6-4559-B30D-ADA10054B708}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {60D7014C-4C59-4127-9CB5-A4402740E525}

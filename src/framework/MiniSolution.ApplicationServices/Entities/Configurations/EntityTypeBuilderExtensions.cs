@@ -16,6 +16,7 @@ public static class EntityTypeBuilderExtensions
     public static EntityTypeBuilder<TEntity> ConfigureMultiTenancy<TEntity>(this EntityTypeBuilder<TEntity> builder) where TEntity :class, IHasMultiTenancy
     {
         builder.Property(m => m.TenantId);
+        builder.HasQueryFilter(m => m.TenantId.HasValue);
         return builder;
     }
 }

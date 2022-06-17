@@ -1,0 +1,10 @@
+﻿
+@model MiniSolution.ApplicationContracts.DTO.OutputResult<MiniSolution.Identity.ApplicationContracts.UserManagement.DTO.UserGetOutputDto<Guid>>
+
+
+@if (Model.Succeed)
+{
+    @Model.Data.Id
+}else{
+    @string.Join(",", Model.Errors)
+}

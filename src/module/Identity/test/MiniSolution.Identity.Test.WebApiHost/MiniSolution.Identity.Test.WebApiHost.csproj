@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\framework\src\MiniSolution.HttpApi\MiniSolution.HttpApi.csproj" />
+    <ProjectReference Include="..\..\src\MiniSolution.Identity.ApplicationServices\MiniSolution.Identity.ApplicationServices.csproj" />
+    <ProjectReference Include="..\..\src\MiniSolution.Identity.HttpApi\MiniSolution.Identity.HttpApi.csproj" />
+  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="6.0.0" />
+	</ItemGroup>
+</Project>

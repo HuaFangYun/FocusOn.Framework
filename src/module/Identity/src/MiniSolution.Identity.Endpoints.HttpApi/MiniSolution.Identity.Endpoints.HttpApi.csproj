@@ -1,0 +1,10 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<Import Project="../../../../../common.props" />
+
+  <ItemGroup>    <ProjectReference Include="..\..\..\..\framework\src\MiniSolution.Endpoints.HttpApi\MiniSolution.Endpoints.HttpApi.csproj" />
+
+    <ProjectReference Include="..\MiniSolution.Identity.Business.Contracts\MiniSolution.Identity.Business.Contracts.csproj" />
+  </ItemGroup>
+
+</Project>

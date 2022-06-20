@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-using MiniSolution.Identity.ApplicationContracts.UserManagement;
+using MiniSolution.Identity.Business.Contracts.UserManagement;
 
 namespace MiniSolution.Identity.Test.ClientWeb.Controllers;
 

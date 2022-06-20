@@ -1,0 +1,22 @@
+<Project>
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <Authors>MiniSolution Team</Authors>
+        <PackageId>$(AssemblyName)</PackageId>
+        <Version>0.1</Version>
+        <AssemblyVersion>$(Version)</AssemblyVersion>
+        <FileVersion>$(Version)</FileVersion>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <OutputPath>bin\$(Configuration)</OutputPath>
+        <DocumentationFile>bin\$(Configuration)\$(AssembliName).xml</DocumentationFile>
+      </PropertyGroup>
+
+      <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+        <FileAlignment>512</FileAlignment>
+      </PropertyGroup>
+      <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+        <FileAlignment>1024</FileAlignment>
+      </PropertyGroup>
+</Project>

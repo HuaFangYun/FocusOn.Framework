@@ -1,5 +1,5 @@
-﻿using MiniSolution.Identity.ApplicationContracts.UserManagement;
-using MiniSolution.Identity.HttpApi.Client;
+﻿using MiniSolution.Identity.Business.Contracts.UserManagement;
+using MiniSolution.Identity.Endpoints.HttpApi.Client;
 
 namespace MiniSolution.Identity.Test.ClientWeb.Proxies
 {

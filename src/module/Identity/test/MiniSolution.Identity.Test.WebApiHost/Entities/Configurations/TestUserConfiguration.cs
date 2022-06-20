@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-using MiniSolution.Identity.ApplicationServices.UserManagement.Entities;
+using MiniSolution.Identity.Business.Services.UserManagement.Entities;
 
 namespace MiniSolution.Identity.Test.WebApiHost.Entities.Configurations
 {

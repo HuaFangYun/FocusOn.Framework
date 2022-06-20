@@ -6,13 +6,11 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\..\framework\src\MiniSolution.HttpApi\MiniSolution.HttpApi.csproj" />
-    <ProjectReference Include="..\..\src\MiniSolution.Identity.ApplicationServices\MiniSolution.Identity.ApplicationServices.csproj" />
-    <ProjectReference Include="..\..\src\MiniSolution.Identity.HttpApi\MiniSolution.Identity.HttpApi.csproj" />
-  </ItemGroup>
 	<ItemGroup>
 		<PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="6.0.0" />
+	</ItemGroup>
+	<ItemGroup>
+	  <ProjectReference Include="..\..\src\MiniSolution.Identity.Business.Services\MiniSolution.Identity.Business.Services.csproj" />
+	  <ProjectReference Include="..\..\src\MiniSolution.Identity.Endpoints.HttpApi\MiniSolution.Identity.Endpoints.HttpApi.csproj" />
 	</ItemGroup>
 </Project>

@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<Import Project="../../../../common.props" />
+	<ItemGroup>
+		<PackageReference Include="Microsoft.Extensions.Http" Version="6.0.0" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+	</ItemGroup>
+	<ItemGroup>
+	  <ProjectReference Include="..\MiniSolution.Business.Contracts\MiniSolution.Business.Contracts.csproj" />
+	</ItemGroup>
+</Project>

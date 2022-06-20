@@ -1,8 +1,9 @@
-﻿using MiniSolution.ApplicationServices;
-using MiniSolution.HttpApi;
+﻿using MiniSolution.Business.Services;
 using MiniSolution.Identity.Test.WebApiHost;
-using MiniSolution.Identity.Test.WebApiHost.ApplicationServices;
-using Microsoft.EntityFrameworkCore; 
+using MiniSolution.Identity.Test.WebApiHost.Business.Services;
+using Microsoft.EntityFrameworkCore;
+using MiniSolution.Endpoints.HttpApi;
+
 var builder=WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();

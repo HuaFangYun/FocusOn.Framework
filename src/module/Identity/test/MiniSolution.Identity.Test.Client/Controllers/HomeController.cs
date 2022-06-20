@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-using MiniSolution.Identity.ApplicationContracts.UserManagement;
+using MiniSolution.Identity.Business.Contracts.UserManagement;
 
 namespace MiniSolution.Identity.Test.ClientWeb.Controllers;
 
@@ -16,6 +16,6 @@ public class HomeController:Controller
     public async Task<IActionResult> Index()
     {
         var result = await UserApplicationService.GetByUserNameAsync("abc");
-        return View(result);
+        return Json(result);
     }
 }

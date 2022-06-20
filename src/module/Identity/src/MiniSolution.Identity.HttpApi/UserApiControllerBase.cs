@@ -23,6 +23,6 @@ public abstract class UserApiControllerBase<TUserApplicationService, TKey, TGetO
     where TUpdateInputDto : UserUpdateInputDto
 {
     [HttpGet("username/{userName}")]
-    public virtual Task<OutputResult<TGetOutputDto?>> GetByUserNameAsync([FromQuery]string userName)
+    public virtual Task<OutputResult<TGetOutputDto?>> GetByUserNameAsync(string userName)
     => AppService.GetByUserNameAsync(userName);
 }

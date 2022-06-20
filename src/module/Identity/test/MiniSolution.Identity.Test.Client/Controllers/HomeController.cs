@@ -16,6 +16,6 @@ public class HomeController:Controller
     public async Task<IActionResult> Index()
     {
         var result = await UserApplicationService.GetByUserNameAsync("abc");
-        return View(result);
+        return Json(result);
     }
 }

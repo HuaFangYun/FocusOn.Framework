@@ -5,7 +5,7 @@ using Microsoft.Extensions.Logging;
 
 namespace MiniSolution.HttpApi.Controllers
 {
-    [ApiController]
+    //[ApiController]
     [Route("[controller]")]
     public abstract class ApiControllerBase:ControllerBase
     {

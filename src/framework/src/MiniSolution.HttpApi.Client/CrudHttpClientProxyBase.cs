@@ -6,6 +6,8 @@ using Microsoft.Extensions.Logging;
 using MiniSolution.ApplicationContracts;
 using MiniSolution.ApplicationContracts.DTO;
 
+using Newtonsoft.Json;
+
 namespace MiniSolution.HttpApi.Client;
 
 public abstract class CrudHttpClientProxyBase<TKey, TGetOutput, TGetListOutput, TGetListInput, TCreateInput, TUpdateInput> : ClientProxyBase, ICrudApplicationService<TKey, TGetOutput, TGetListOutput, TGetListInput, TCreateInput, TUpdateInput>
@@ -109,7 +111,7 @@ public abstract class CrudHttpClientProxyBase<TKey, TGetOutput, TGetListOutput, 
             {
                 return OutputResult.Failed(Logger, "Content from HttpContent is null or empty");
             }
-            var result = JsonSerializer.Deserialize<OutputResult>(content);
+            var result = JsonConvert.DeserializeObject<OutputResult>(content);
             if (result is null)
             {
                 return OutputResult.Failed(Logger, $"Deserialize {nameof(OutputResult)} from content failed");
@@ -145,7 +147,7 @@ public abstract class CrudHttpClientProxyBase<TKey, TGetOutput, TGetListOutput, 
             {
                 return OutputResult<TResult>.Failed(Logger, "Content from HttpContent is null or empty");
             }
-            var result = JsonSerializer.Deserialize<OutputResult<TResult>>(content);
+            var result = JsonConvert.DeserializeObject<OutputResult<TResult>>(content);
             if (result is null)
             {
                 return OutputResult<TResult>.Failed(Logger, $"Deserialize {nameof(OutputResult)} from content failed");

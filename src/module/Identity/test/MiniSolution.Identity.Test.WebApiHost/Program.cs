@@ -7,6 +7,7 @@ using MiniSolution.Endpoints.HttpApi;
 var builder=WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
+
 builder.Services.AddDbContext<TestIdentityDbContext>(configure =>
 {
     configure.UseInMemoryDatabase("Identity");
@@ -16,6 +17,7 @@ builder.Services.AddMiniSolution(configure =>
     configure.AddSwagger();
     configure.AddAutoMapper(typeof(Program).Assembly);
     configure.AddApplicationService<ITestUserApplicationService, TestUserApplicationService>();
+    configure.AddAutoHttpApi();
 });
 
 

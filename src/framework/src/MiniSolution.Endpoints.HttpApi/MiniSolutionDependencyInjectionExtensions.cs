@@ -1,5 +1,10 @@
 ﻿
+using System.Reflection;
+
+using Microsoft.AspNetCore.Mvc;
+
 using MiniSolution;
+using MiniSolution.Endpoints.HttpApi.Conventions;
 
 using Swashbuckle.AspNetCore.SwaggerGen;
 
@@ -12,6 +17,21 @@ public static class MiniSolutionDependencyInjectionExtensions
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen(configure);
 
+        return builder;
+    }
+
+    public static MiniSolutionBuilder AddAutoHttpApi(this MiniSolutionBuilder builder,params Assembly[] assemblies)
+    {
+        var mvcBuilder=builder.Services.AddMvcCore().ConfigureApplicationPartManager(applicationPart =>
+        {
+            applicationPart.FeatureProviders.Add(new DynamicHttpApiControllerFeatureProvider());
+        })
+            ;
+        mvcBuilder.Services.Configure<MvcOptions>(options =>
+        {
+
+            options.Conventions.Add(new DynamicHttpApiConvention());
+        });
         return builder;
     }
 }

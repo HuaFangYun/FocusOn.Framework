@@ -2,7 +2,7 @@
 
 namespace MiniSolution.Identity.Business.Contracts.UserManagement.DTO;
 
-public class UserGetOutputDto<TKey> : OutpuDtoBase<TKey>
+public class UserGetOutputDto<TKey> : OutputDtoBase<TKey>
 {
     public string UserName { get; set; }
 }

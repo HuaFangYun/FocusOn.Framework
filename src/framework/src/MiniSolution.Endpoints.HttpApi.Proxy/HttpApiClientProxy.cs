@@ -5,13 +5,13 @@ using Microsoft.Extensions.Options;
 
 namespace MiniSolution.Endpoints.HttpApi.Proxy;
 
-public abstract class HttpApiClientProxy : ApplicationServiceBase, IHttpApiClientProxy
+public abstract class HttpApiClientProxy : BusinessService, IHttpApiClientProxy
 {
     protected HttpApiClientProxy(IServiceProvider services) : base(services)
     {
     }
 
-    public IHttpClientFactory HttpClientFactory => Services.GetRequiredService<IHttpClientFactory>();
+    public IHttpClientFactory HttpClientFactory => ServiceProvider.GetRequiredService<IHttpClientFactory>();
 
     protected virtual string? Name { get; }
 

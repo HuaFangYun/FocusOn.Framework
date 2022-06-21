@@ -7,31 +7,65 @@ using MiniSolution.Business.Contracts.DTO;
 using MiniSolution.Business.Contracts;
 
 namespace MiniSolution.Business.Services;
+
+/// <summary>
+/// 表示基于 EF Core 实现增删改查基本功能的基类。这是一个抽象类。
+/// </summary>
+/// <typeparam name="TContext">数据库上下文类型。</typeparam>
+/// <typeparam name="TEntity">实体类型。</typeparam>
+/// <typeparam name="TKey">主键类型。</typeparam>
 public abstract class EfCoreCrudApplicationServiceBase<TContext, TEntity, TKey>
-    : EfCoreCrudApplicationServiceBase<TContext, TEntity, TKey, TEntity, TEntity, TEntity>, ICrudApplicationService<TKey, TEntity, TEntity, TEntity, TEntity>
+    : EfCoreCrudApplicationServiceBase<TContext, TEntity, TKey, TEntity, TEntity, TEntity>, ICrudBusinessService<TKey, TEntity, TEntity, TEntity, TEntity>
     where TContext : DbContext
     where TEntity : class
 {
-    public EfCoreCrudApplicationServiceBase(IServiceProvider serviceProvider) : base(serviceProvider)
+    /// <summary>
+    /// 初始化 <see cref="EfCoreCrudApplicationServiceBase{TContext, TEntity, TKey}"/> 类的新实例。
+    /// </summary>
+    /// <param name="serviceProvider"><see cref="IServiceProvider"/> 实例。</param>
+    protected EfCoreCrudApplicationServiceBase(IServiceProvider serviceProvider) : base(serviceProvider)
     {
     }
 }
 
+/// <summary>
+/// 表示基于 EF Core 实现增删改查基本功能的基类。这是一个抽象类。
+/// </summary>
+/// <typeparam name="TContext">数据库上下文类型。</typeparam>
+/// <typeparam name="TEntity">实体类型。</typeparam>
+/// <typeparam name="TKey">主键类型。</typeparam>
+/// <typeparam name="TGetOutput">获取单个结果的输出类型。</typeparam>
+/// <typeparam name="TGetListOutput">获取列表结果的输出类型。</typeparam>
+/// <typeparam name="TGetListInput">获取列表结果的输入类型。</typeparam>
 public abstract class EfCoreCrudApplicationServiceBase<TContext, TEntity, TKey, TGetOutput, TGetListOutput, TGetListInput>
-    : EfCoreCrudApplicationServiceBase<TContext, TEntity, TKey, TGetOutput, TGetListOutput, TGetListInput, TEntity>, ICrudApplicationService<TKey, TGetOutput, TGetListOutput, TGetListInput, TEntity>
+    : EfCoreCrudApplicationServiceBase<TContext, TEntity, TKey, TGetOutput, TGetListOutput, TGetListInput, TEntity>, ICrudBusinessService<TKey, TGetOutput, TGetListOutput, TGetListInput, TEntity>
     where TContext : DbContext
     where TEntity : class
     where TGetListInput : class
     where TGetListOutput : class
     where TGetOutput : class
 {
-    public EfCoreCrudApplicationServiceBase(IServiceProvider serviceProvider) : base(serviceProvider)
+    /// <summary>
+    /// 初始化 <see cref="EfCoreCrudApplicationServiceBase{TContext, TEntity, TKey, TGetOutput, TGetListOutput, TGetListInput}"/> 类的新实例。
+    /// </summary>
+    /// <param name="serviceProvider"><see cref="IServiceProvider"/> 实例。</param>
+    protected EfCoreCrudApplicationServiceBase(IServiceProvider serviceProvider) : base(serviceProvider)
     {
     }
 }
 
+/// <summary>
+/// 表示基于 EF Core 实现增删改查基本功能的基类。这是一个抽象类。
+/// </summary>
+/// <typeparam name="TContext">数据库上下文类型。</typeparam>
+/// <typeparam name="TEntity">实体类型。</typeparam>
+/// <typeparam name="TKey">主键类型。</typeparam>
+/// <typeparam name="TGetOutput">获取单个结果的输出类型。</typeparam>
+/// <typeparam name="TGetListOutput">获取列表结果的输出类型。</typeparam>
+/// <typeparam name="TGetListInput">获取列表结果的输入类型。</typeparam>
+/// <typeparam name="TCreateOrUpdateInput">创建或更新数据的输入类型。</typeparam>
 public abstract class EfCoreCrudApplicationServiceBase<TContext, TEntity, TKey, TGetOutput, TGetListOutput, TGetListInput, TCreateOrUpdateInput>
-    : EfCoreCrudApplicationServiceBase<TContext, TEntity, TKey, TGetOutput, TGetListOutput, TGetListInput, TCreateOrUpdateInput, TCreateOrUpdateInput>, ICrudApplicationService<TKey, TGetOutput, TGetListOutput, TGetListInput, TCreateOrUpdateInput>
+    : EfCoreCrudApplicationServiceBase<TContext, TEntity, TKey, TGetOutput, TGetListOutput, TGetListInput, TCreateOrUpdateInput, TCreateOrUpdateInput>, ICrudBusinessService<TKey, TGetOutput, TGetListOutput, TGetListInput, TCreateOrUpdateInput>
     where TContext : DbContext
     where TEntity : class
     where TGetListInput : class
@@ -39,13 +73,28 @@ public abstract class EfCoreCrudApplicationServiceBase<TContext, TEntity, TKey, 
     where TGetOutput : class
     where TCreateOrUpdateInput : class
 {
-    public EfCoreCrudApplicationServiceBase(IServiceProvider serviceProvider) : base(serviceProvider)
+    /// <summary>
+    /// 初始化 <see cref="EfCoreCrudApplicationServiceBase{TContext, TEntity, TKey, TGetOutput, TGetListOutput, TGetListInput, TCreateOrUpdateInput}"/> 类的新实例。
+    /// </summary>
+    /// <param name="serviceProvider"><see cref="IServiceProvider"/> 实例。</param>
+    protected EfCoreCrudApplicationServiceBase(IServiceProvider serviceProvider) : base(serviceProvider)
     {
     }
 }
 
+/// <summary>
+/// 表示基于 EF Core 实现增删改查基本功能的基类。这是一个抽象类。
+/// </summary>
+/// <typeparam name="TContext">数据库上下文类型。</typeparam>
+/// <typeparam name="TEntity">实体类型。</typeparam>
+/// <typeparam name="TKey">主键类型。</typeparam>
+/// <typeparam name="TGetOutput">获取单个结果的输出类型。</typeparam>
+/// <typeparam name="TGetListOutput">获取列表结果的输出类型。</typeparam>
+/// <typeparam name="TGetListInput">获取列表结果的输入类型。</typeparam>
+/// <typeparam name="TCreateInput">创建数据的输入类型。</typeparam>
+/// <typeparam name="TUpdateInput">更新数据的输入类型。</typeparam>
 public abstract class EfCoreCrudApplicationServiceBase<TContext, TEntity, TKey, TGetOutput, TGetListOutput, TGetListInput, TCreateInput, TUpdateInput>
-    : ApplicationServiceBase, ICrudApplicationService<TKey, TGetOutput, TGetListOutput, TGetListInput, TCreateInput, TUpdateInput>
+    : BusinessService, ICrudApplicationService<TKey, TGetOutput, TGetListOutput, TGetListInput, TCreateInput, TUpdateInput>
     where TContext : DbContext
     where TEntity : class
     where TGetListInput : class
@@ -54,29 +103,42 @@ public abstract class EfCoreCrudApplicationServiceBase<TContext, TEntity, TKey, 
     where TCreateInput : class
     where TUpdateInput : class
 {
-    public EfCoreCrudApplicationServiceBase(IServiceProvider serviceProvider) : base(serviceProvider)
+    /// <summary>
+    /// 初始化 <see cref="EfCoreCrudApplicationServiceBase{TContext, TEntity, TKey, TGetOutput, TGetListOutput, TGetListInput, TCreateInput, TUpdateInput}"/> 类的新实例。
+    /// </summary>
+    /// <param name="serviceProvider"><see cref="IServiceProvider"/> 实例。</param>
+    protected EfCoreCrudApplicationServiceBase(IServiceProvider serviceProvider) : base(serviceProvider)
     {
     }
 
 
+    /// <summary>
+    /// 获取 <see cref="IMapper"/> 实例。
+    /// </summary>
+    protected IMapper Mapper => ServiceProvider.GetRequiredService<IMapper>();
 
-    protected IMapper Mapper => Services.GetRequiredService<IMapper>();
 
-    protected CancellationToken CancellationToken
-    {
-        get
-        {
-            var tokenSource = new CancellationTokenSource(TimeSpan.FromMinutes(1));
-            return tokenSource.Token;
-        }
-    }
+    /// <summary>
+    /// 获取 <typeparamref name="TContext"/> 实例。
+    /// </summary>
+    protected TContext Context => ServiceProvider.GetRequiredService<TContext>();
 
-    protected TContext Context => Services.GetRequiredService<TContext>();
-
+    /// <summary>
+    /// 获取 <see cref="DbSet{TEntity}"/> 实例。
+    /// </summary>
     protected DbSet<TEntity> Set => Context.Set<TEntity>();
 
+    /// <summary>
+    /// 获取 <c>AsNoTracking</c> 的查询结果。
+    /// </summary>
     protected IQueryable<TEntity> Query => Set.AsNoTracking();
 
+    /// <summary>
+    /// <inheritdoc/>
+    /// </summary>
+    /// <param name="model">要创建的输入。</param>
+    /// <returns></returns>
+    /// <exception cref="ArgumentNullException"><paramref name="model"/> 是 null。</exception>
     public virtual async ValueTask<OutputResult> CreateAsync(TCreateInput model)
     {
         if (model is null)
@@ -94,6 +156,10 @@ public abstract class EfCoreCrudApplicationServiceBase<TContext, TEntity, TKey, 
         return await SaveChangesAsync();
     }
 
+    /// <summary>
+    /// <inheritdoc/>
+    /// </summary>
+    /// <param name="id">要删除的 Id。</param>
     public virtual async ValueTask<OutputResult> DeleteAsync(TKey id)
     {
         var entity = await FindAsync(id);
@@ -105,7 +171,13 @@ public abstract class EfCoreCrudApplicationServiceBase<TContext, TEntity, TKey, 
         return await SaveChangesAsync();
     }
 
-    public async ValueTask<OutputResult> UpdateAsync(TKey id, TUpdateInput model)
+    /// <summary>
+    /// <inheritdoc/>
+    /// </summary>
+    /// <param name="id">要更新的 Id。</param>
+    /// <param name="model">要更新的字段。</param>
+    /// <exception cref="ArgumentNullException"><paramref name="model"/> 是 null。</exception>
+    public virtual async ValueTask<OutputResult> UpdateAsync(TKey id, TUpdateInput model)
     {
         if (model is null)
         {
@@ -127,6 +199,10 @@ public abstract class EfCoreCrudApplicationServiceBase<TContext, TEntity, TKey, 
         return await SaveChangesAsync();
     }
 
+    /// <summary>
+    /// <inheritdoc/>
+    /// </summary>
+    /// <param name="id">要获取的 Id。</param>
     public virtual async ValueTask<OutputResult<TGetOutput?>> GetAsync(TKey id)
     {
         var entity = await FindAsync(id);
@@ -138,21 +214,22 @@ public abstract class EfCoreCrudApplicationServiceBase<TContext, TEntity, TKey, 
         return OutputResult<TGetOutput?>.Success(output);
     }
 
-    public virtual async Task<OutputResult<PagedOutputDto<TGetListOutput>>> GetListAsync(int page, int size, TGetListInput? model = default)
+    /// <summary>
+    /// <inheritdoc/>
+    /// </summary>
+    /// <param name="model">列表检索的输入。</param>
+    public virtual async Task<OutputResult<PagedOutputDto<TGetListOutput>>> GetListAsync(TGetListInput? model = default)
     {
-        var query = Query;
+        var query = CreateQuery(model);
 
-        query = CreateQuery(query);
-
-        if (model is IHasQueryable<TEntity> queryable)
+        if (model is PagedInputDto pagedInputDto)
         {
-            query = queryable.Query(query);
+            query = query.Skip((pagedInputDto.Page - 1) * pagedInputDto.Size).Take(pagedInputDto.Page * pagedInputDto.Size);
         }
 
-        query = query.Skip((page - 1) * size).Take(page * size);
         try
         {
-            var data = await Mapper.ProjectTo<TGetListOutput>(query, model).ToListAsync(CancellationToken);
+            var data = await Mapper.ProjectTo<TGetListOutput>(query).ToListAsync(CancellationToken);
             var total = await query.CountAsync(CancellationToken);
             return OutputResult<PagedOutputDto<TGetListOutput>>.Success(new(data, total));
         }
@@ -165,15 +242,17 @@ public abstract class EfCoreCrudApplicationServiceBase<TContext, TEntity, TKey, 
 
 
     /// <summary>
-    /// 
+    /// 根据主键获取指定的实体。
     /// </summary>
-    /// <param name="id"></param>
-    /// <param name="throwIfError"></param>
-    /// <returns></returns>
-    /// <exception cref="InvalidOperationException"></exception>
+    /// <param name="id">主键 Id。</param>
     protected ValueTask<TEntity?> FindAsync(TKey id) => Set.FindAsync(id);
 
-    protected virtual IQueryable<TEntity> CreateQuery(IQueryable<TEntity> source) => source;
+    /// <summary>
+    /// 创建指定 <typeparamref name="TGetListInput"/> 提供的检索。
+    /// </summary>
+    /// <param name="model">获取的输入参数。</param>
+    protected virtual IQueryable<TEntity> CreateQuery(TGetListInput? model) => Query;
+
 
     /// <summary>
     /// 保存数据库。

@@ -9,7 +9,7 @@ namespace MiniSolution.Endpoints.HttpApi.Controllers;
 
 public abstract class CrudApiControllerBase<TAppService, TKey, TGetOutputDto, TGetListOutputDto, TGetListInputDto, TCreateOrUpdateInputDto>
     : CrudApiControllerBase<TAppService, TKey, TGetOutputDto, TGetListOutputDto, TGetListInputDto, TCreateOrUpdateInputDto, TCreateOrUpdateInputDto>
-   where TAppService : ICrudApplicationService<TKey, TGetOutputDto, TGetListOutputDto, TGetListInputDto, TCreateOrUpdateInputDto>
+   where TAppService : ICrudBusinessService<TKey, TGetOutputDto, TGetListOutputDto, TGetListInputDto, TCreateOrUpdateInputDto>
 
      where TGetOutputDto : class
     where TGetListInputDto : class

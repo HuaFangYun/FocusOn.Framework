@@ -8,7 +8,7 @@ namespace Microsoft.Extensions.DependencyInjection;
 public static class MiniSolutionDependencyInjectionExtensions
 {
     public static MiniSolutionBuilder AddHttpClientProxy<TService, TClientProxy>(this MiniSolutionBuilder builder)
-        where TService : class, IApplicationSerivce
+        where TService : class, IBusinessSerivce
         where TClientProxy : class, IHttpApiClientProxy, TService
     {
         builder.Services.AddScoped<TService, TClientProxy>();

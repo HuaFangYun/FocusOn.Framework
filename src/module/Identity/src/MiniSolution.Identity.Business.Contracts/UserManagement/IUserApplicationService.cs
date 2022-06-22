@@ -7,7 +7,7 @@ public interface IUserApplicationService<TKey>: IUserApplicationService<TKey, Us
 {
 
 }
-public interface IUserApplicationService<TKey, TGetOutput, TGetListOutput, TGetListInput, TCreateInput, TUpdateInput> : ICrudApplicationService<TKey, TGetOutput, TGetListOutput, TGetListInput, TCreateInput, TUpdateInput>
+public interface IUserApplicationService<TKey, TGetOutput, TGetListOutput, TGetListInput, TCreateInput, TUpdateInput> : ICrudBusinessService<TKey, TGetOutput, TGetListOutput, TGetListInput, TCreateInput, TUpdateInput>
     where TGetListInput : UserGetListInputDto
     where TGetListOutput : UserGetListOutputDto<TKey>
     where TGetOutput : UserGetOutputDto<TKey>

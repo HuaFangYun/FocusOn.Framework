@@ -1,6 +1,4 @@
 ﻿
-using System.Reflection;
-
 using Microsoft.AspNetCore.Mvc;
 
 using MiniSolution;
@@ -10,8 +8,17 @@ using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
+/// <summary>
+/// Mini Solution 的扩展。
+/// </summary>
 public static class MiniSolutionDependencyInjectionExtensions
 {
+    /// <summary>
+    /// 添加 Swagger 功能服务。
+    /// </summary>
+    /// <param name="builder"><see cref="MiniSolutionBuilder"/> 实例。</param>
+    /// <param name="configure">Swagger 配置。</param>
+    /// <returns></returns>
     public static MiniSolutionBuilder AddSwagger(this MiniSolutionBuilder builder, Action<SwaggerGenOptions> configure = default)
     {
         builder.Services.AddEndpointsApiExplorer();
@@ -20,7 +27,11 @@ public static class MiniSolutionDependencyInjectionExtensions
         return builder;
     }
 
-    public static MiniSolutionBuilder AddAutoHttpApi(this MiniSolutionBuilder builder,params Assembly[] assemblies)
+    /// <summary>
+    /// 添加可自动识别实现 <see cref="MiniSolution.Business.Contracts.IRemotingService"/> 的类型作为 HTTP API 。
+    /// </summary>
+    /// <param name="builder"><see cref="MiniSolutionBuilder"/> 实例。</param>
+    public static MiniSolutionBuilder AddRemotingServiceHttpApi(this MiniSolutionBuilder builder)
     {
         var mvcBuilder=builder.Services.AddMvcCore().ConfigureApplicationPartManager(applicationPart =>
         {

@@ -6,6 +6,9 @@ using MiniSolution.Business.Contracts;
 
 namespace MiniSolution.Endpoints.HttpApi.Conventions;
 
+/// <summary>
+/// 表示自动化识别 HTTP API 的特性提供器。
+/// </summary>
 internal class DynamicHttpApiControllerFeatureProvider : ControllerFeatureProvider
 {
     protected override bool IsController(TypeInfo typeInfo)

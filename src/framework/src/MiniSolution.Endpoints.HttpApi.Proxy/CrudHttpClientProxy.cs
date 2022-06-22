@@ -9,7 +9,7 @@ using Newtonsoft.Json;
 
 namespace MiniSolution.Endpoints.HttpApi.Proxy;
 
-public abstract class CrudHttpClientProxy<TKey, TGetOutput, TGetListOutput, TGetListInput, TCreateInput, TUpdateInput> : HttpApiClientProxy, ICrudApplicationService<TKey, TGetOutput, TGetListOutput, TGetListInput, TCreateInput, TUpdateInput>
+public abstract class CrudHttpClientProxy<TKey, TGetOutput, TGetListOutput, TGetListInput, TCreateInput, TUpdateInput> : HttpApiClientProxy, ICrudBusinessService<TKey, TGetOutput, TGetListOutput, TGetListInput, TCreateInput, TUpdateInput>
     where TGetListInput : class
     where TGetListOutput : class
     where TGetOutput : class

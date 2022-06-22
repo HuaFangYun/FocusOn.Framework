@@ -5,18 +5,16 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ActionConstraints;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
-using Microsoft.Extensions.Options;
 
 using MiniSolution.Business.Contracts;
 
 namespace MiniSolution.Endpoints.HttpApi.Conventions;
 
-public class DynamicHttpApiConvention : IApplicationModelConvention
+/// <summary>
+/// 动态 HTTP API 的约定。
+/// </summary>
+internal class DynamicHttpApiConvention : IApplicationModelConvention
 {
-    public DynamicHttpApiConvention()
-    {
-    }
-
     public void Apply(ApplicationModel application)
     {
         foreach (var controller in application.Controllers)

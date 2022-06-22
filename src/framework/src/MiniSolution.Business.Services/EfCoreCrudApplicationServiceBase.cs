@@ -94,7 +94,7 @@ public abstract class EfCoreCrudApplicationServiceBase<TContext, TEntity, TKey, 
 /// <typeparam name="TCreateInput">创建数据的输入类型。</typeparam>
 /// <typeparam name="TUpdateInput">更新数据的输入类型。</typeparam>
 public abstract class EfCoreCrudApplicationServiceBase<TContext, TEntity, TKey, TGetOutput, TGetListOutput, TGetListInput, TCreateInput, TUpdateInput>
-    : BusinessService, ICrudApplicationService<TKey, TGetOutput, TGetListOutput, TGetListInput, TCreateInput, TUpdateInput>
+    : BusinessService, ICrudBusinessService<TKey, TGetOutput, TGetListOutput, TGetListInput, TCreateInput, TUpdateInput>
     where TContext : DbContext
     where TEntity : class
     where TGetListInput : class

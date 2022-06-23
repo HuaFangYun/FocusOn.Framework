@@ -1,6 +1,4 @@
 ﻿
-using System.Text.Json.Serialization;
-
 using Microsoft.Extensions.Logging;
 
 namespace MiniSolution.Business.Contracts.DTO;

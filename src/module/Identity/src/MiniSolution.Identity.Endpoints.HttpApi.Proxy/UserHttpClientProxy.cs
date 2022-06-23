@@ -26,7 +26,7 @@ public class UserHttpClientProxy<TKey, TGetOutputDto, TGetListOutputDto, TGetLis
 
     protected override string? Name => Const.HttpClientName;
 
-    protected override string RootPath => "users";
+    protected override string RootPath => "api/users";
 
     public virtual async Task<OutputResult<TGetOutputDto?>> GetByUserNameAsync(string userName)
     {

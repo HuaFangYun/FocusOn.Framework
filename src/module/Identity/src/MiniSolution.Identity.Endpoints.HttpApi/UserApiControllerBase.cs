@@ -24,5 +24,5 @@ public abstract class UserApiControllerBase<TUserApplicationService, TKey, TGetO
 {
     [HttpGet("username/{userName}")]
     public virtual Task<OutputResult<TGetOutputDto?>> GetByUserNameAsync(string userName)
-    => AppService.GetByUserNameAsync(userName);
+    => BusinessService.GetByUserNameAsync(userName);
 }

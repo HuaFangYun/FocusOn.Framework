@@ -11,7 +11,7 @@ namespace MiniSolution.Business.Contracts;
 /// <typeparam name="TGetListInput">获取列表结果的输入类型。</typeparam>
 /// <typeparam name="TCreateOrUpdateInput">创建或更新数据的输入类型。</typeparam>
 public interface ICrudBusinessService<TKey, TGetOutput, TGetListOutput, TGetListInput, TCreateOrUpdateInput>
-    : ICrudApplicationService<TKey, TGetOutput, TGetListOutput, TGetListInput, TCreateOrUpdateInput, TCreateOrUpdateInput>
+    : ICrudBusinessService<TKey, TGetOutput, TGetListOutput, TGetListInput, TCreateOrUpdateInput, TCreateOrUpdateInput>
     where TGetListInput : class
     where TGetListOutput : class
     where TGetOutput : class
@@ -29,7 +29,7 @@ public interface ICrudBusinessService<TKey, TGetOutput, TGetListOutput, TGetList
 /// <typeparam name="TGetListInput">获取列表结果的输入类型。</typeparam>
 /// <typeparam name="TCreateInput">创建数据的输入类型。</typeparam>
 /// <typeparam name="TUpdateInput">更新数据的输入类型。</typeparam>
-public interface ICrudApplicationService<TKey,TGetOutput,TGetListOutput,TGetListInput,TCreateInput,TUpdateInput> :IBusinessSerivce
+public interface ICrudBusinessService<TKey,TGetOutput,TGetListOutput,TGetListInput,TCreateInput,TUpdateInput> :IBusinessSerivce
     where TGetListInput:class
     where TGetListOutput:class
     where TGetOutput:class

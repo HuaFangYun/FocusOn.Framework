@@ -16,7 +16,7 @@ builder.Services.AddMiniSolution(configure =>
 {
     configure.AddSwagger();
     configure.AddAutoMapper(typeof(Program).Assembly);
-    configure.AddApplicationService<ITestUserApplicationService, TestUserApplicationService>();
+    configure.AddBusinessService<ITestUserApplicationService, TestUserApplicationService>();
     configure.AddAutoHttpApi();
 });
 

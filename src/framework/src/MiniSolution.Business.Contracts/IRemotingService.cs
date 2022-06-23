@@ -1,5 +1,5 @@
 ﻿namespace MiniSolution.Business.Contracts;
 
-public interface IRemotingService:IApplicationSerivce
+public interface IRemotingService:IBusinessSerivce
 {
 }

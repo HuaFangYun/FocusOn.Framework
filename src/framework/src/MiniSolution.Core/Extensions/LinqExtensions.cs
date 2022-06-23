@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace MiniSolution;
 
+/// <summary>
+/// LINQ 扩展。
+/// </summary>
 public static class LinqExtensions
 {
 }

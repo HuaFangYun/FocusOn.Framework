@@ -15,6 +15,32 @@ namespace MiniSolution.Endpoints.HttpApi.Conventions;
 /// </summary>
 internal class DynamicHttpApiConvention : IApplicationModelConvention
 {
+    /// <summary>
+    /// 识别并替换的 controller 后缀关键字。
+    /// </summary>
+    readonly static string[] Controller_Replace_Sufix_Key_Words = new string[] { "ApplicationService", "AppService", "BusinessService","BizService" };
+    /// <summary>
+    /// 识别并替换的 action 前缀关键字。
+    /// </summary>
+    readonly static string[] Action_Replace_Prefix_Key_Words = new[] {
+    "GetBy","GetList","Get",
+    "Post","Create","Add","Insert",
+    "Put","Update",
+    "Delete","Remove",
+    "Patch"};
+    readonly static Dictionary<string, string> Action_HttpMethod_Mapping = new()
+    {
+        ["Create"] = HttpMethods.Post,
+        ["Add"] = HttpMethods.Post,
+        ["Insert"]= HttpMethods.Post,
+        ["Update"] = HttpMethods.Put,
+        ["Edit"] = HttpMethods.Put,
+        ["Patch"]= HttpMethods.Put,
+        ["Delete"] = HttpMethods.Delete,
+        ["Remove"] = HttpMethods.Delete,
+        ["Get"] = HttpMethods.Get,
+        ["Find"] = HttpMethods.Get,
+    };
     public void Apply(ApplicationModel application)
     {
         foreach (var controller in application.Controllers)
@@ -30,11 +56,25 @@ internal class DynamicHttpApiConvention : IApplicationModelConvention
 
     void ConfigureApiExplorer(ControllerModel controller)
     {
-        controller.ApiExplorer.IsVisible = !controller.ApiExplorer.IsVisible.HasValue;
+        if(TryGetRemotingServiceAttribute(controller, out RemotingServiceAttribute? remotingServiceAttribute))
+        {
+            controller.ApiExplorer.IsVisible = !remotingServiceAttribute?.Disabled;
+        }
+        else
+        {
+            controller.ApiExplorer.IsVisible = true;
+        }
 
         foreach (var action in controller.Actions)
         {
-            action.ApiExplorer.IsVisible = !action.ApiExplorer.IsVisible.HasValue;
+            if (TryGetRemotingServiceAttribute(action,out RemotingServiceAttribute? actionRemotingServiceAttribute))
+            {
+                action.ApiExplorer.IsVisible = !actionRemotingServiceAttribute?.Disabled;
+            }
+            else
+            {
+                action.ApiExplorer.IsVisible = true;
+            }
         }
     }
 
@@ -73,7 +113,7 @@ internal class DynamicHttpApiConvention : IApplicationModelConvention
                 .ToList().ForEach(s => selectors.Remove(s));
     }
 
-    private void ConfigureParameters(ControllerModel controller)
+    private static void ConfigureParameters(ControllerModel controller)
     {
         foreach (var action in controller.Actions)
         {
@@ -90,14 +130,13 @@ internal class DynamicHttpApiConvention : IApplicationModelConvention
                 {
                     var httpMethods = action.Selectors.SelectMany(temp => temp.ActionConstraints).OfType<HttpMethodActionConstraint>().SelectMany(temp => temp.HttpMethods).ToList();
 
-                    if (httpMethods.Contains("GET") ||
-                        httpMethods.Contains("DELETE") ||
-                        httpMethods.Contains("TRACE") ||
-                        httpMethods.Contains("HEAD"))
+                    if (httpMethods.Contains(HttpMethods.Get) ||
+                        httpMethods.Contains(HttpMethods.Delete) ||
+                        httpMethods.Contains(HttpMethods.Trace) ||
+                        httpMethods.Contains(HttpMethods.Head))
                     {
                         continue;
                     }
-
                     parameter.BindingInfo = BindingInfo.GetBindingInfo(new[] { new FromBodyAttribute() });
                 }
             }
@@ -134,9 +173,9 @@ internal class DynamicHttpApiConvention : IApplicationModelConvention
     string GenerateRouteTemplate(ActionModel action)
     {
         var routeTemplateBuilder = new StringBuilder("api");
-        var controllerName = ResolveControllerName(action);
+        var controllerName = GetControllerName(action);
 
-        routeTemplateBuilder.Append($"/{controllerName}s");
+        routeTemplateBuilder.Append($"/{controllerName}");
 
         if (action.Parameters.Any(m => m.ParameterName.ToLower() == "id"))
         {
@@ -144,26 +183,25 @@ internal class DynamicHttpApiConvention : IApplicationModelConvention
         }
 
         var actionName = action.ActionName;
-        if (actionName.EndsWith("Async"))
+
+        if (TryGetRemotingServiceAttribute(action, out var remotingServiceAttribute) && !remotingServiceAttribute.Template.IsNullOrEmpty())
         {
-            actionName = actionName.Replace("Async", string.Empty);
+            actionName = remotingServiceAttribute.Template;
         }
-
-
-        var trimPrefixes = new[]
-{
-    "GetBy","GetList","Get",
-    "Post","Create","Add","Insert",
-    "Put","Update",
-    "Delete","Remove",
-    "Patch"
-};
-        foreach (var trimPrefix in trimPrefixes)
+        else
         {
-            if (actionName.StartsWith(trimPrefix))
+            if (actionName.EndsWith("Async"))
             {
-                actionName = actionName[trimPrefix.Length..];
-                break;
+                actionName = actionName.Replace("Async", string.Empty);
+            }
+
+            foreach (var trimPrefix in Action_Replace_Prefix_Key_Words)
+            {
+                if (actionName.StartsWith(trimPrefix))
+                {
+                    actionName = actionName[trimPrefix.Length..];
+                    break;
+                }
             }
         }
 
@@ -176,35 +214,31 @@ internal class DynamicHttpApiConvention : IApplicationModelConvention
 
     string GetHttpMethod(ActionModel action)
     {
-        var actionName = action.ActionName;
-        if (actionName.StartsWith("Get"))
+        foreach (var item in Action_HttpMethod_Mapping.Keys)
         {
-            return "GET";
+            if (action.ActionName.Contains(item))
+            {
+                return Action_HttpMethod_Mapping[item];
+            }
         }
-
-        if (actionName.StartsWith("Put") || actionName.StartsWith("Update"))
-        {
-            return "PUT";
-        }
-
-        if (actionName.StartsWith("Delete") || actionName.StartsWith("Remove"))
-        {
-            return "DELETE";
-        }
-
-        if (actionName.StartsWith("Patch"))
-        {
-            return "PATCH";
-        }
-
-        return "POST";
+        return HttpMethods.Post;
     }
 
-    protected virtual string ResolveControllerName(ActionModel action)
+    /// <summary>
+    /// 获取 controller 的名称。
+    /// </summary>
+    /// <param name="action">Action</param>
+    /// <returns></returns>
+    protected virtual string GetControllerName(ActionModel action)
     {
-        var controllerName = action.Controller.ControllerName;
+        if(TryGetRemotingServiceAttribute(action.Controller,out var controllerRemotingServiceAttribute) && !controllerRemotingServiceAttribute.Template.IsNullOrEmpty())
+        {
+            return controllerRemotingServiceAttribute.Template;
+        }
 
-        foreach (var name in new[] { "ApplicationService", "AppService" })
+        var controllerName = action.Controller.ControllerName;
+        
+        foreach (var name in Controller_Replace_Sufix_Key_Words)
         {
             if (controllerName.EndsWith(name))
             {
@@ -212,5 +246,17 @@ internal class DynamicHttpApiConvention : IApplicationModelConvention
             }
         }
         return controllerName;
+    }
+
+    bool TryGetRemotingServiceAttribute(ControllerModel controller,out RemotingServiceAttribute? attribute)
+    {
+        return controller.ControllerType.TryGetCustomAttribute(out attribute);
+    }
+
+    bool TryGetRemotingServiceAttribute(ActionModel action, out RemotingServiceAttribute? attribute)
+    {
+        var actionRemotingServiceAttribute = action.Attributes.Where(m=>m is RemotingServiceAttribute).Select(m => m as RemotingServiceAttribute).FirstOrDefault();
+        attribute = actionRemotingServiceAttribute;
+        return actionRemotingServiceAttribute != null;
     }
 }

@@ -6,6 +6,18 @@ namespace MiniSolution.Business.Contracts;
 /// 提供具备增删改查的业务服务。
 /// </summary>
 /// <typeparam name="TKey">主键类型。</typeparam>
+/// <typeparam name="TModel">输出、输出模型。</typeparam>
+public interface ICrudBusinessService<TKey, TModel>
+    :ICrudBusinessService<TKey,TModel, TModel, TModel,TModel>
+    where TModel : class
+{
+
+}
+
+/// <summary>
+/// 提供具备增删改查的业务服务。
+/// </summary>
+/// <typeparam name="TKey">主键类型。</typeparam>
 /// <typeparam name="TGetOutput">获取单个结果的输出类型。</typeparam>
 /// <typeparam name="TGetListOutput">获取列表结果的输出类型。</typeparam>
 /// <typeparam name="TGetListInput">获取列表结果的输入类型。</typeparam>

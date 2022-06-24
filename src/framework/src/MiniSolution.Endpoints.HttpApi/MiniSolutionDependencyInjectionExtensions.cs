@@ -33,14 +33,13 @@ public static class MiniSolutionDependencyInjectionExtensions
     /// <param name="builder"><see cref="MiniSolutionBuilder"/> 实例。</param>
     public static MiniSolutionBuilder AddRemotingServiceHttpApi(this MiniSolutionBuilder builder)
     {
-        var mvcBuilder=builder.Services.AddMvcCore().ConfigureApplicationPartManager(applicationPart =>
+        var mvcBuilder=builder.Services.AddMvc().ConfigureApplicationPartManager(applicationPart =>
         {
             applicationPart.FeatureProviders.Add(new DynamicHttpApiControllerFeatureProvider());
         })
             ;
         mvcBuilder.Services.Configure<MvcOptions>(options =>
         {
-
             options.Conventions.Add(new DynamicHttpApiConvention());
         });
         return builder;

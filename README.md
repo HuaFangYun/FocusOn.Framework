@@ -1,39 +1,97 @@
-# BoloniApp
+# MiniSolution
+基于契约的全栈开发框架，由框架自动生成 HTTP API 代理和 HTTP WEB API 终结点，开发者只需要集中精力在业务逻辑上即可。以沿用原生 .NET 体系技术为原则，让学习门槛降低约至 0，并支持模块化开发的功能，具备无限扩展的能力。用最少的时间开发出最接近需求的产品。
 
-#### 介绍
-{**以下是 Gitee 平台说明，您可以替换此简介**
-Gitee 是 OSCHINA 推出的基于 Git 的代码托管平台（同时支持 SVN）。专为开发者提供稳定、高效、安全的云端软件开发协作平台
-无论是个人、团队、或是企业，都能够用 Gitee 实现代码托管、项目管理、协作开发。企业项目请看 [https://gitee.com/enterprises](https://gitee.com/enterprises)}
+# 架构图
 
-#### 软件架构
-软件架构说明
+# 优势
 
+* 前后端分离经常会在联调时产生各种问题。但在 .NET 体系下，因为 Blazor 的诞生，让全栈不是梦。因此只要基于契约，让框架实现前后端自动化处理即可，减少因为前后端各种不一致造成的问题。
+* 简单易学。我们保证基于原生技术进行功能扩展，尽可能减少新框架的学习成本，只需要懂三层架构即可。
+* 支持 EF Core（目前），开箱即用
 
-#### 安装教程
+# 快速上手
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+1. 定义契约
+```cs
+public interface IUserService : ICrudBusinessService<Guid, GetUserOutput, GetUserListOutput, UserCreateInput, UserUpdateInput>
+{
+    Task<OutputResult<GetSingleUserOutput>> GetByNameAsync(string userName);
+}
+```
 
-#### 使用说明
+2. 后端业务实现
+```cs
+public class UserService : EfCoreBusinessService<UserDbContext, Guid, GetUserOutput, GetUserListOutput, UserCreateInput, UserUpdateInput> , IRemotingService
+{
+    public UserService(IServiceProvider serviceProvider):base(serviceProvider)
+    {
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+    }
 
-#### 参与贡献
+    public async Task<OutputResult<GetSingleUserOutput>> GetByNameAsync(string userName)
+    {
+        var user = Query.SingleOrDefault(m=>m.UserName == userName);
+        if(user is null)
+        {
+            return OutputResult<GetSingleUserOutput>.Failed("User is not found");
+        }
 
-1.  Fork 本仓库
-2.  新建 Feat_xxx 分支
-3.  提交代码
-4.  新建 Pull Request
+        var model = Mapper.Map<User, GetSingleUserOutput>(user);
+        return OutputResult<GetSingleUserOutput>.Success(model);
+    }
+}
+```
+继承了 `IRemotingService` 会自动生成 web api
 
+因此该方法会生成 `/api/users/byName?userName={userName}` 格式的路由
 
-#### 特技
+在 API 层，配置 Service
+```cs
+...
+builder.Services.AddMiniSolution(configure =>
+{
+    configure.AddSwagger();
+    configure.AddBusinessService<IUserService, UserService>();
+});
+...
+```
+然后运行 API，或 Swagger
 
-1.  使用 Readme\_XXX.md 来支持不同的语言，例如 Readme\_en.md, Readme\_zh.md
-2.  Gitee 官方博客 [blog.gitee.com](https://blog.gitee.com)
-3.  你可以 [https://gitee.com/explore](https://gitee.com/explore) 这个地址来了解 Gitee 上的优秀开源项目
-4.  [GVP](https://gitee.com/gvp) 全称是 Gitee 最有价值开源项目，是综合评定出的优秀开源项目
-5.  Gitee 官方提供的使用手册 [https://gitee.com/help](https://gitee.com/help)
-6.  Gitee 封面人物是一档用来展示 Gitee 会员风采的栏目 [https://gitee.com/gitee-stars/](https://gitee.com/gitee-stars/)
+3. 前端代理实现
+```cs
+public class UserServiceHttpProxy : CrudHttpProxy<User, Guid, GetUserOutput, GetUserListOutput, UserCreateInput, UserUpdateInput>
+{
+    public UserServiceHttpProxy(IServiceProvider serviceProvider):base(serviceProvider)
+    {
+
+    }
+
+    public async Task<OutputResult<GetSingleUserOutput>> GetByNameAsync(string userName)
+    {
+        var result = Client.GetAsync(GetRequestUri(userName));
+        return GetOutputResult<GetSingleUserOutput>(result);
+    }
+}
+```
+
+在客户端层（例如 Blazor)，配置 Service
+```cs
+builder.Service.AddMiniSolution(configure =>
+{
+    configure.AddHttpProxy<IUserService, UserServiceHttpProxy>();
+});
+```
+
+在客户都使用 `IUserService` 调用
+```cs
+var _userService = ServiceProfider.GetService<IUserService>();
+
+var result = await _userService.GetByNameAsync("admin");
+if(result.Succeed)
+{
+    var user = result.Data; //获取数据
+}
+
+//获取错误信息
+result.Errors
+```

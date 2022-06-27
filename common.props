@@ -3,15 +3,18 @@
         <TargetFramework>net6.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
-        <Authors>MiniSolution Team</Authors>
+		<Company>$(Authors)</Company>
+		<Product>FocusOn</Product>
+        <Authors>FocusOn</Authors>
         <PackageId>$(AssemblyName)</PackageId>
         <Version>0.1</Version>
         <AssemblyVersion>$(Version)</AssemblyVersion>
         <FileVersion>$(Version)</FileVersion>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <OutputPath>bin\$(Configuration)</OutputPath>
-        <DocumentationFile>bin\$(Configuration)\$(AssembliName).xml</DocumentationFile>
+        <DocumentationFile>bin\$(Configuration)\$(AssemblyName).xml</DocumentationFile>
         <Description>基于契约和 HTTP API 的自动化前后端全栈框架。</Description>
+		<Title>FocusOn</Title>
       </PropertyGroup>
 
       <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -19,5 +22,8 @@
       </PropertyGroup>
       <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
         <FileAlignment>1024</FileAlignment>
+		  <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		  <PackageOutputPath>../../../../pack/$(Configuration)/$(Version)</PackageOutputPath>
+		  <DebugSymbols>false</DebugSymbols>
       </PropertyGroup>
 </Project>

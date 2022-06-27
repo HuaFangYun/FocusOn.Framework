@@ -1,6 +1,6 @@
 {
   "profiles": {
-    "MiniSolution.Identity.Test.WebApiHost": {
+    "FocusOn.Identity.Test.WebApiHost": {
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {

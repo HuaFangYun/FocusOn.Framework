@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-using MiniSolution.Identity.Test.WebApiHost.Entities.Configurations;
+using FocusOn.Identity.Test.WebApiHost.Entities.Configurations;
 
-namespace MiniSolution.Identity.Test.WebApiHost
+namespace FocusOn.Identity.Test.WebApiHost
 {
     public class TestIdentityDbContext : DbContext
     {

@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -10,7 +10,7 @@
 		<PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="6.0.0" />
 	</ItemGroup>
 	<ItemGroup>
-	  <ProjectReference Include="..\..\src\MiniSolution.Identity.Business.Services\MiniSolution.Identity.Business.Services.csproj" />
-	  <ProjectReference Include="..\..\src\MiniSolution.Identity.Endpoints.HttpApi\MiniSolution.Identity.Endpoints.HttpApi.csproj" />
+	  <ProjectReference Include="..\..\src\FocusOn.Identity.Business.Services\FocusOn.Identity.Business.Services.csproj" />
+	  <ProjectReference Include="..\..\src\FocusOn.Identity.Endpoints.HttpApi\FocusOn.Identity.Endpoints.HttpApi.csproj" />
 	</ItemGroup>
 </Project>

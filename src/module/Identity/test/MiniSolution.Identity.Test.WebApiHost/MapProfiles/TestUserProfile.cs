@@ -1,7 +1,7 @@
-﻿using MiniSolution.Identity.Business.Services.UserManagement.MapProfiles;
-using MiniSolution.Identity.Test.WebApiHost.Entities;
+﻿using FocusOn.Identity.Business.Services.UserManagement.MapProfiles;
+using FocusOn.Identity.Test.WebApiHost.Entities;
 
-namespace MiniSolution.Identity.Test.WebApiHost.MapProfiles;
+namespace FocusOn.Identity.Test.WebApiHost.MapProfiles;
 
 public class TestUserProfile: UserMapProfile<TestUser,Guid>
 {

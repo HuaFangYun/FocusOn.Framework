@@ -17,6 +17,7 @@ internal class DynamicHttpApiControllerFeatureProvider : ControllerFeatureProvid
         {
             return !typeInfo.IsAbstract && !typeInfo.IsInterface && !typeInfo.IsGenericType && typeInfo.IsPublic;
         }
-        return false;
+
+        return typeInfo.TryGetCustomAttribute(out RemotingServiceAttribute attribute);
     }
 }

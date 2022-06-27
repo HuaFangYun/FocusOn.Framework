@@ -18,7 +18,7 @@ internal class DynamicHttpApiConvention : IApplicationModelConvention
     /// <summary>
     /// 识别并替换的 controller 后缀关键字。
     /// </summary>
-    readonly static string[] Controller_Replace_Sufix_Key_Words = new string[] { "ApplicationService", "AppService", "BusinessService","BizService" };
+    readonly static string[] Controller_Replace_Sufix_Key_Words = new string[] { "BusinessService", "AppService", "BusinessService","BizService" };
     /// <summary>
     /// 识别并替换的 action 前缀关键字。
     /// </summary>

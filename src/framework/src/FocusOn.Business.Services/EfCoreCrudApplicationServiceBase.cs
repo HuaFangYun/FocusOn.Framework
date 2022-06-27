@@ -14,16 +14,16 @@ namespace FocusOn.Business.Services;
 /// <typeparam name="TContext">数据库上下文类型。</typeparam>
 /// <typeparam name="TEntity">实体类型。</typeparam>
 /// <typeparam name="TKey">主键类型。</typeparam>
-public abstract class EfCoreCrudApplicationServiceBase<TContext, TEntity, TKey>
-    : EfCoreCrudApplicationServiceBase<TContext, TEntity, TKey, TEntity, TEntity, TEntity>, ICrudBusinessService<TKey, TEntity, TEntity, TEntity, TEntity>
+public abstract class EfCoreCrudBusinessServiceBase<TContext, TEntity, TKey>
+    : EfCoreCrudBusinessServiceBase<TContext, TEntity, TKey, TEntity, TEntity, TEntity>, ICrudBusinessService<TKey, TEntity, TEntity, TEntity, TEntity>
     where TContext : DbContext
     where TEntity : class
 {
     /// <summary>
-    /// 初始化 <see cref="EfCoreCrudApplicationServiceBase{TContext, TEntity, TKey}"/> 类的新实例。
+    /// 初始化 <see cref="EfCoreCrudBusinessServiceBase{TContext, TEntity, TKey}"/> 类的新实例。
     /// </summary>
     /// <param name="serviceProvider"><see cref="IServiceProvider"/> 实例。</param>
-    protected EfCoreCrudApplicationServiceBase(IServiceProvider serviceProvider) : base(serviceProvider)
+    protected EfCoreCrudBusinessServiceBase(IServiceProvider serviceProvider) : base(serviceProvider)
     {
     }
 }
@@ -37,8 +37,8 @@ public abstract class EfCoreCrudApplicationServiceBase<TContext, TEntity, TKey>
 /// <typeparam name="TGetOutput">获取单个结果的输出类型。</typeparam>
 /// <typeparam name="TGetListOutput">获取列表结果的输出类型。</typeparam>
 /// <typeparam name="TGetListInput">获取列表结果的输入类型。</typeparam>
-public abstract class EfCoreCrudApplicationServiceBase<TContext, TEntity, TKey, TGetOutput, TGetListOutput, TGetListInput>
-    : EfCoreCrudApplicationServiceBase<TContext, TEntity, TKey, TGetOutput, TGetListOutput, TGetListInput, TEntity>, ICrudBusinessService<TKey, TGetOutput, TGetListOutput, TGetListInput, TEntity>
+public abstract class EfCoreCrudBusinessServiceBase<TContext, TEntity, TKey, TGetOutput, TGetListOutput, TGetListInput>
+    : EfCoreCrudBusinessServiceBase<TContext, TEntity, TKey, TGetOutput, TGetListOutput, TGetListInput, TEntity>, ICrudBusinessService<TKey, TGetOutput, TGetListOutput, TGetListInput, TEntity>
     where TContext : DbContext
     where TEntity : class
     where TGetListInput : class
@@ -46,10 +46,10 @@ public abstract class EfCoreCrudApplicationServiceBase<TContext, TEntity, TKey, 
     where TGetOutput : class
 {
     /// <summary>
-    /// 初始化 <see cref="EfCoreCrudApplicationServiceBase{TContext, TEntity, TKey, TGetOutput, TGetListOutput, TGetListInput}"/> 类的新实例。
+    /// 初始化 <see cref="EfCoreCrudBusinessServiceBase{TContext, TEntity, TKey, TGetOutput, TGetListOutput, TGetListInput}"/> 类的新实例。
     /// </summary>
     /// <param name="serviceProvider"><see cref="IServiceProvider"/> 实例。</param>
-    protected EfCoreCrudApplicationServiceBase(IServiceProvider serviceProvider) : base(serviceProvider)
+    protected EfCoreCrudBusinessServiceBase(IServiceProvider serviceProvider) : base(serviceProvider)
     {
     }
 }
@@ -64,8 +64,8 @@ public abstract class EfCoreCrudApplicationServiceBase<TContext, TEntity, TKey, 
 /// <typeparam name="TGetListOutput">获取列表结果的输出类型。</typeparam>
 /// <typeparam name="TGetListInput">获取列表结果的输入类型。</typeparam>
 /// <typeparam name="TCreateOrUpdateInput">创建或更新数据的输入类型。</typeparam>
-public abstract class EfCoreCrudApplicationServiceBase<TContext, TEntity, TKey, TGetOutput, TGetListOutput, TGetListInput, TCreateOrUpdateInput>
-    : EfCoreCrudApplicationServiceBase<TContext, TEntity, TKey, TGetOutput, TGetListOutput, TGetListInput, TCreateOrUpdateInput, TCreateOrUpdateInput>, ICrudBusinessService<TKey, TGetOutput, TGetListOutput, TGetListInput, TCreateOrUpdateInput>
+public abstract class EfCoreCrudBusinessServiceBase<TContext, TEntity, TKey, TGetOutput, TGetListOutput, TGetListInput, TCreateOrUpdateInput>
+    : EfCoreCrudBusinessServiceBase<TContext, TEntity, TKey, TGetOutput, TGetListOutput, TGetListInput, TCreateOrUpdateInput, TCreateOrUpdateInput>, ICrudBusinessService<TKey, TGetOutput, TGetListOutput, TGetListInput, TCreateOrUpdateInput>
     where TContext : DbContext
     where TEntity : class
     where TGetListInput : class
@@ -74,10 +74,10 @@ public abstract class EfCoreCrudApplicationServiceBase<TContext, TEntity, TKey, 
     where TCreateOrUpdateInput : class
 {
     /// <summary>
-    /// 初始化 <see cref="EfCoreCrudApplicationServiceBase{TContext, TEntity, TKey, TGetOutput, TGetListOutput, TGetListInput, TCreateOrUpdateInput}"/> 类的新实例。
+    /// 初始化 <see cref="EfCoreCrudBusinessServiceBase{TContext, TEntity, TKey, TGetOutput, TGetListOutput, TGetListInput, TCreateOrUpdateInput}"/> 类的新实例。
     /// </summary>
     /// <param name="serviceProvider"><see cref="IServiceProvider"/> 实例。</param>
-    protected EfCoreCrudApplicationServiceBase(IServiceProvider serviceProvider) : base(serviceProvider)
+    protected EfCoreCrudBusinessServiceBase(IServiceProvider serviceProvider) : base(serviceProvider)
     {
     }
 }
@@ -93,7 +93,7 @@ public abstract class EfCoreCrudApplicationServiceBase<TContext, TEntity, TKey, 
 /// <typeparam name="TGetListInput">获取列表结果的输入类型。</typeparam>
 /// <typeparam name="TCreateInput">创建数据的输入类型。</typeparam>
 /// <typeparam name="TUpdateInput">更新数据的输入类型。</typeparam>
-public abstract class EfCoreCrudApplicationServiceBase<TContext, TEntity, TKey, TGetOutput, TGetListOutput, TGetListInput, TCreateInput, TUpdateInput>
+public abstract class EfCoreCrudBusinessServiceBase<TContext, TEntity, TKey, TGetOutput, TGetListOutput, TGetListInput, TCreateInput, TUpdateInput>
     : BusinessService, ICrudBusinessService<TKey, TGetOutput, TGetListOutput, TGetListInput, TCreateInput, TUpdateInput>
     where TContext : DbContext
     where TEntity : class
@@ -104,10 +104,10 @@ public abstract class EfCoreCrudApplicationServiceBase<TContext, TEntity, TKey, 
     where TUpdateInput : class
 {
     /// <summary>
-    /// 初始化 <see cref="EfCoreCrudApplicationServiceBase{TContext, TEntity, TKey, TGetOutput, TGetListOutput, TGetListInput, TCreateInput, TUpdateInput}"/> 类的新实例。
+    /// 初始化 <see cref="EfCoreCrudBusinessServiceBase{TContext, TEntity, TKey, TGetOutput, TGetListOutput, TGetListInput, TCreateInput, TUpdateInput}"/> 类的新实例。
     /// </summary>
     /// <param name="serviceProvider"><see cref="IServiceProvider"/> 实例。</param>
-    protected EfCoreCrudApplicationServiceBase(IServiceProvider serviceProvider) : base(serviceProvider)
+    protected EfCoreCrudBusinessServiceBase(IServiceProvider serviceProvider) : base(serviceProvider)
     {
     }
 

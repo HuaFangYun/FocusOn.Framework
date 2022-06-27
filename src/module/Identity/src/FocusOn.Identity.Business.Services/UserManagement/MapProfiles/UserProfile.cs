@@ -6,16 +6,16 @@ using FocusOn.Identity.Business.Services.UserManagement.Entities;
 namespace FocusOn.Identity.Business.Services.UserManagement.MapProfiles;
 
 public abstract class UserMapProfile<TUser, TKey>:UserMapProfile<TUser, TKey, UserGetOutputDto<TKey>, UserGetListOutputDto<TKey>, UserCreateInputDto, UserUpdateInputDto>
-    where TUser : User<TKey>
+    where TUser : IdentityUser<TKey>
 {
 
 }
 
 public abstract class UserMapProfile<TUser,TKey, TGetOutputDto, TGetListOutputDto, TCreateInputDto, TUpdateInputDto> : CrudMapProfile<TUser, TGetOutputDto, TGetListOutputDto, TCreateInputDto, TUpdateInputDto>
-    where TUser:User<TKey>
-    where TGetListOutputDto : UserGetListOutputDto<TKey>
-    where TGetOutputDto : UserGetOutputDto<TKey>
-    where TCreateInputDto : UserCreateInputDto
-    where TUpdateInputDto : UserUpdateInputDto
+    where TUser:IdentityUser<TKey>
+    where TGetListOutputDto : class
+    where TGetOutputDto : class
+    where TCreateInputDto : class
+    where TUpdateInputDto : class
 {
 }

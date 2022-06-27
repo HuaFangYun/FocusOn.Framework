@@ -6,7 +6,7 @@ using FocusOn.Business.Services.Entities.Configurations;
 
 namespace FocusOn.Identity.Business.Services.UserManagement.Entities;
 
-public class UserConfiguration<TUser, TKey> : IEntityTypeConfiguration<TUser> where TUser : User<TKey>
+public class IdentityUserConfiguration<TUser, TKey> : IEntityTypeConfiguration<TUser> where TUser : IdentityUser<TKey>
 {
     public virtual void Configure(EntityTypeBuilder<TUser> builder)
     {
@@ -14,5 +14,5 @@ public class UserConfiguration<TUser, TKey> : IEntityTypeConfiguration<TUser> wh
         builder.ToTable(TableName);
     }
 
-    protected virtual string TableName => "MiniUsers";
+    protected virtual string TableName => "IdentityUsers";
 }

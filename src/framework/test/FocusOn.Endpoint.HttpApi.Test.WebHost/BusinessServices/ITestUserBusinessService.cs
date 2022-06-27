@@ -12,7 +12,7 @@ public interface ITestUserBusinessService:ICrudBusinessService<Guid,User>
     Task<OutputResult<User>> GetByNameAsync(string name);
 }
 
-public class TestUserBusinessService : EfCoreCrudApplicationServiceBase<TestDbContext, User, Guid>, ITestUserBusinessService,IRemotingService
+public class TestUserBusinessService : EfCoreCrudBusinessServiceBase<TestDbContext, User, Guid>, ITestUserBusinessService,IRemotingService
 {
     public TestUserBusinessService(IServiceProvider serviceProvider) : base(serviceProvider)
     {

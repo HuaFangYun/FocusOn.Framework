@@ -5,7 +5,7 @@ using FocusOn.Identity.Business.Contracts.UserManagement.DTO;
 
 namespace FocusOn.Identity.Endpoints.HttpApi.Client;
 
-public class UserHttpClientProxy<TKey> : UserHttpClientProxy<TKey, UserGetOutputDto<TKey>, UserGetListOutputDto<TKey>, UserGetListInputDto, UserCreateInputDto, UserUpdateInputDto>, IUserApplicationService<TKey>
+public class UserHttpClientProxy<TKey> : UserHttpClientProxy<TKey, UserGetOutputDto<TKey>, UserGetListOutputDto<TKey>, UserGetListInputDto, UserCreateInputDto, UserUpdateInputDto>, IUserBusinessService<TKey>
 {
     public UserHttpClientProxy(IServiceProvider services) : base(services)
     {
@@ -13,12 +13,12 @@ public class UserHttpClientProxy<TKey> : UserHttpClientProxy<TKey, UserGetOutput
 }
 
 public class UserHttpClientProxy<TKey, TGetOutputDto, TGetListOutputDto, TGetListInputDto, TCreateInputDto, TUpdateInputDto>
-    : CrudHttpClientProxy<TKey, TGetOutputDto, TGetListOutputDto, TGetListInputDto, TCreateInputDto, TUpdateInputDto>, IUserApplicationService<TKey, TGetOutputDto, TGetListOutputDto, TGetListInputDto, TCreateInputDto, TUpdateInputDto>
-    where TGetListInputDto : UserGetListInputDto
-    where TGetListOutputDto : UserGetListOutputDto<TKey>
-    where TGetOutputDto : UserGetOutputDto<TKey>
-    where TCreateInputDto : UserCreateInputDto
-    where TUpdateInputDto : UserUpdateInputDto
+    : CrudHttpClientProxy<TKey, TGetOutputDto, TGetListOutputDto, TGetListInputDto, TCreateInputDto, TUpdateInputDto>, IUserBusinessService<TKey, TGetOutputDto, TGetListOutputDto, TGetListInputDto, TCreateInputDto, TUpdateInputDto>
+    where TGetListInputDto : class
+    where TGetListOutputDto : class
+    where TGetOutputDto : class
+    where TCreateInputDto : class
+    where TUpdateInputDto : class
 {
     public UserHttpClientProxy(IServiceProvider services) : base(services)
     {

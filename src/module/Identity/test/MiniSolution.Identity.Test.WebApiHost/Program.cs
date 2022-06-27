@@ -1,8 +1,8 @@
-﻿using MiniSolution.Business.Services;
-using MiniSolution.Identity.Test.WebApiHost;
-using MiniSolution.Identity.Test.WebApiHost.Business.Services;
+﻿using FocusOn.Business.Services;
+using FocusOn.Identity.Test.WebApiHost;
+using FocusOn.Identity.Test.WebApiHost.Business.Services;
 using Microsoft.EntityFrameworkCore;
-using MiniSolution.Endpoints.HttpApi;
+using FocusOn.Endpoints.HttpApi;
 
 var builder=WebApplication.CreateBuilder(args);
 
@@ -12,7 +12,7 @@ builder.Services.AddDbContext<TestIdentityDbContext>(configure =>
 {
     configure.UseInMemoryDatabase("Identity");
 });
-builder.Services.AddMiniSolution(configure =>
+builder.Services.AddFocusOn(configure =>
 {
     configure.AddSwagger();
     configure.AddAutoMapper(typeof(Program).Assembly);

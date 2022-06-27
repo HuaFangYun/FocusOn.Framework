@@ -1,8 +1,8 @@
-﻿using MiniSolution.Identity.Business.Services.UserManagement.Entities;
+﻿using FocusOn.Identity.Business.Services.UserManagement.Entities;
 
-namespace MiniSolution.Identity.Test.WebApiHost.Entities
+namespace FocusOn.Identity.Test.WebApiHost.Entities
 {
-    public class TestUser:User<Guid>
+    public class TestUser:IdentityUser<Guid>
     {
         public DateTime? BirthDay { get; set; }
     }

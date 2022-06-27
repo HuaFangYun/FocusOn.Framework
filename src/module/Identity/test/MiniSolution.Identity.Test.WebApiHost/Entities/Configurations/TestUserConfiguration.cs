@@ -1,10 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-using MiniSolution.Identity.Business.Services.UserManagement.Entities;
+using FocusOn.Identity.Business.Services.UserManagement.Entities;
 
-namespace MiniSolution.Identity.Test.WebApiHost.Entities.Configurations
+namespace FocusOn.Identity.Test.WebApiHost.Entities.Configurations
 {
-    public class TestUserConfiguration:UserConfiguration<TestUser,Guid>
+    public class TestUserConfiguration: IdentityUserConfiguration<TestUser,Guid>
     {
         public override void Configure(EntityTypeBuilder<TestUser> builder)
         {

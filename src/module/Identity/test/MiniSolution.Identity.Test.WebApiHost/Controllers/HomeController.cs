@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace MiniSolution.Identity.Test.WebApiHost.Controllers
+namespace FocusOn.Identity.Test.WebApiHost.Controllers
 {
     public class HomeController:Controller
     {

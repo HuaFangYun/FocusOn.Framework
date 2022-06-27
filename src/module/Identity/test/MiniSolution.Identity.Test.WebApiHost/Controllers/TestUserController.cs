@@ -1,7 +1,7 @@
-﻿//using MiniSolution.Identity.HttpApi;
-//using MiniSolution.Identity.Test.WebApiHost.Business.Services;
+﻿//using FocusOn.Identity.HttpApi;
+//using FocusOn.Identity.Test.WebApiHost.Business.Services;
 
-//namespace MiniSolution.Identity.Test.WebApiHost.Controllers
+//namespace FocusOn.Identity.Test.WebApiHost.Controllers
 //{
 //    public class TestUserController:UserApiControllerBase<ITestUserApplicationService,Guid>
 //    {

@@ -1,7 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<Import Project="../../../../common.props" />
-
   <ItemGroup>
 	  <PackageReference Include="AutoMapper.Collection" Version="8.0.0" />
 	  <PackageReference Include="AutoMapper.Extensions.ExpressionMapping" Version="5.0.2" />

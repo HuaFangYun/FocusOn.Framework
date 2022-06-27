@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<Import Project="../../../../common.props" />
+
+  <ItemGroup>
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\FocusOn.Business.Contracts\FocusOn.Business.Contracts.csproj" />
+    <ProjectReference Include="..\FocusOn.Business.Contracts\FocusOn.Business.Contracts.csproj" />
+  </ItemGroup>
+
+</Project>

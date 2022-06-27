@@ -11,6 +11,7 @@
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <OutputPath>bin\$(Configuration)</OutputPath>
         <DocumentationFile>bin\$(Configuration)\$(AssembliName).xml</DocumentationFile>
+        <Description>基于契约和 HTTP API 的自动化前后端全栈框架。</Description>
       </PropertyGroup>
 
       <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

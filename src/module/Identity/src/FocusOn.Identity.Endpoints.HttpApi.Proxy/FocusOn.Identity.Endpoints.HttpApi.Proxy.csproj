@@ -1,0 +1,10 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<Import Project="../../../../../common.props" />
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\framework\src\FocusOn.Endpoints.HttpApi.Proxy\FocusOn.Endpoints.HttpApi.Proxy.csproj" />
+    <ProjectReference Include="..\FocusOn.Identity.Business.Contracts\FocusOn.Identity.Business.Contracts.csproj" />
+  </ItemGroup>
+
+</Project>

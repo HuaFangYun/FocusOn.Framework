@@ -31,7 +31,7 @@ public abstract class CrudHttpApiClientProxy<TKey, TModel> : CrudHttpApiClientPr
 /// <typeparam name="TGetListOutput">获取列表结果的输出类型。</typeparam>
 /// <typeparam name="TGetListInput">获取列表结果的输入类型。</typeparam>
 /// <typeparam name="TCreateOrUpdateInput">创建数据的输入类型。</typeparam>
-public abstract class CrudHttpApiClientProxy<TKey, TGetOutput, TGetListOutput, TGetListInput, TCreateOrUpdateInput> : CrudHttpClientProxy<TKey, TGetOutput, TGetListOutput, TGetListInput, TCreateOrUpdateInput, TCreateOrUpdateInput>, ICrudBusinessService<TKey, TGetOutput, TGetListOutput, TGetListInput, TCreateOrUpdateInput>
+public abstract class CrudHttpApiClientProxy<TKey, TGetOutput, TGetListOutput, TGetListInput, TCreateOrUpdateInput> : CrudHttpApiClientProxy<TKey, TGetOutput, TGetListOutput, TGetListInput, TCreateOrUpdateInput, TCreateOrUpdateInput>, ICrudBusinessService<TKey, TGetOutput, TGetListOutput, TGetListInput, TCreateOrUpdateInput>
     where TKey : IEquatable<TKey>
     where TGetListInput : class
     where TGetListOutput : class
@@ -39,7 +39,7 @@ public abstract class CrudHttpApiClientProxy<TKey, TGetOutput, TGetListOutput, T
     where TCreateOrUpdateInput : class
 {
     /// <summary>
-    /// 初始化 <see cref="CrudHttpClientProxy{TKey, TGetOutput, TGetListOutput, TGetListInput, TCreateInput, TUpdateInput}"/> 类的新实例。
+    /// 初始化 <see cref="CrudHttpApiClientProxy{TKey, TGetOutput, TGetListOutput, TGetListInput, TCreateInput, TUpdateInput}"/> 类的新实例。
     /// </summary>
     /// <param name="services"><inheritdoc/></param>
     protected CrudHttpApiClientProxy(IServiceProvider services) : base(services)
@@ -55,7 +55,7 @@ public abstract class CrudHttpApiClientProxy<TKey, TGetOutput, TGetListOutput, T
     /// <typeparam name="TGetListInput">获取列表结果的输入类型。</typeparam>
     /// <typeparam name="TCreateInput">创建数据的输入类型。</typeparam>
     /// <typeparam name="TUpdateInput">更新数据的输入类型。</typeparam>
-    public abstract class CrudHttpClientProxy<TKey, TGetOutput, TGetListOutput, TGetListInput, TCreateInput, TUpdateInput> : ReadOnlyHttpApiClientProxy<TKey,TGetOutput,TGetListOutput,TGetListInput>, ICrudBusinessService<TKey, TGetOutput, TGetListOutput, TGetListInput, TCreateInput, TUpdateInput>
+    public abstract class CrudHttpApiClientProxy<TKey, TGetOutput, TGetListOutput, TGetListInput, TCreateInput, TUpdateInput> : ReadOnlyHttpApiClientProxy<TKey,TGetOutput,TGetListOutput,TGetListInput>, ICrudBusinessService<TKey, TGetOutput, TGetListOutput, TGetListInput, TCreateInput, TUpdateInput>
     where TKey:IEquatable<TKey>
     where TGetListInput : class
     where TGetListOutput : class
@@ -64,10 +64,10 @@ public abstract class CrudHttpApiClientProxy<TKey, TGetOutput, TGetListOutput, T
     where TUpdateInput : class
 {
     /// <summary>
-    /// 初始化 <see cref="CrudHttpClientProxy{TKey, TGetOutput, TGetListOutput, TGetListInput, TCreateInput, TUpdateInput}"/> 类的新实例。
+    /// 初始化 <see cref="CrudHttpApiClientProxy{TKey, TGetOutput, TGetListOutput, TGetListInput, TCreateInput, TUpdateInput}"/> 类的新实例。
     /// </summary>
     /// <param name="services"><inheritdoc/></param>
-    protected CrudHttpClientProxy(IServiceProvider services) : base(services)
+    protected CrudHttpApiClientProxy(IServiceProvider services) : base(services)
     {
     }
 

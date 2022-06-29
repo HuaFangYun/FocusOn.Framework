@@ -2,24 +2,42 @@
 using Microsoft.AspNetCore.Mvc;
 
 using FocusOn.Business.Contracts;
-using Microsoft.Extensions.DependencyInjection;
 using FocusOn.Business.Contracts.DTO;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace FocusOn.Endpoints.HttpApi.Controllers;
-
 
 /// <summary>
 /// 表示具备 CRUD 功能的 HTTP API 控制器基类。
 /// </summary>
-/// <typeparam name="TBusinessService">业务服务类型。</typeparam>
+/// <typeparam name="TContext">数据库上下文类型。</typeparam>
+/// <typeparam name="TEntity">实体类型。</typeparam>
+/// <typeparam name="TKey">主键类型。</typeparam>
+public abstract class CrudApiControllerBase<TContext, TEntity, TKey>
+    : CrudApiControllerBase<TContext, TEntity, TKey, TEntity, TEntity, TEntity, TEntity>
+    where TContext : DbContext
+    where TEntity : class
+    where TKey : IEquatable<TKey>
+{
+
+}
+
+/// <summary>
+/// 表示具备 CRUD 功能的 HTTP API 控制器基类。
+/// </summary>
+/// <typeparam name="TContext">数据库上下文类型。</typeparam>
+/// <typeparam name="TEntity">实体类型。</typeparam>
 /// <typeparam name="TKey">主键类型。</typeparam>
 /// <typeparam name="TGetOutput">获取单个结果的输出类型。</typeparam>
 /// <typeparam name="TGetListOutput">获取列表结果的输出类型。</typeparam>
 /// <typeparam name="TGetListInput">获取列表结果的输入类型。</typeparam>
 /// <typeparam name="TCreateOrUpdateInput">创建或更新数据的输入类型。</typeparam>
-public abstract class CrudApiControllerBase<TBusinessService, TKey, TGetOutput, TGetListOutput, TGetListInput, TCreateOrUpdateInput>
-    : CrudApiControllerBase<TBusinessService, TKey, TGetOutput, TGetListOutput, TGetListInput, TCreateOrUpdateInput, TCreateOrUpdateInput>
-    where TBusinessService : ICrudBusinessService<TKey, TGetOutput, TGetListOutput, TGetListInput, TCreateOrUpdateInput>
+public abstract class CrudApiControllerBase<TContext, TEntity, TKey, TGetOutput, TGetListOutput, TGetListInput, TCreateOrUpdateInput>
+    : CrudApiControllerBase<TContext, TEntity, TKey, TGetOutput, TGetListOutput, TGetListInput, TCreateOrUpdateInput, TCreateOrUpdateInput>
+    where TContext : DbContext
+    where TEntity : class
+    where TKey : IEquatable<TKey>
     where TGetOutput : class
     where TGetListInput : class
     where TGetListOutput : class
@@ -31,17 +49,19 @@ public abstract class CrudApiControllerBase<TBusinessService, TKey, TGetOutput, 
 /// <summary>
 /// 表示具备 CRUD 功能的 HTTP API 控制器基类。
 /// </summary>
-/// <typeparam name="TBusinessService">业务服务类型。</typeparam>
+/// <typeparam name="TContext">数据库上下文类型。</typeparam>
+/// <typeparam name="TEntity">实体类型。</typeparam>
 /// <typeparam name="TKey">主键类型。</typeparam>
 /// <typeparam name="TGetOutput">获取单个结果的输出类型。</typeparam>
 /// <typeparam name="TGetListOutput">获取列表结果的输出类型。</typeparam>
 /// <typeparam name="TGetListInput">获取列表结果的输入类型。</typeparam>
 /// <typeparam name="TCreateInput">创建数据的输入类型。</typeparam>
 /// <typeparam name="TUpdateInput">更新数据的输入类型。</typeparam>
-[Produces("application/json")]
-public abstract class CrudApiControllerBase<TBusinessService, TKey, TGetOutput, TGetListOutput, TGetListInput, TCreateInput, TUpdateInput>
-    : ApiControllerBase, ICrudBusinessService<TKey, TGetOutput, TGetListOutput, TGetListInput, TCreateInput, TUpdateInput>
-    where TBusinessService : ICrudBusinessService<TKey, TGetOutput, TGetListOutput, TGetListInput, TCreateInput, TUpdateInput>
+public abstract class CrudApiControllerBase<TContext, TEntity, TKey, TGetOutput, TGetListOutput, TGetListInput, TCreateInput, TUpdateInput>
+    : ReadOnlyApiControllerBase<TContext, TEntity, TKey, TGetOutput, TGetListOutput, TGetListInput>, ICrudBusinessService<TKey, TGetOutput, TGetListOutput, TGetListInput, TCreateInput, TUpdateInput>
+    where TContext : DbContext
+    where TEntity:class
+    where TKey : IEquatable<TKey>
     where TGetOutput : class
     where TGetListInput : class
     where TGetListOutput : class
@@ -49,53 +69,110 @@ public abstract class CrudApiControllerBase<TBusinessService, TKey, TGetOutput, 
     where TUpdateInput : class
 {
     /// <summary>
-    /// 获取已注册服务的 <typeparamref name="TBusinessService"/> 类型.
+    /// 创建指定数据。
     /// </summary>
-    protected virtual TBusinessService BusinessService => ServiceProvider.GetRequiredService<TBusinessService>();
-
-    /// <summary>
-    /// 创建指定 <typeparamref name="TCreateInput"/> 的数据。
-    /// </summary>
-    /// <param name="model">要创建的输入模型。</param>
+    /// <param name="model">要创建的输入。</param>
+    /// <exception cref="ArgumentNullException"><paramref name="model"/> 是 null。</exception>
     [HttpPost]
-    [ProducesResponseType(200,Type =typeof(OutputResult))]
-    public virtual ValueTask<OutputResult> CreateAsync([FromBody]TCreateInput model)
-    => BusinessService.CreateAsync(model);
+    public virtual async ValueTask<OutputResult> CreateAsync([FromBody]TCreateInput model)
+    {
+        if (model is null)
+        {
+            throw new ArgumentNullException(nameof(model));
+        }
+
+        if (!Validator.TryValidate(model, out var errors))
+        {
+            return OutputResult.Failed(errors);
+        }
+
+        var entity = Mapper.Map<TCreateInput, TEntity>(model);
+        Set.Add(entity);
+        return await SaveChangesAsync();
+    }
 
     /// <summary>
     /// 删除指定 id 的数据。
     /// </summary>
-    /// <param name="id">要删除的 id。</param>
+    /// <param name="id">要删除的 Id。</param>
     [HttpDelete("{id}")]
-    [ProducesResponseType(200, Type = typeof(OutputResult))]
-    public virtual ValueTask<OutputResult> DeleteAsync(TKey id)
-    => BusinessService.DeleteAsync(id);
-
-    /// <summary>
-    /// 获取指定 id 的数据。
-    /// </summary>
-    /// <param name="id">要获取的 id。</param>
-    [ProducesResponseType(200, Type = typeof(OutputResult<>))]
-    [HttpGet("{id}")]
-    public virtual ValueTask<OutputResult<TGetOutput?>> GetAsync(TKey id)
-    => BusinessService.GetAsync(id);
-
-    /// <summary>
-    /// 获取指定 <typeparamref name="TGetListInput"/> 的列表。
-    /// </summary>
-    /// <param name="model">列表的过滤输入模型。</param>
-    [ProducesResponseType(200, Type = typeof(OutputResult<>))]
-    [HttpGet]
-    public virtual Task<OutputResult<PagedOutputDto<TGetListOutput>>> GetListAsync([FromQuery] TGetListInput? model = null)
-    => BusinessService.GetListAsync(model);
+    public virtual async ValueTask<OutputResult> DeleteAsync(TKey id)
+    {
+        var entity = await FindAsync(id);
+        if (entity is null)
+        {
+            return OutputResult.Failed(GetEntityNotFoundMessage(id));
+        }
+        Set.Remove(entity);
+        return await SaveChangesAsync();
+    }
 
     /// <summary>
     /// 更新指定 id 的数据。
     /// </summary>
-    /// <param name="id">要更新的 id。</param>
-    /// <param name="model">要更新的输入模型。</param>
-    [ProducesResponseType(200, Type = typeof(OutputResult))]
+    /// <param name="id">要更新的 Id。</param>
+    /// <param name="model">要更新的字段。</param>
+    /// <exception cref="ArgumentNullException"><paramref name="model"/> 是 null。</exception>
     [HttpPut("{id}")]
-    public virtual ValueTask<OutputResult> UpdateAsync(TKey id, [FromBody]TUpdateInput model)
-    => BusinessService.UpdateAsync(id, model);
+    public virtual async ValueTask<OutputResult> UpdateAsync(TKey id, [FromBody]TUpdateInput model)
+    {
+        if (model is null)
+        {
+            throw new ArgumentNullException(nameof(model));
+        }
+
+        if (!Validator.TryValidate(model, out var errors))
+        {
+            return OutputResult.Failed(errors);
+        }
+
+        var entity = await FindAsync(id);
+        if (entity is null)
+        {
+            return OutputResult.Failed(GetEntityNotFoundMessage(id));
+        }
+
+        Mapper.Map(model, entity);
+        return await SaveChangesAsync();
+    }
+
+    /// <summary>
+    /// 保存数据库。
+    /// </summary>
+    protected virtual async Task<OutputResult> SaveChangesAsync()
+    {
+        try
+        {
+            var rows = await Context.SaveChangesAsync(CancellationToken);
+            if (rows > 0)
+            {
+                Logger.LogInformation("Save changes successfully");
+                return OutputResult.Success();
+            }
+            Logger.LogWarning("Save changes failed because affected row is 0");
+            return OutputResult.Failed("Save changes failed");
+        }
+        catch (AggregateException ex)
+        {
+            Logger.LogError(ex, string.Join(";", ex.InnerExceptions.Select(m => m.Message)));
+            return OutputResult.Failed("Exceptions occured when saving changes, see log for details");
+        }
+    }
+
+    protected virtual TEntity? MapToEntity(TCreateInput model)
+    {
+        if (typeof(TCreateInput) == typeof(TEntity))
+        {
+            return model as TEntity;
+        }
+        return Mapper.Map<TCreateInput, TEntity>(model);
+    }
+    protected virtual TEntity? MapToEntity(TUpdateInput model)
+    {
+        if (typeof(TUpdateInput) == typeof(TEntity))
+        {
+            return model as TEntity;
+        }
+        return Mapper.Map<TUpdateInput, TEntity>(model);
+    }
 }

@@ -9,7 +9,6 @@
 		<PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="6.0.0" />
 	</ItemGroup>
 	<ItemGroup>
-	  <ProjectReference Include="..\..\src\FocusOn.Business.Services\FocusOn.Business.Services.csproj" />
 	  <ProjectReference Include="..\..\src\FocusOn.Endpoints.HttpApi\FocusOn.Endpoints.HttpApi.csproj" />
 	</ItemGroup>
 </Project>

@@ -8,7 +8,8 @@ namespace FocusOn.Business.Contracts;
 /// <typeparam name="TKey">主键类型。</typeparam>
 /// <typeparam name="TModel">输出、输出模型。</typeparam>
 public interface ICrudBusinessService<TKey, TModel>
-    :ICrudBusinessService<TKey,TModel, TModel, TModel,TModel>
+    :ICrudBusinessService<TKey,TModel, TModel, TModel,TModel>, IReadOnlyBusinessService<TKey,TModel>
+    where TKey : IEquatable<TKey>
     where TModel : class
 {
 
@@ -24,6 +25,7 @@ public interface ICrudBusinessService<TKey, TModel>
 /// <typeparam name="TCreateOrUpdateInput">创建或更新数据的输入类型。</typeparam>
 public interface ICrudBusinessService<TKey, TGetOutput, TGetListOutput, TGetListInput, TCreateOrUpdateInput>
     : ICrudBusinessService<TKey, TGetOutput, TGetListOutput, TGetListInput, TCreateOrUpdateInput, TCreateOrUpdateInput>
+    where TKey : IEquatable<TKey>
     where TGetListInput : class
     where TGetListOutput : class
     where TGetOutput : class
@@ -41,7 +43,8 @@ public interface ICrudBusinessService<TKey, TGetOutput, TGetListOutput, TGetList
 /// <typeparam name="TGetListInput">获取列表结果的输入类型。</typeparam>
 /// <typeparam name="TCreateInput">创建数据的输入类型。</typeparam>
 /// <typeparam name="TUpdateInput">更新数据的输入类型。</typeparam>
-public interface ICrudBusinessService<TKey,TGetOutput,TGetListOutput,TGetListInput,TCreateInput,TUpdateInput> :IBusinessSerivce
+public interface ICrudBusinessService<TKey,TGetOutput,TGetListOutput,TGetListInput,TCreateInput,TUpdateInput> :IReadOnlyBusinessService<TKey,TGetOutput,TGetListOutput,TGetListInput>
+    where TKey : IEquatable<TKey>
     where TGetListInput:class
     where TGetListOutput:class
     where TGetOutput:class
@@ -67,16 +70,4 @@ public interface ICrudBusinessService<TKey,TGetOutput,TGetListOutput,TGetListInp
     /// <param name="id">要删除的 id。</param>
     /// <returns>一个删除方法，返回 <see cref="OutputResult"/> 结果。</returns>
     ValueTask<OutputResult> DeleteAsync(TKey id);
-    /// <summary>
-    /// 以异步的方式获取指定 id 的结果。
-    /// </summary>
-    /// <param name="id">要获取的 id 。</param>
-    /// <returns>一个获取结果的方法，返回 <see cref="OutputResult{TGetOutput}"/> 结果。</returns>
-    ValueTask<OutputResult<TGetOutput?>> GetAsync(TKey id);
-    /// <summary>
-    /// 以异步的方式获取指定分页的结果列表。
-    /// </summary>
-    /// <param name="model">获取列表的过滤输入模型。</param>
-    /// <returns>一个获取分页结果的方法，返回 <see cref="OutputResult{PagedOutputDto{TGetListOutput}}"/> 结果。</returns>
-    Task<OutputResult<PagedOutputDto<TGetListOutput>>> GetListAsync(TGetListInput? model=default);
 }

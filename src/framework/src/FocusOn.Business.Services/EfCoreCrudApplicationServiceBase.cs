@@ -18,6 +18,7 @@ public abstract class EfCoreCrudBusinessServiceBase<TContext, TEntity, TKey>
     : EfCoreCrudBusinessServiceBase<TContext, TEntity, TKey, TEntity, TEntity, TEntity>, ICrudBusinessService<TKey, TEntity, TEntity, TEntity, TEntity>
     where TContext : DbContext
     where TEntity : class
+    where TKey : IEquatable<TKey>
 {
     /// <summary>
     /// 初始化 <see cref="EfCoreCrudBusinessServiceBase{TContext, TEntity, TKey}"/> 类的新实例。
@@ -41,6 +42,7 @@ public abstract class EfCoreCrudBusinessServiceBase<TContext, TEntity, TKey, TGe
     : EfCoreCrudBusinessServiceBase<TContext, TEntity, TKey, TGetOutput, TGetListOutput, TGetListInput, TEntity>, ICrudBusinessService<TKey, TGetOutput, TGetListOutput, TGetListInput, TEntity>
     where TContext : DbContext
     where TEntity : class
+    where TKey : IEquatable<TKey>
     where TGetListInput : class
     where TGetListOutput : class
     where TGetOutput : class
@@ -68,6 +70,7 @@ public abstract class EfCoreCrudBusinessServiceBase<TContext, TEntity, TKey, TGe
     : EfCoreCrudBusinessServiceBase<TContext, TEntity, TKey, TGetOutput, TGetListOutput, TGetListInput, TCreateOrUpdateInput, TCreateOrUpdateInput>, ICrudBusinessService<TKey, TGetOutput, TGetListOutput, TGetListInput, TCreateOrUpdateInput>
     where TContext : DbContext
     where TEntity : class
+    where TKey : IEquatable<TKey>
     where TGetListInput : class
     where TGetListOutput : class
     where TGetOutput : class
@@ -96,6 +99,7 @@ public abstract class EfCoreCrudBusinessServiceBase<TContext, TEntity, TKey, TGe
 public abstract class EfCoreCrudBusinessServiceBase<TContext, TEntity, TKey, TGetOutput, TGetListOutput, TGetListInput, TCreateInput, TUpdateInput>
     : BusinessService, ICrudBusinessService<TKey, TGetOutput, TGetListOutput, TGetListInput, TCreateInput, TUpdateInput>
     where TContext : DbContext
+    where TKey:IEquatable<TKey>
     where TEntity : class
     where TGetListInput : class
     where TGetListOutput : class

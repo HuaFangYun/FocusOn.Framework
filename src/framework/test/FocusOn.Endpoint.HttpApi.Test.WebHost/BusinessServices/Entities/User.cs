@@ -1,4 +1,4 @@
-﻿using FocusOn.Business.Services.Entities;
+﻿using FocusOn.Endpoints.HttpApi.Data.Entities;
 
 namespace FocusOn.Endpoint.HttpApi.Test.WebHost.BusinessServices.Entities
 {

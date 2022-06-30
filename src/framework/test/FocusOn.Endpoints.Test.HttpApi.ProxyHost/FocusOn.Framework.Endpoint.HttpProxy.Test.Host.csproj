@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\FocusOn.Framework.Endpoint.HttpProxy\FocusOn.Framework.Endpoint.HttpProxy.csproj" />
+    <ProjectReference Include="..\FocusOn.Endpoint.HttpApi.Test.WebHost\FocusOn.Framework.Endpoint.HttpApi.Test.Host.csproj" />
+  </ItemGroup>
+
+</Project>

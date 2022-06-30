@@ -1,6 +1,6 @@
-﻿using FocusOn.Endpoints.HttpApi.Data.Entities;
+﻿using FocusOn.Framework.Business.Store;
 
-namespace FocusOn.Endpoint.HttpApi.Test.WebHost.BusinessServices.Entities
+namespace FocusOn.Framework.Endpoint.HttpApi.Test.WebHost.BusinessServices.Entities
 {
     public class User:EntityBase<Guid>
     {

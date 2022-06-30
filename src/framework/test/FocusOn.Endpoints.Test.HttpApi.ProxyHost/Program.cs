@@ -1,5 +1,5 @@
-using FocusOn.Endpoint.HttpApi.Test.WebHost.BusinessServices;
-using FocusOn.Endpoints.Test.HttpApi.ProxyHost.Proxies;
+using FocusOn.Framework.Endpoint.HttpApi.Test.Host.BusinessServices;
+using FocusOn.Framework.Endpoint.HttpProxy.Test.Host.Proxies;
 
 using Microsoft.Extensions.Options;
 

@@ -1,4 +1,4 @@
-namespace FocusOn.Core.Test
+namespace FocusOn.Framework.Core.Test
 {
     public class UnitTest1
     {

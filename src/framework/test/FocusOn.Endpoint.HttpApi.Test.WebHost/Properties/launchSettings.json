@@ -9,7 +9,7 @@
     }
   },
   "profiles": {
-    "FocusOn.Endpoint.HttpApi.Test.WebHost": {
+    "FocusOn.Framework.Endpoint.HttpApi.Test.WebHost": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": true,

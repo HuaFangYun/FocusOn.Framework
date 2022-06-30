@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-using FocusOn.Endpoint.HttpApi.Test.WebHost.BusinessServices.Entities;
+using FocusOn.Framework.Endpoint.HttpApi.Test.WebHost.BusinessServices.Entities;
 
-namespace FocusOn.Endpoint.HttpApi.Test.WebHost.BusinessServices
+namespace FocusOn.Framework.Endpoint.HttpApi.Test.Host.BusinessServices
 {
     public class TestDbContext : DbContext
     {

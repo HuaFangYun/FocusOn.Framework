@@ -1,6 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-
-using FocusOn.Endpoint.HttpApi.Test.WebHost.BusinessServices;
+using FocusOn.Framework.Endpoint.HttpApi.Test.Host.BusinessServices;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,7 +13,6 @@ builder.Services.AddFocusOn(configure =>
 
     configure.AddSwagger();
     configure.AddAutoMapper(typeof(Program).Assembly);
-    //configure.AddRemotingServiceHttpApi();
 });
 
 var app = builder.Build();

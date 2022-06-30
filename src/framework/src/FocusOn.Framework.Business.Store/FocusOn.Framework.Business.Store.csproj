@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<Import Project="../../../../common.props" />
+  <PropertyGroup>
+  </PropertyGroup>
+	<ItemGroup>
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="6.0.0" />
+	</ItemGroup>
+	<ItemGroup>
+	  <ProjectReference Include="..\FocusOn.Framework.Infrastructure\FocusOn.Framework.Infrastructure.csproj" />
+	</ItemGroup>
+</Project>

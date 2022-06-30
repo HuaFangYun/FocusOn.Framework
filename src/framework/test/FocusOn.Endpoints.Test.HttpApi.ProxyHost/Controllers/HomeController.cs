@@ -1,8 +1,8 @@
-﻿using FocusOn.Endpoint.HttpApi.Test.WebHost.BusinessServices;
+﻿using FocusOn.Framework.Endpoint.HttpApi.Test.Host.BusinessServices;
 
 using Microsoft.AspNetCore.Mvc;
 
-namespace FocusOn.Endpoints.Test.HttpApi.ProxyHost.Controllers
+namespace FocusOn.Framework.Endpoint.Test.HttpApi.ProxyHost.Controllers
 {
     public class HomeController:Controller
     {

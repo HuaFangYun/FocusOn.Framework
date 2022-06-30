@@ -8,7 +8,7 @@
     }
   },
   "profiles": {
-    "FocusOn.Endpoints.Test.HttpApi.ProxyHost": {
+    "FocusOn.Framework.Endpoint.Test.HttpApi.ProxyHost": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": true,

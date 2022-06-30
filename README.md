@@ -79,6 +79,7 @@ public class UserHttpApiClientProxy : CrudHttpApiClientProxy<User, Guid, GetUser
 ```cs
 builder.Service.AddFocusOn(configure =>
 {
+    configure.AddHttpClient(options => options.BaseAddress = builder.HostEnvironment.BaseAddress);
     configure.AddHttpProxy<IUserBusinessService, UserHttpApiClientProxy>();
 });
 ```

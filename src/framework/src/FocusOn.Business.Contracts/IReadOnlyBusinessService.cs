@@ -22,7 +22,8 @@ public interface IReadOnlyBusinessService<TKey,TModel>:IReadOnlyBusinessService<
 /// <typeparam name="TGetOutput">获取单个结果的输出类型。</typeparam>
 /// <typeparam name="TGetListOutput">获取列表结果的输出类型。</typeparam>
 /// <typeparam name="TGetListInput">获取列表结果的输入类型。</typeparam>
-public interface IReadOnlyBusinessService<TKey, TGetOutput, TGetListOutput, TGetListInput>
+public interface IReadOnlyBusinessService<TKey, TGetOutput, TGetListOutput, TGetListInput>:IBusinessSerivce
+    
     where TKey : IEquatable<TKey>
     where TGetListInput : class
     where TGetListOutput : class

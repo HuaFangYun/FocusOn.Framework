@@ -52,9 +52,9 @@ public abstract class HttpApiClientProxy : BusinessService, IHttpApiClientProxy
     /// 获取请求的 URI。
     /// </summary>
     /// <param name="queryParameters">一个查询参数对象，属性字段将生成为 query 部分的 key=value 字符串。</param>
-    /// <param name="route">请求的 HTTP API 路由。该路由是相对路径，并且会与 <see cref="RootPath"/> 的值组合成最终请求路由。</param>
+    /// <param name="relativeUri">请求的 HTTP API 路由。该路由是相对路径，并且会与 <see cref="RootPath"/> 的值组合成最终请求路由。</param>
     /// <returns>请求 HTTP API 的 URI 资源。</returns>
-    protected Uri GetRequestUri(string route = default, object queryParameters = default)
+    protected Uri GetRequestUri(string relativeUri = default, object queryParameters = default)
     {
         string? queryString = default;
         if (queryParameters is not null)
@@ -62,10 +62,10 @@ public abstract class HttpApiClientProxy : BusinessService, IHttpApiClientProxy
             queryString = queryParameters.GetType().GetProperties().Where(p => p.CanRead).Select(m => $"{m.Name}={m.GetValue(queryParameters)}").Aggregate((prev, next) => $"{prev}&{next}");
         }
 
-        var hasQueryMark = route is not null && route.IndexOf('?') > -1;
+        var hasQueryMark = relativeUri is not null && relativeUri.IndexOf('?') > -1;
 
 
-        return new(BaseAddress, $"{RootPath}/{route}{(hasQueryMark ? queryString : $"?{queryString}")}");
+        return new(BaseAddress, $"{RootPath}/{relativeUri}{(hasQueryMark ? queryString : $"?{queryString}")}");
     }
 
     /// <summary>
@@ -95,8 +95,11 @@ public abstract class HttpApiClientProxy : BusinessService, IHttpApiClientProxy
             {
                 return OutputResult.Failed(Logger, $"Deserialize {nameof(OutputResult)} from content failed");
             }
+            if (!result.Succeed)
+            {
+                Logger.LogDebug(JsonConvert.SerializeObject(result));
+            }
             return result;
-
         }
         catch (Exception ex)
         {
@@ -130,6 +133,10 @@ public abstract class HttpApiClientProxy : BusinessService, IHttpApiClientProxy
             if (result is null)
             {
                 return OutputResult<TResult>.Failed(Logger, $"Deserialize {nameof(OutputResult)} from content failed");
+            }
+            if (!result.Succeed)
+            {
+                Logger.LogDebug(JsonConvert.SerializeObject(result));
             }
             return result;
 

@@ -1,13 +1,20 @@
-﻿
-using FocusOn.Framework.Business.Contract.DTO;
+﻿using FocusOn.Framework.Business.Contract.DTO;
 
 namespace FocusOn.Framework.Endpoint.HttpProxy;
 
-public abstract class ReadOnlyHttpApiClientProxy<TKey, TModel> : ReadOnlyHttpApiClientProxy<TKey, TModel, TModel, TModel>
+/// <summary>
+/// 表示只读查询的 HTTP API 客户端代理。
+/// </summary>
+/// <typeparam name="TKey">主键类型。</typeparam>
+/// <typeparam name="TModel">输入、输出模型。</typeparam>
+public abstract class ReadOnlyHttpApiClientProxyBase<TKey, TModel> : ReadOnlyHttpApiClientProxy<TKey, TModel, TModel, TModel>
     where TKey : IEquatable<TKey>
     where TModel : class
 {
-    protected ReadOnlyHttpApiClientProxy(IServiceProvider services) : base(services)
+    /// <summary>
+    /// 初始化 <see cref="ReadOnlyHttpApiClientProxyBase{TKey, TModel}"/> 类的新实例。
+    /// </summary>
+    protected ReadOnlyHttpApiClientProxyBase(IServiceProvider services) : base(services)
     {
     }
 }
@@ -19,12 +26,15 @@ public abstract class ReadOnlyHttpApiClientProxy<TKey, TModel> : ReadOnlyHttpApi
 /// <typeparam name="TDetailOutput">获取单个结果的输出类型。</typeparam>
 /// <typeparam name="TListOutput">获取列表结果的输出类型。</typeparam>
 /// <typeparam name="TListSearchInput">获取列表结果的输入类型。</typeparam>
-public abstract class ReadOnlyHttpApiClientProxy<TKey, TDetailOutput, TListOutput, TListSearchInput> : HttpApiClientProxy
+public abstract class ReadOnlyHttpApiClientProxy<TKey, TDetailOutput, TListOutput, TListSearchInput> : HttpApiClientProxyBase
     where TKey : IEquatable<TKey>
     where TListSearchInput : class
     where TListOutput : class
     where TDetailOutput : class
 {
+    /// <summary>
+    /// 初始化 <see cref="ReadOnlyHttpApiClientProxy{TKey, TDetailOutput, TListOutput, TListSearchInput}"/> 类的新实例。
+    /// </summary>
     protected ReadOnlyHttpApiClientProxy(IServiceProvider services) : base(services)
     {
     }

@@ -5,7 +5,7 @@ using FocusOn.Framework.Endpoint.HttpProxy;
 
 namespace FocusOn.Framework.Endpoint.HttpProxy.Test.Host.Proxies;
 
-public class UserHttpApiClientProxy : CrudHttpApiClientProxy<Guid, User>, ITestUserBusinessService
+public class UserHttpApiClientProxy : CrudHttpApiClientProxyBase<Guid, User>, ITestUserBusinessService
 {
     public UserHttpApiClientProxy(IServiceProvider services) : base(services)
     {

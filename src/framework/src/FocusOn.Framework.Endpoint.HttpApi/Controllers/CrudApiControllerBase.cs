@@ -136,7 +136,7 @@ public abstract class CrudApiControllerBase<TContext, TEntity, TKey, TDetailOutp
     }
 
     /// <summary>
-    /// 保存数据库。
+    /// 保存数据库并返回 <see cref="OutputResult"/> 的结果。
     /// </summary>
     protected virtual async Task<OutputResult> SaveChangesAsync()
     {

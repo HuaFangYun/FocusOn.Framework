@@ -10,15 +10,15 @@ namespace FocusOn.Framework.Endpoint.HttpProxy;
 /// </summary>
 /// <typeparam name="TKey">主键类型。</typeparam>
 /// <typeparam name="TModel">输入、输出模型。</typeparam>
-public abstract class CrudHttpApiClientProxy<TKey, TModel> : CrudHttpApiClientProxy<TKey, TModel, TModel, TModel, TModel>, ICrudBusinessService<TKey, TModel>
+public abstract class CrudHttpApiClientProxyBase<TKey, TModel> : CrudHttpApiClientProxyBase<TKey, TModel, TModel, TModel, TModel>, ICrudBusinessService<TKey, TModel>
     where TKey : IEquatable<TKey>
     where TModel : class
 {
     /// <summary>
-    /// 初始化 <see cref="CrudHttpApiClientProxy{TKey, TModel}"/> 类的新实例。
+    /// 初始化 <see cref="CrudHttpApiClientProxyBase{TKey, TModel}"/> 类的新实例。
     /// </summary>
     /// <param name="services"><inheritdoc/></param>
-    protected CrudHttpApiClientProxy(IServiceProvider services) : base(services)
+    protected CrudHttpApiClientProxyBase(IServiceProvider services) : base(services)
     {
     }
 }
@@ -31,7 +31,7 @@ public abstract class CrudHttpApiClientProxy<TKey, TModel> : CrudHttpApiClientPr
 /// <typeparam name="TListOutput">获取列表结果的输出类型。</typeparam>
 /// <typeparam name="TListSearchInput">获取列表结果的输入类型。</typeparam>
 /// <typeparam name="TCreateOrUpdateInput">创建数据的输入类型。</typeparam>
-public abstract class CrudHttpApiClientProxy<TKey, TDetailOutput, TListOutput, TListSearchInput, TCreateOrUpdateInput> : CrudHttpApiClientProxy<TKey, TDetailOutput, TListOutput, TListSearchInput, TCreateOrUpdateInput, TCreateOrUpdateInput>, ICrudBusinessService<TKey, TDetailOutput, TListOutput, TListSearchInput, TCreateOrUpdateInput>
+public abstract class CrudHttpApiClientProxyBase<TKey, TDetailOutput, TListOutput, TListSearchInput, TCreateOrUpdateInput> : CrudHttpApiClientProxyBase<TKey, TDetailOutput, TListOutput, TListSearchInput, TCreateOrUpdateInput, TCreateOrUpdateInput>, ICrudBusinessService<TKey, TDetailOutput, TListOutput, TListSearchInput, TCreateOrUpdateInput>
     where TKey : IEquatable<TKey>
     where TListSearchInput : class
     where TListOutput : class
@@ -39,10 +39,10 @@ public abstract class CrudHttpApiClientProxy<TKey, TDetailOutput, TListOutput, T
     where TCreateOrUpdateInput : class
 {
     /// <summary>
-    /// 初始化 <see cref="CrudHttpApiClientProxy{TKey, TDetailOutput, TListOutput, TListSearchInput, TCreateInput, TUpdateInput}"/> 类的新实例。
+    /// 初始化 <see cref="CrudHttpApiClientProxyBase{TKey, TDetailOutput, TListOutput, TListSearchInput, TCreateInput, TUpdateInput}"/> 类的新实例。
     /// </summary>
     /// <param name="services"><inheritdoc/></param>
-    protected CrudHttpApiClientProxy(IServiceProvider services) : base(services)
+    protected CrudHttpApiClientProxyBase(IServiceProvider services) : base(services)
     {
     }
 }
@@ -55,7 +55,7 @@ public abstract class CrudHttpApiClientProxy<TKey, TDetailOutput, TListOutput, T
 /// <typeparam name="TListSearchInput">获取列表结果的输入类型。</typeparam>
 /// <typeparam name="TCreateInput">创建数据的输入类型。</typeparam>
 /// <typeparam name="TUpdateInput">更新数据的输入类型。</typeparam>
-public abstract class CrudHttpApiClientProxy<TKey, TDetailOutput, TListOutput, TListSearchInput, TCreateInput, TUpdateInput> : ReadOnlyHttpApiClientProxy<TKey, TDetailOutput, TListOutput, TListSearchInput>, ICrudBusinessService<TKey, TDetailOutput, TListOutput, TListSearchInput, TCreateInput, TUpdateInput>
+public abstract class CrudHttpApiClientProxyBase<TKey, TDetailOutput, TListOutput, TListSearchInput, TCreateInput, TUpdateInput> : ReadOnlyHttpApiClientProxy<TKey, TDetailOutput, TListOutput, TListSearchInput>, ICrudBusinessService<TKey, TDetailOutput, TListOutput, TListSearchInput, TCreateInput, TUpdateInput>
 where TKey : IEquatable<TKey>
 where TListSearchInput : class
 where TListOutput : class
@@ -64,10 +64,10 @@ where TCreateInput : class
 where TUpdateInput : class
 {
     /// <summary>
-    /// 初始化 <see cref="CrudHttpApiClientProxy{TKey, TDetailOutput, TListOutput, TListSearchInput, TCreateInput, TUpdateInput}"/> 类的新实例。
+    /// 初始化 <see cref="CrudHttpApiClientProxyBase{TKey, TDetailOutput, TListOutput, TListSearchInput, TCreateInput, TUpdateInput}"/> 类的新实例。
     /// </summary>
     /// <param name="services"><inheritdoc/></param>
-    protected CrudHttpApiClientProxy(IServiceProvider services) : base(services)
+    protected CrudHttpApiClientProxyBase(IServiceProvider services) : base(services)
     {
     }
 

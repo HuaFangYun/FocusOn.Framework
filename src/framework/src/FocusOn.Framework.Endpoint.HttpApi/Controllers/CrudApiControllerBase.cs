@@ -1,8 +1,7 @@
-﻿
-using Microsoft.AspNetCore.Mvc;
-
-using FocusOn.Framework.Business.Contract;
+﻿using FocusOn.Framework.Business.Contract;
 using FocusOn.Framework.Business.Contract.DTO;
+
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
@@ -29,18 +28,18 @@ public abstract class CrudApiControllerBase<TContext, TEntity, TKey>
 /// <typeparam name="TContext">数据库上下文类型。</typeparam>
 /// <typeparam name="TEntity">实体类型。</typeparam>
 /// <typeparam name="TKey">主键类型。</typeparam>
-/// <typeparam name="TGetOutput">获取单个结果的输出类型。</typeparam>
-/// <typeparam name="TGetListOutput">获取列表结果的输出类型。</typeparam>
-/// <typeparam name="TGetListInput">获取列表结果的输入类型。</typeparam>
+/// <typeparam name="TDetailOutput">获取单个结果的输出类型。</typeparam>
+/// <typeparam name="TListOutput">获取列表结果的输出类型。</typeparam>
+/// <typeparam name="TListSearchInput">获取列表结果的输入类型。</typeparam>
 /// <typeparam name="TCreateOrUpdateInput">创建或更新数据的输入类型。</typeparam>
-public abstract class CrudApiControllerBase<TContext, TEntity, TKey, TGetOutput, TGetListOutput, TGetListInput, TCreateOrUpdateInput>
-    : CrudApiControllerBase<TContext, TEntity, TKey, TGetOutput, TGetListOutput, TGetListInput, TCreateOrUpdateInput, TCreateOrUpdateInput>
+public abstract class CrudApiControllerBase<TContext, TEntity, TKey, TDetailOutput, TListOutput, TListSearchInput, TCreateOrUpdateInput>
+    : CrudApiControllerBase<TContext, TEntity, TKey, TDetailOutput, TListOutput, TListSearchInput, TCreateOrUpdateInput, TCreateOrUpdateInput>
     where TContext : DbContext
     where TEntity : class
     where TKey : IEquatable<TKey>
-    where TGetOutput : class
-    where TGetListInput : class
-    where TGetListOutput : class
+    where TDetailOutput : class
+    where TListSearchInput : class
+    where TListOutput : class
     where TCreateOrUpdateInput : class
 {
 
@@ -52,19 +51,19 @@ public abstract class CrudApiControllerBase<TContext, TEntity, TKey, TGetOutput,
 /// <typeparam name="TContext">数据库上下文类型。</typeparam>
 /// <typeparam name="TEntity">实体类型。</typeparam>
 /// <typeparam name="TKey">主键类型。</typeparam>
-/// <typeparam name="TGetOutput">获取单个结果的输出类型。</typeparam>
-/// <typeparam name="TGetListOutput">获取列表结果的输出类型。</typeparam>
-/// <typeparam name="TGetListInput">获取列表结果的输入类型。</typeparam>
+/// <typeparam name="TDetailOutput">获取单个结果的输出类型。</typeparam>
+/// <typeparam name="TListOutput">获取列表结果的输出类型。</typeparam>
+/// <typeparam name="TListSearchInput">获取列表结果的输入类型。</typeparam>
 /// <typeparam name="TCreateInput">创建数据的输入类型。</typeparam>
 /// <typeparam name="TUpdateInput">更新数据的输入类型。</typeparam>
-public abstract class CrudApiControllerBase<TContext, TEntity, TKey, TGetOutput, TGetListOutput, TGetListInput, TCreateInput, TUpdateInput>
-    : ReadOnlyApiControllerBase<TContext, TEntity, TKey, TGetOutput, TGetListOutput, TGetListInput>, ICrudBusinessService<TKey, TGetOutput, TGetListOutput, TGetListInput, TCreateInput, TUpdateInput>
+public abstract class CrudApiControllerBase<TContext, TEntity, TKey, TDetailOutput, TListOutput, TListSearchInput, TCreateInput, TUpdateInput>
+    : ReadOnlyApiControllerBase<TContext, TEntity, TKey, TDetailOutput, TListOutput, TListSearchInput>, ICrudBusinessService<TKey, TDetailOutput, TListOutput, TListSearchInput, TCreateInput, TUpdateInput>
     where TContext : DbContext
-    where TEntity:class
+    where TEntity : class
     where TKey : IEquatable<TKey>
-    where TGetOutput : class
-    where TGetListInput : class
-    where TGetListOutput : class
+    where TDetailOutput : class
+    where TListSearchInput : class
+    where TListOutput : class
     where TCreateInput : class
     where TUpdateInput : class
 {
@@ -74,7 +73,7 @@ public abstract class CrudApiControllerBase<TContext, TEntity, TKey, TGetOutput,
     /// <param name="model">要创建的输入。</param>
     /// <exception cref="ArgumentNullException"><paramref name="model"/> 是 null。</exception>
     [HttpPost]
-    public virtual async ValueTask<OutputResult> CreateAsync([FromBody]TCreateInput model)
+    public virtual async ValueTask<OutputResult> CreateAsync([FromBody] TCreateInput model)
     {
         if (model is null)
         {
@@ -114,7 +113,7 @@ public abstract class CrudApiControllerBase<TContext, TEntity, TKey, TGetOutput,
     /// <param name="model">要更新的字段。</param>
     /// <exception cref="ArgumentNullException"><paramref name="model"/> 是 null。</exception>
     [HttpPut("{id}")]
-    public virtual async ValueTask<OutputResult> UpdateAsync(TKey id, [FromBody]TUpdateInput model)
+    public virtual async ValueTask<OutputResult> UpdateAsync(TKey id, [FromBody] TUpdateInput model)
     {
         if (model is null)
         {

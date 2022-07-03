@@ -31,6 +31,11 @@ public class IdentityUser<TKey> : EntityBase<TKey>, IUser<TKey> where TKey : IEq
     public virtual string UserName { get; set; }
 
     /// <summary>
+    /// 获取或设置被 HASH 运算后的密码字符串。
+    /// </summary>
+    public virtual string? PasswordHash { get; set; }
+
+    /// <summary>
     /// 获取或设置当前用户拥有的角色集合。
     /// </summary>
     public virtual ICollection<IdentityRole<TKey>> Roles { get; set; } = new HashSet<IdentityRole<TKey>>();

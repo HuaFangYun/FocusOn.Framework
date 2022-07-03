@@ -14,17 +14,17 @@ namespace FocusOn.Framework.Endpoint.HttpApi.Controllers;
 /// <typeparam name="TContext">数据库上下文类型。</typeparam>
 /// <typeparam name="TEntity">实体类型。</typeparam>
 /// <typeparam name="TKey">主键类型。</typeparam>
-/// <typeparam name="TGetOutput">获取单个结果的输出类型。</typeparam>
-/// <typeparam name="TGetListOutput">获取列表结果的输出类型。</typeparam>
-/// <typeparam name="TGetListInput">获取列表结果的输入类型。</typeparam>
+/// <typeparam name="TDetailOutput">获取单个结果的输出类型。</typeparam>
+/// <typeparam name="TListOutput">获取列表结果的输出类型。</typeparam>
+/// <typeparam name="TListSearchInput">获取列表结果的输入类型。</typeparam>
 [Produces("application/json")]
-public abstract class ReadOnlyApiControllerBase<TContext, TEntity, TKey, TGetOutput, TGetListOutput, TGetListInput> :ApiControllerBase , IReadOnlyBusinessService<TKey,TGetOutput,TGetListOutput,TGetListInput>
-    where TContext: DbContext
+public abstract class ReadOnlyApiControllerBase<TContext, TEntity, TKey, TDetailOutput, TListOutput, TListSearchInput> : ApiControllerBase, IReadOnlyBusinessService<TKey, TDetailOutput, TListOutput, TListSearchInput>
+    where TContext : DbContext
     where TEntity : class
     where TKey : IEquatable<TKey>
-    where TGetListInput : class
-    where TGetListOutput : class
-    where TGetOutput : class
+    where TListSearchInput : class
+    where TListOutput : class
+    where TDetailOutput : class
 {
     /// <summary>
     /// 获取 <typeparamref name="TContext"/> 实例。
@@ -48,15 +48,15 @@ public abstract class ReadOnlyApiControllerBase<TContext, TEntity, TKey, TGetOut
     /// </summary>
     /// <param name="id">要获取的 Id。</param>
     [HttpGet("{id}")]
-    public virtual async ValueTask<OutputResult<TGetOutput?>> GetAsync(TKey id)
+    public virtual async ValueTask<OutputResult<TDetailOutput?>> GetAsync(TKey id)
     {
         var entity = await FindAsync(id);
         if (entity is null)
         {
-            return OutputResult<TGetOutput?>.Failed(GetEntityNotFoundMessage(id));
+            return OutputResult<TDetailOutput?>.Failed(GetEntityNotFoundMessage(id));
         }
         var output = MapToModel(entity);
-        return OutputResult<TGetOutput?>.Success(output);
+        return OutputResult<TDetailOutput?>.Success(output);
     }
 
     /// <summary>
@@ -64,7 +64,7 @@ public abstract class ReadOnlyApiControllerBase<TContext, TEntity, TKey, TGetOut
     /// </summary>
     /// <param name="model">列表检索的输入。</param>
     [HttpGet]
-    public virtual async Task<OutputResult<PagedOutputDto<TGetListOutput>>> GetListAsync(TGetListInput? model = default)
+    public virtual async Task<OutputResult<PagedOutputDto<TListOutput>>> GetListAsync(TListSearchInput? model = default)
     {
         var query = CreateQuery(model);
 
@@ -75,14 +75,14 @@ public abstract class ReadOnlyApiControllerBase<TContext, TEntity, TKey, TGetOut
 
         try
         {
-            var data = await Mapper.ProjectTo<TGetListOutput>(query).ToListAsync(CancellationToken);
+            var data = await Mapper.ProjectTo<TListOutput>(query).ToListAsync(CancellationToken);
             var total = await query.CountAsync(CancellationToken);
-            return OutputResult<PagedOutputDto<TGetListOutput>>.Success(new(data, total));
+            return OutputResult<PagedOutputDto<TListOutput>>.Success(new(data, total));
         }
         catch (AggregateException ex)
         {
             Logger.LogError(ex, ex.Message);
-            return OutputResult<PagedOutputDto<TGetListOutput>>.Failed(ex.Message);
+            return OutputResult<PagedOutputDto<TListOutput>>.Failed(ex.Message);
         }
     }
 
@@ -94,10 +94,10 @@ public abstract class ReadOnlyApiControllerBase<TContext, TEntity, TKey, TGetOut
     protected ValueTask<TEntity?> FindAsync(TKey id) => Set.FindAsync(id);
 
     /// <summary>
-    /// 创建指定 <typeparamref name="TGetListInput"/> 提供的检索。
+    /// 创建指定 <typeparamref name="TListSearchInput"/> 提供的检索。
     /// </summary>
     /// <param name="model">获取的输入参数。</param>
-    protected virtual IQueryable<TEntity> CreateQuery(TGetListInput? model) => Query;
+    protected virtual IQueryable<TEntity> CreateQuery(TListSearchInput? model) => Query;
 
     /// <summary>
     /// 获取 实体不存在 的消息字符串。
@@ -106,13 +106,13 @@ public abstract class ReadOnlyApiControllerBase<TContext, TEntity, TKey, TGetOut
     protected virtual string GetEntityNotFoundMessage(TKey id)
         => "实体 '{0}' 不存在".StringFormat(id);
 
-    protected virtual TGetOutput? MapToModel(TEntity entity)
+    protected virtual TDetailOutput? MapToModel(TEntity entity)
     {
-        if (typeof(TEntity) == typeof(TGetOutput))
+        if (typeof(TEntity) == typeof(TDetailOutput))
         {
-            return entity as TGetOutput;
+            return entity as TDetailOutput;
         }
 
-        return Mapper.Map<TEntity, TGetOutput>(entity);
+        return Mapper.Map<TEntity, TDetailOutput>(entity);
     }
 }

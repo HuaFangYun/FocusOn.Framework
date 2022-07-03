@@ -32,6 +32,7 @@ public class IdentityUserConfiguration<TUser, TKey> : IEntityTypeConfiguration<T
         builder.ToTable(TableName);
 
         ConfigureUserName(builder);
+        ConfigurePasswordHash(builder);
     }
 
     /// <summary>
@@ -42,6 +43,15 @@ public class IdentityUserConfiguration<TUser, TKey> : IEntityTypeConfiguration<T
     {
         builder.Property(m => m.UserName).IsRequired().HasMaxLength(30);
         builder.HasIndex(m => m.UserName).IsUnique();
+    }
+
+    /// <summary>
+    /// 配置密码的数据库字段。
+    /// </summary>
+    /// <param name="builder"><see cref="EntityTypeBuilder{TEntity}"/> 实例。</param>
+    protected virtual void ConfigurePasswordHash(EntityTypeBuilder<TUser> builder)
+    {
+        builder.Property(m => m.PasswordHash).HasMaxLength(128);
     }
 
     /// <summary>

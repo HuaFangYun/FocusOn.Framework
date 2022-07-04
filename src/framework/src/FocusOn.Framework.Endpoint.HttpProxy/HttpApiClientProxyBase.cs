@@ -12,13 +12,13 @@ namespace FocusOn.Framework.Endpoint.HttpProxy;
 /// <summary>
 /// 表示 HTTP API 的客户端代理。这是一个抽象类。
 /// </summary>
-public abstract class HttpApiClientProxy : BusinessService, IHttpApiClientProxy
+public abstract class HttpApiClientProxyBase : BusinessService, IHttpApiClientProxy
 {
     /// <summary>
-    /// 初始化 <see cref="HttpApiClientProxy"/> 类的新实例。
+    /// 初始化 <see cref="HttpApiClientProxyBase"/> 类的新实例。
     /// </summary>
     /// <param name="services"><see cref="IServiceProvider"/> 实例。</param>
-    protected HttpApiClientProxy(IServiceProvider services) : base(services)
+    protected HttpApiClientProxyBase(IServiceProvider services) : base(services)
     {
     }
 
@@ -39,7 +39,7 @@ public abstract class HttpApiClientProxy : BusinessService, IHttpApiClientProxy
     /// <summary>
     /// 获取基本请求的 URI 地址。
     /// </summary>
-    protected virtual Uri BaseAddress =>new Uri(Client.BaseAddress,RootPath) ?? throw new ArgumentNullException(nameof(Client.BaseAddress));
+    protected virtual Uri BaseAddress => new Uri(Client.BaseAddress, RootPath) ?? throw new ArgumentNullException(nameof(Client.BaseAddress));
 
 
     /// <summary>

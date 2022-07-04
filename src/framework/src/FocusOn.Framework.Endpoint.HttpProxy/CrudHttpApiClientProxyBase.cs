@@ -10,15 +10,15 @@ namespace FocusOn.Framework.Endpoint.HttpProxy;
 /// </summary>
 /// <typeparam name="TKey">主键类型。</typeparam>
 /// <typeparam name="TModel">输入、输出模型。</typeparam>
-public abstract class CrudHttpApiClientProxy<TKey, TModel> : CrudHttpApiClientProxy<TKey, TModel, TModel, TModel, TModel>,ICrudBusinessService<TKey,TModel>
+public abstract class CrudHttpApiClientProxyBase<TKey, TModel> : CrudHttpApiClientProxyBase<TKey, TModel, TModel, TModel, TModel>, ICrudBusinessService<TKey, TModel>
     where TKey : IEquatable<TKey>
     where TModel : class
 {
     /// <summary>
-    /// 初始化 <see cref="CrudHttpApiClientProxy{TKey, TModel}"/> 类的新实例。
+    /// 初始化 <see cref="CrudHttpApiClientProxyBase{TKey, TModel}"/> 类的新实例。
     /// </summary>
     /// <param name="services"><inheritdoc/></param>
-    protected CrudHttpApiClientProxy(IServiceProvider services) : base(services)
+    protected CrudHttpApiClientProxyBase(IServiceProvider services) : base(services)
     {
     }
 }
@@ -27,47 +27,47 @@ public abstract class CrudHttpApiClientProxy<TKey, TModel> : CrudHttpApiClientPr
 /// 提供 CRUD 对 HTTP API 客户端代理的功能，这是一个抽象类。
 /// </summary>
 /// <typeparam name="TKey">主键类型。</typeparam>
-/// <typeparam name="TGetOutput">获取单个结果的输出类型。</typeparam>
-/// <typeparam name="TGetListOutput">获取列表结果的输出类型。</typeparam>
-/// <typeparam name="TGetListInput">获取列表结果的输入类型。</typeparam>
+/// <typeparam name="TDetailOutput">获取单个结果的输出类型。</typeparam>
+/// <typeparam name="TListOutput">获取列表结果的输出类型。</typeparam>
+/// <typeparam name="TListSearchInput">获取列表结果的输入类型。</typeparam>
 /// <typeparam name="TCreateOrUpdateInput">创建数据的输入类型。</typeparam>
-public abstract class CrudHttpApiClientProxy<TKey, TGetOutput, TGetListOutput, TGetListInput, TCreateOrUpdateInput> : CrudHttpApiClientProxy<TKey, TGetOutput, TGetListOutput, TGetListInput, TCreateOrUpdateInput, TCreateOrUpdateInput>, ICrudBusinessService<TKey, TGetOutput, TGetListOutput, TGetListInput, TCreateOrUpdateInput>
+public abstract class CrudHttpApiClientProxyBase<TKey, TDetailOutput, TListOutput, TListSearchInput, TCreateOrUpdateInput> : CrudHttpApiClientProxyBase<TKey, TDetailOutput, TListOutput, TListSearchInput, TCreateOrUpdateInput, TCreateOrUpdateInput>, ICrudBusinessService<TKey, TDetailOutput, TListOutput, TListSearchInput, TCreateOrUpdateInput>
     where TKey : IEquatable<TKey>
-    where TGetListInput : class
-    where TGetListOutput : class
-    where TGetOutput : class
+    where TListSearchInput : class
+    where TListOutput : class
+    where TDetailOutput : class
     where TCreateOrUpdateInput : class
 {
     /// <summary>
-    /// 初始化 <see cref="CrudHttpApiClientProxy{TKey, TGetOutput, TGetListOutput, TGetListInput, TCreateInput, TUpdateInput}"/> 类的新实例。
+    /// 初始化 <see cref="CrudHttpApiClientProxyBase{TKey, TDetailOutput, TListOutput, TListSearchInput, TCreateInput, TUpdateInput}"/> 类的新实例。
     /// </summary>
     /// <param name="services"><inheritdoc/></param>
-    protected CrudHttpApiClientProxy(IServiceProvider services) : base(services)
+    protected CrudHttpApiClientProxyBase(IServiceProvider services) : base(services)
     {
     }
 }
-    /// <summary>
-    /// 提供 CRUD 对 HTTP API 客户端代理的功能，这是一个抽象类。
-    /// </summary>
-    /// <typeparam name="TKey">主键类型。</typeparam>
-    /// <typeparam name="TGetOutput">获取单个结果的输出类型。</typeparam>
-    /// <typeparam name="TGetListOutput">获取列表结果的输出类型。</typeparam>
-    /// <typeparam name="TGetListInput">获取列表结果的输入类型。</typeparam>
-    /// <typeparam name="TCreateInput">创建数据的输入类型。</typeparam>
-    /// <typeparam name="TUpdateInput">更新数据的输入类型。</typeparam>
-    public abstract class CrudHttpApiClientProxy<TKey, TGetOutput, TGetListOutput, TGetListInput, TCreateInput, TUpdateInput> : ReadOnlyHttpApiClientProxy<TKey,TGetOutput,TGetListOutput,TGetListInput>, ICrudBusinessService<TKey, TGetOutput, TGetListOutput, TGetListInput, TCreateInput, TUpdateInput>
-    where TKey:IEquatable<TKey>
-    where TGetListInput : class
-    where TGetListOutput : class
-    where TGetOutput : class
-    where TCreateInput : class
-    where TUpdateInput : class
+/// <summary>
+/// 提供 CRUD 对 HTTP API 客户端代理的功能，这是一个抽象类。
+/// </summary>
+/// <typeparam name="TKey">主键类型。</typeparam>
+/// <typeparam name="TDetailOutput">获取单个结果的输出类型。</typeparam>
+/// <typeparam name="TListOutput">获取列表结果的输出类型。</typeparam>
+/// <typeparam name="TListSearchInput">获取列表结果的输入类型。</typeparam>
+/// <typeparam name="TCreateInput">创建数据的输入类型。</typeparam>
+/// <typeparam name="TUpdateInput">更新数据的输入类型。</typeparam>
+public abstract class CrudHttpApiClientProxyBase<TKey, TDetailOutput, TListOutput, TListSearchInput, TCreateInput, TUpdateInput> : ReadOnlyHttpApiClientProxy<TKey, TDetailOutput, TListOutput, TListSearchInput>, ICrudBusinessService<TKey, TDetailOutput, TListOutput, TListSearchInput, TCreateInput, TUpdateInput>
+where TKey : IEquatable<TKey>
+where TListSearchInput : class
+where TListOutput : class
+where TDetailOutput : class
+where TCreateInput : class
+where TUpdateInput : class
 {
     /// <summary>
-    /// 初始化 <see cref="CrudHttpApiClientProxy{TKey, TGetOutput, TGetListOutput, TGetListInput, TCreateInput, TUpdateInput}"/> 类的新实例。
+    /// 初始化 <see cref="CrudHttpApiClientProxyBase{TKey, TDetailOutput, TListOutput, TListSearchInput, TCreateInput, TUpdateInput}"/> 类的新实例。
     /// </summary>
     /// <param name="services"><inheritdoc/></param>
-    protected CrudHttpApiClientProxy(IServiceProvider services) : base(services)
+    protected CrudHttpApiClientProxyBase(IServiceProvider services) : base(services)
     {
     }
 

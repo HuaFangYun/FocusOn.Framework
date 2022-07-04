@@ -1,6 +1,6 @@
-﻿
-using FocusOn.Framework.MuiltyTenancy;
+﻿using FocusOn.Framework.MuiltyTenancy;
 
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace FocusOn.Framework.Business.Store.Configurations;
@@ -28,8 +28,18 @@ public static class EntityTypeBuilderExtensions
     /// <param name="builder"><see cref="EntityTypeBuilder{TEntity}"/> 实例。</param>
     public static EntityTypeBuilder<TEntity> ConfigureMultiTenancy<TEntity>(this EntityTypeBuilder<TEntity> builder) where TEntity : class, IHasMultiTenancy
     {
-        builder.Property(m => m.TenantId);
-        builder.HasQueryFilter(m => m.TenantId.HasValue);
+        builder.TryConfigureMultiTenancy<TEntity>();
         return builder;
+    }
+
+    public static bool TryConfigureMultiTenancy<TEntity>(this EntityTypeBuilder<TEntity> builder) where TEntity : class
+    {
+        if (builder.Metadata is IHasMultiTenancy multiTenancy)
+        {
+            builder.Property(nameof(IHasMultiTenancy.TenantId));
+            builder.HasQueryFilter(m => EF.Property<Guid>(m, nameof(IHasMultiTenancy.TenantId)) == multiTenancy.TenantId);
+            return true;
+        }
+        return false;
     }
 }

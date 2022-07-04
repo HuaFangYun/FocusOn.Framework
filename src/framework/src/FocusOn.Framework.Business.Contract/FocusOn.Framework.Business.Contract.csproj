@@ -8,5 +8,18 @@
   <ItemGroup>
     <ProjectReference Include="..\FocusOn.Framework.Infrastructure\FocusOn.Framework.Infrastructure.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Compile Update="Localizations\Locale.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Locale.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Update="Localizations\Locale.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Locale.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
 
 </Project>

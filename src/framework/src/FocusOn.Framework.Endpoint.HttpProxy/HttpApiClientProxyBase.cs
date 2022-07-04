@@ -39,7 +39,7 @@ public abstract class HttpApiClientProxyBase : BusinessService, IHttpApiClientPr
     /// <summary>
     /// 获取基本请求的 URI 地址。
     /// </summary>
-    protected virtual Uri BaseAddress => new Uri(Client.BaseAddress, RootPath) ?? throw new ArgumentNullException(nameof(Client.BaseAddress));
+    protected virtual Uri BaseAddress =>Client.BaseAddress ?? throw new ArgumentNullException(nameof(Client.BaseAddress));
 
 
     /// <summary>
@@ -62,7 +62,7 @@ public abstract class HttpApiClientProxyBase : BusinessService, IHttpApiClientPr
             queryString = queryParameters.GetType().GetProperties().Where(p => p.CanRead).Select(m => $"{m.Name}={m.GetValue(queryParameters)}").Aggregate((prev, next) => $"{prev}&{next}");
         }
 
-        var hasQueryMark = relativeUri is not null && relativeUri.IndexOf('?') > -1;
+        var hasQueryMark = relativeUri.IndexOf('?') > -1;
 
 
         return new(BaseAddress, $"{RootPath}/{relativeUri}{(hasQueryMark ? queryString : $"?{queryString}")}");

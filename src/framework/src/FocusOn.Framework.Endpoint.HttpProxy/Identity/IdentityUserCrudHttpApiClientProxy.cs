@@ -55,7 +55,7 @@ public class IdentityUserCrudHttpApiClientProxy<TKey, TDetailOutput, TListOutput
     /// <returns></returns>
     public virtual async Task<OutputResult<TDetailOutput>> GetByUserNameAsync(string userName)
     {
-        var uri = GetRequestUri(queryParameters: new { userName });
+        var uri = GetRequestUri($"username/{userName}");
         var response = await Client.GetAsync(uri);
         return await HandleOutputResultAsync<TDetailOutput>(response);
     }

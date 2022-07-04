@@ -85,7 +85,7 @@ public abstract class CrudApiControllerBase<TContext, TEntity, TKey, TDetailOutp
             return OutputResult.Failed(errors);
         }
 
-        var entity = Mapper.Map<TCreateInput, TEntity>(model);
+        var entity = MapToEntity(model);
         Set.Add(entity);
         return await SaveChangesAsync();
     }
@@ -131,7 +131,7 @@ public abstract class CrudApiControllerBase<TContext, TEntity, TKey, TDetailOutp
             return OutputResult.Failed(GetEntityNotFoundMessage(id));
         }
 
-        Mapper.Map(model, entity);
+        MapToEntity(model, entity);
         return await SaveChangesAsync();
     }
 
@@ -145,16 +145,16 @@ public abstract class CrudApiControllerBase<TContext, TEntity, TKey, TDetailOutp
             var rows = await Context.SaveChangesAsync(CancellationToken);
             if (rows > 0)
             {
-                Logger.LogInformation("Save changes successfully");
+                Logger.LogInformation("数据保存成功");
                 return OutputResult.Success();
             }
-            Logger.LogWarning("Save changes failed because affected row is 0");
-            return OutputResult.Failed("Save changes failed");
+            Logger.LogWarning("因为影响行数是0，保存失败");
+            return OutputResult.Failed("数据保存失败，请查看日志");
         }
         catch (AggregateException ex)
         {
             Logger.LogError(ex, string.Join(";", ex.InnerExceptions.Select(m => m.Message)));
-            return OutputResult.Failed("Exceptions occured when saving changes, see log for details");
+            return OutputResult.Failed("保存发生异常，请查看日志以获得详情");
         }
     }
 
@@ -166,12 +166,12 @@ public abstract class CrudApiControllerBase<TContext, TEntity, TKey, TDetailOutp
         }
         return Mapper.Map<TCreateInput, TEntity>(model);
     }
-    protected virtual TEntity? MapToEntity(TUpdateInput model)
+    protected virtual TEntity? MapToEntity(TUpdateInput model,TEntity entity)
     {
         if (typeof(TUpdateInput) == typeof(TEntity))
         {
             return model as TEntity;
         }
-        return Mapper.Map<TUpdateInput, TEntity>(model);
+        return Mapper.Map(model, entity);
     }
 }

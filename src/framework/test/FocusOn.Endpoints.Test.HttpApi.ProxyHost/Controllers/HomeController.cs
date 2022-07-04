@@ -15,7 +15,7 @@ namespace FocusOn.Framework.Endpoint.Test.HttpApi.ProxyHost.Controllers
 
         public async Task<IActionResult> Default()
         {
-            var result = await UserBusinessService.GetByNameAsync("abc");
+            var result = await UserBusinessService.GetByUserNameAsync("abc");
             return Ok(result);
         }
     }

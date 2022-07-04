@@ -5,20 +5,10 @@ using FocusOn.Framework.Endpoint.HttpApi.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using FocusOn.Framework.Endpoint.HttpApi.Test.Host.BusinessServices;
+using FocusOn.Framework.Endpoint.HttpApi.Identity.Controllers;
 
 namespace FocusOn.Framework.Endpoint.HttpApi.Test.Host.Controllers;
 
-public class UserController : CrudApiControllerBase<TestDbContext, User, Guid>, ITestUserBusinessService
+public class UserController : IdentityUserCrudApiController<TestDbContext, User, Guid>, ITestUserBusinessService
 {
-    [HttpGet("by-name/{name}")]
-    public async Task<OutputResult<User?>> GetByNameAsync(string name)
-    {
-        var entity = await Query.SingleOrDefaultAsync(m => m.Name.Equals(name), CancellationToken);
-        if (entity is null)
-        {
-            return OutputResult<User?>.Failed("User not found");
-        }
-        var result = MapToModel(entity);
-        return OutputResult<User?>.Success(result);
-    }
 }

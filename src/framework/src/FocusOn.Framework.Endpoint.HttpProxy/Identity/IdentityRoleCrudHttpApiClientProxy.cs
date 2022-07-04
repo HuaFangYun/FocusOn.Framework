@@ -1,7 +1,23 @@
 ﻿using FocusOn.Framework.Business.Contract.DTO;
 using FocusOn.Framework.Business.Contract.Identity;
+using FocusOn.Framework.Business.Contract.Identity.DTO;
 
 namespace FocusOn.Framework.Endpoint.HttpProxy.Identity;
+
+/// <summary>
+/// 表示角色的 CRUD 的 HTTP API 远程服务代理。
+/// </summary>
+/// <typeparam name="TKey">主键类型。</typeparam>
+public class IdentityRoleCrudHttpApiClientProxy<TKey> : IdentityRoleCrudHttpApiClientProxy<TKey, IdentityRoleDetailOutput, IdentityRoleListOutput, IdentityRoleListSearchInput, IdentityRoleCreateInput, IdentityRoleUpdateInput>
+        where TKey : IEquatable<TKey>
+{
+    /// <summary>
+    /// 初始化 <see cref="IdentityRoleCrudHttpApiClientProxy{TKey}"/> 类的新实例。
+    /// </summary>
+    public IdentityRoleCrudHttpApiClientProxy(IServiceProvider services) : base(services)
+    {
+    }
+}
 
 /// <summary>
 /// 表示角色的 CRUD 的 HTTP API 远程服务代理。

@@ -28,7 +28,7 @@ public class IdentityUserCrudHttpApiClientProxy<TKey, TModel> : IdentityUserCrud
 /// <typeparam name="TListSearchInput">获取列表结果的输入类型。</typeparam>
 /// <typeparam name="TCreateInput">创建数据的输入类型。</typeparam>
 /// <typeparam name="TUpdateInput">更新数据的输入类型。</typeparam>
-public class IdentityUserCrudHttpApiClientProxy<TKey, TDetailOutput, TListOutput, TListSearchInput, TCreateInput, TUpdateInput> : CrudHttpApiClientProxy<TKey, TDetailOutput, TListOutput, TListSearchInput, TCreateInput, TUpdateInput>, IIdentityUserCrudBusinessService<TKey, TDetailOutput, TListOutput, TListSearchInput, TCreateInput, TUpdateInput>
+public class IdentityUserCrudHttpApiClientProxy<TKey, TDetailOutput, TListOutput, TListSearchInput, TCreateInput, TUpdateInput> : CrudHttpApiClientProxyBase<TKey, TDetailOutput, TListOutput, TListSearchInput, TCreateInput, TUpdateInput>, IIdentityUserCrudBusinessService<TKey, TDetailOutput, TListOutput, TListSearchInput, TCreateInput, TUpdateInput>
     where TKey : IEquatable<TKey>
     where TListSearchInput : class
     where TListOutput : class
@@ -55,7 +55,7 @@ public class IdentityUserCrudHttpApiClientProxy<TKey, TDetailOutput, TListOutput
     /// <returns></returns>
     public virtual async Task<OutputResult<TDetailOutput>> GetByUserNameAsync(string userName)
     {
-        var uri = GetRequestUri(queryParameters: new { userName });
+        var uri = GetRequestUri($"username/{userName}");
         var response = await Client.GetAsync(uri);
         return await HandleOutputResultAsync<TDetailOutput>(response);
     }

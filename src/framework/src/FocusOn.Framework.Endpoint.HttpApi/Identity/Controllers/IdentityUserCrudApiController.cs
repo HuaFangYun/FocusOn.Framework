@@ -10,6 +10,7 @@ using FocusOn.Framework.Endpoint.HttpApi.Localizations;
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace FocusOn.Framework.Endpoint.HttpApi.Identity.Controllers;
 
@@ -49,6 +50,7 @@ public class IdentityUserCrudApiController<TContext, TUser, TKey, TDetailOutput,
     /// </summary>
     /// <param name="model"></param>
     /// <returns></returns>
+    [HttpPost]
     public override async ValueTask<OutputResult> CreateAsync([FromBody] TUser model)
     {
         Set.Add(model);
@@ -82,8 +84,8 @@ public class IdentityUserCrudApiController<TContext, TUser, TKey, TDetailOutput,
     /// 获取指定用户名的用户详情。
     /// </summary>
     /// <param name="userName">用户名。</param>
-    [HttpGet]
-    public virtual async Task<OutputResult<TDetailOutput>> GetByUserNameAsync([FromQuery] string userName)
+    [HttpGet("username/{userName}")]
+    public virtual async Task<OutputResult<TDetailOutput>> GetByUserNameAsync(string userName)
     {
         var user = await Query.SingleOrDefaultAsync(m => m.UserName.Equals(userName), CancellationToken);
         if (user is null)
@@ -99,6 +101,7 @@ public class IdentityUserCrudApiController<TContext, TUser, TKey, TDetailOutput,
     /// 重写用户创建。
     /// </summary>
     /// <param name="model">用户创建模型。</param>
+    [HttpPost]
     public override async ValueTask<OutputResult> CreateAsync([FromBody] TCreateInput model)
     {
         var valid = Validator.TryValidate(model, out var errors);
@@ -128,11 +131,7 @@ public class IdentityUserCrudApiController<TContext, TUser, TKey, TDetailOutput,
 
             if (model is IdentityUserPasswordCreateInput passwordCreateInput)
             {
-                var passwordHashBuffer = MD5.Create().ComputeHash(Encoding.Default.GetBytes(passwordCreateInput.Password));
-
-                var passwordHash = Convert.ToBase64String(passwordHashBuffer);
-
-                user.PasswordHash = passwordHash;
+                user.PasswordHash = HashPassword(passwordCreateInput.Password);
             }
 
             Set.Add(user);
@@ -141,5 +140,23 @@ public class IdentityUserCrudApiController<TContext, TUser, TKey, TDetailOutput,
         }
 
         return OutputResult.Failed($"{nameof(model)} 不是派生自 {nameof(IdentityUserCreateInput)} 类，请重写并自己实现业务逻辑");
+    }
+
+    /// <summary>
+    /// 对指定的原始密码进行哈希加密。
+    /// </summary>
+    /// <param name="password">原始密码。</param>
+    /// <returns>哈希加密后的密码字符串。</returns>
+    /// <exception cref="ArgumentException"><paramref name="password"/> 是空或空白字符串。</exception>
+    protected virtual string HashPassword(string password)
+    {
+        if (string.IsNullOrWhiteSpace(password))
+        {
+            throw new ArgumentException($"'{nameof(password)}' cannot be null or whitespace.", nameof(password));
+        }
+
+        var passwordHashBuffer = MD5.Create().ComputeHash(Encoding.Default.GetBytes(password));
+
+        return Convert.ToBase64String(passwordHashBuffer);
     }
 }

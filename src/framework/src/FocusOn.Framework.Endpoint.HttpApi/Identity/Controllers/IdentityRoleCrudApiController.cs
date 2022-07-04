@@ -15,7 +15,7 @@ namespace FocusOn.Framework.Endpoint.HttpApi.Identity.Controllers;
 /// </summary>
 /// <typeparam name="TContext">数据库上下文类型。</typeparam>
 /// <typeparam name="TKey">主键类型。</typeparam>
-public class IdentityRoleCrudApiController<TContext, TKey> : IdentityRoleCrudApiController<TContext, IdentityRole<TKey>, TKey, IdentityRoleDetailOutput, IdentityRoleListOutput, IdentityRoleListSearchInput, IdentityRoleCreateInput, IdentityRoleCreateInput>, IIdentityRoleCrudBusinessService<TKey, IdentityRoleDetailOutput, IdentityRoleListOutput, IdentityRoleListSearchInput, IdentityRoleCreateInput, IdentityRoleCreateInput>
+public class IdentityRoleCrudApiController<TContext, TKey> : IdentityRoleCrudApiController<TContext, IdentityRole<TKey>, TKey, IdentityRoleDetailOutput, IdentityRoleListOutput, IdentityRoleListSearchInput, IdentityRoleCreateInput, IdentityRoleUpdateInput>, IIdentityRoleCrudBusinessService<TKey, IdentityRoleDetailOutput, IdentityRoleListOutput, IdentityRoleListSearchInput, IdentityRoleCreateInput, IdentityRoleUpdateInput>
     where TContext : DbContext
     where TKey : IEquatable<TKey>
 {

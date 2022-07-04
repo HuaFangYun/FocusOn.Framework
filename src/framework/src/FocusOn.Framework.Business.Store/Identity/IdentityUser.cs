@@ -2,7 +2,6 @@
 
 namespace FocusOn.Framework.Business.Store.Identity;
 
-
 /// <summary>
 /// 表示用户的基本信息。
 /// </summary>

@@ -17,10 +17,10 @@ public class IdentityUserRole<TKey> where TKey : IEquatable<TKey>
     /// <summary>
     /// 用户的 Id。
     /// </summary>
-    public TKey UserId { get; set; }
+    public virtual TKey UserId { get; set; }
 
     /// <summary>
     /// 角色的 Id。
     /// </summary>
-    public TKey RoleId { get; set; }
+    public virtual TKey RoleId { get; set; }
 }

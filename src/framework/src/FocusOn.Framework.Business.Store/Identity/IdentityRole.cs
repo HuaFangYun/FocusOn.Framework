@@ -27,4 +27,9 @@ public class IdentityRole<TKey> : EntityBase<TKey> where TKey : IEquatable<TKey>
     /// 获取或设置角色名称。
     /// </summary>
     public virtual string Name { get; set; }
+
+    /// <summary>
+    /// 重写输出 <see cref="Name"/> 的字符串。
+    /// </summary>
+    public override string ToString() => Name;
 }

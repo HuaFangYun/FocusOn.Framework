@@ -1,21 +1,18 @@
 using Microsoft.EntityFrameworkCore;
-
-using FocusOn.Endpoint.HttpApi.Test.WebHost.BusinessServices;
+using FocusOn.Framework.Endpoint.HttpApi.Test.Host.BusinessServices;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-//builder.Services.AddControllers();
+builder.Services.AddControllers();
 
 builder.Services.AddFocusOn(configure =>
 {
     configure.Services.AddDbContext<TestDbContext>(m=>m.UseInMemoryDatabase("test"));
 
-    configure.AddBusinessService<ITestUserBusinessService, TestUserBusinessService>();
     configure.AddSwagger();
     configure.AddAutoMapper(typeof(Program).Assembly);
-    configure.AddRemotingServiceHttpApi();
 });
 
 var app = builder.Build();

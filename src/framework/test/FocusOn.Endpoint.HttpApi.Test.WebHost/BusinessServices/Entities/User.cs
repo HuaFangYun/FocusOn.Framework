@@ -1,8 +1,9 @@
-﻿using FocusOn.Business.Services.Entities;
+﻿using FocusOn.Framework.Business.Store;
+using FocusOn.Framework.Business.Store.Identity;
 
-namespace FocusOn.Endpoint.HttpApi.Test.WebHost.BusinessServices.Entities
+namespace FocusOn.Framework.Endpoint.HttpApi.Test.WebHost.BusinessServices.Entities
 {
-    public class User:EntityBase<Guid>
+    public class User:IdentityUser<Guid>
     {
         public string Name { get; set; }
     }

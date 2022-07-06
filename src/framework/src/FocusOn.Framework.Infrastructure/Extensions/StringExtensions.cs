@@ -33,9 +33,9 @@ public static class StringExtensions
     /// <summary>
     /// 使用指定的分隔符，将当前数组对象进行=连接。
     /// </summary>
-    /// <param name="value">要连接的对象数组。</param>
+    /// <param name="values">要连接的对象数组。</param>
     /// <param name="seperator">分隔符字符串。</param>
     /// <returns>数组使用分隔符进行连接过后的字符串。</returns>
-    public static string Join(this object[] value, string seperator)
-        => string.Join(seperator, value);
+    public static string JoinString<T>(this IEnumerable<T> values, string seperator)
+        => string.Join(seperator, values);
 }

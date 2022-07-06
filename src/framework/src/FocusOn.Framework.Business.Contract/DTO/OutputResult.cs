@@ -51,9 +51,16 @@ public record class OutputResult
     /// <param name="errors">操作失败的错误信息数组。</param>
     public static OutputResult Failed(ILogger logger, params string[] errors)
     {
-        logger.LogError(errors.Join(";"));
+        logger.LogError(errors.JoinString(";"));
         return Failed(errors);
     }
+    /// <summary>
+    /// 表示操作结果是失败的。
+    /// </summary>
+    /// <param name="logger"><see cref="ILogger"/> 实例。</param>
+    /// <param name="errors">操作失败的错误信息数组。</param>
+    public static new OutputResult Failed(ILogger logger, IEnumerable<string> errors)
+        => Failed(logger, errors.ToArray());
     /// <summary>
     /// 表示操作结果是失败的，并记录异常日志。
     /// </summary>
@@ -106,9 +113,17 @@ public record class OutputResult<TResult> : OutputResult
     /// <param name="errors">操作失败的错误信息数组。</param>
     public static new OutputResult<TResult> Failed(ILogger logger, params string[] errors)
     {
-        logger.LogError(errors.Join(";"));
+        logger.LogError(errors.JoinString(";"));
         return Failed(errors);
     }
+    /// <summary>
+    /// 表示操作结果是失败的。
+    /// </summary>
+    /// <param name="logger"><see cref="ILogger"/> 实例。</param>
+    /// <param name="errors">操作失败的错误信息数组。</param>
+    public static new OutputResult<TResult> Failed(ILogger logger, IEnumerable<string> errors)
+        => Failed(logger, errors.ToArray());
+
     /// <summary>
     /// 表示操作结果是失败的，并记录异常日志。
     /// </summary>

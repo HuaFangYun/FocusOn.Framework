@@ -11,4 +11,7 @@ namespace FocusOn.Framework.Endpoint.HttpApi.Test.Host.Controllers;
 
 public class UserController : IdentityUserCrudApiController<TestDbContext, User, Guid>, ITestUserBusinessService
 {
+    public UserController(IServiceProvider serviceProvider) : base(serviceProvider)
+    {
+    }
 }

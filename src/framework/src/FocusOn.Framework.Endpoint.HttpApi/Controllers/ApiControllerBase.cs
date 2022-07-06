@@ -14,18 +14,26 @@ namespace FocusOn.Framework.Endpoint.HttpApi.Controllers;
 public abstract class ApiControllerBase : ControllerBase
 {
     /// <summary>
+    /// 初始化 <see cref="ApiControllerBase"/> 类的新实例。
+    /// </summary>
+    protected ApiControllerBase(IServiceProvider serviceProvider)
+    {
+        ServiceProvider = serviceProvider;
+    }
+
+    /// <summary>
     /// 获取 <see cref="IServiceProvider"/> 实例。
     /// </summary>
-    public IServiceProvider ServiceProvider => HttpContext.RequestServices;
+    public IServiceProvider ServiceProvider { get; }
 
     /// <summary>
     /// 获取 <see cref="ILoggerFactory"/> 实例。
     /// </summary>
-    protected ILoggerFactory LoggerFactory => ServiceProvider.GetRequiredService<ILoggerFactory>();
+    protected ILoggerFactory? LoggerFactory => ServiceProvider?.GetService<ILoggerFactory>();
     /// <summary>
     /// 获取 <see cref="ILogger"/> 实例。
     /// </summary>
-    protected virtual ILogger Logger => LoggerFactory.CreateLogger(GetType().Name);
+    protected virtual ILogger? Logger => LoggerFactory?.CreateLogger(GetType().Name);
     /// <summary>
     /// 获取 <see cref="IMapper"/> 实例。
     /// </summary>

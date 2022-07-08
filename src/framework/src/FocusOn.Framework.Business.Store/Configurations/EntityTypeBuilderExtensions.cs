@@ -22,6 +22,7 @@ public static class EntityTypeBuilderExtensions
         where TKey:IEquatable<TKey>
     {
         builder.HasKey(m => m.Id);
+        builder.Property(m => m.Id).ValueGeneratedOnAdd();
         return builder;
     }
     /// <summary>

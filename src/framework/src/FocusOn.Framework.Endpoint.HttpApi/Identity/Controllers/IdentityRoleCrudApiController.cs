@@ -106,8 +106,8 @@ public class IdentityRoleCrudApiController<TContext, TRole, TKey, TDetailOutput,
     /// 获取指定角色名的角色。
     /// </summary>
     /// <param name="name">角色名称。</param>
-    [HttpGet]
-    public virtual async Task<OutputResult<TDetailOutput>> GetByNameAsync([FromQuery] string name)
+    [HttpGet("name/{name}")]
+    public virtual async Task<OutputResult<TDetailOutput>> GetByNameAsync(string name)
     {
         var role = await Query.SingleOrDefaultAsync(m => m.Name.Equals(name), CancellationToken);
         if (role is null)

@@ -1,7 +1,7 @@
 ﻿using System.Security.Claims;
 using System.Security.Principal;
 
-namespace FocusOn.Framework.Endpoint.HttpApi.Identity;
+namespace FocusOn.Framework.Modules.Identity;
 
 /// <summary>
 /// Identity 扩展。
@@ -21,16 +21,16 @@ public static class IdentityExtensions
     /// <param name="identity"></param>
     /// <param name="type">声明类型。</param>
     /// <returns>声明类型的值。</returns>
-    public static string? FindFirstClaimValue(this IIdentity identity,string type)
-        =>identity.ToClaimIdentity()?.FindFirst(type)?.Value;
+    public static string? FindFirstClaimValue(this IIdentity identity, string type)
+        => identity.ToClaimIdentity()?.FindFirst(type)?.Value;
 
     /// <summary>
-    /// 获取声明类型是 <see cref="IdentityClaimTypes.Tenant"/> 的租户 Id。
+    /// 获取声明类型是 <see cref="IdentityClaimTypes.TenantId"/> 的租户 Id。
     /// </summary>
     public static Guid? GetTenantId(this IIdentity identity)
     {
         var value = identity.FindFirstClaimValue(IdentityClaimTypes.TenantId);
-        if(Guid.TryParse(value,out var id))
+        if (Guid.TryParse(value, out var id))
         {
             return id;
         }

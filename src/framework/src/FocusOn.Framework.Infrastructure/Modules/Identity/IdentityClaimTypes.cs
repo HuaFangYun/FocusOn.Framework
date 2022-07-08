@@ -1,4 +1,4 @@
-﻿namespace FocusOn.Framework.Endpoint.HttpApi.Identity;
+﻿namespace FocusOn.Framework.Modules.Identity;
 
 /// <summary>
 /// Identity 的声明类型。

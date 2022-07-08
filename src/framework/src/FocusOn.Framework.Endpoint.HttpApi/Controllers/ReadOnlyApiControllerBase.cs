@@ -19,7 +19,7 @@ namespace FocusOn.Framework.Endpoint.HttpApi.Controllers;
 /// <typeparam name="TListOutput">获取列表结果的输出类型。</typeparam>
 /// <typeparam name="TListSearchInput">获取列表结果的输入类型。</typeparam>
 [Produces("application/json")]
-public abstract class ReadOnlyApiControllerBase<TContext, TEntity, TKey, TDetailOutput, TListOutput, TListSearchInput> : ApiControllerBase, IReadOnlyBusinessService<TKey, TDetailOutput, TListOutput, TListSearchInput>
+public abstract class ReadOnlyApiControllerBase<TContext, TEntity, TKey, TDetailOutput, TListOutput, TListSearchInput> : EfCoreApiControllerBase<TContext,TEntity,TKey>, IReadOnlyBusinessService<TKey, TDetailOutput, TListOutput, TListSearchInput>
     where TContext : DbContext
     where TEntity : class
     where TKey : IEquatable<TKey>
@@ -34,23 +34,6 @@ public abstract class ReadOnlyApiControllerBase<TContext, TEntity, TKey, TDetail
     protected ReadOnlyApiControllerBase(IServiceProvider serviceProvider) : base(serviceProvider)
     {
     }
-
-    /// <summary>
-    /// 获取 <typeparamref name="TContext"/> 实例。
-    /// </summary>
-    protected TContext Context => ServiceProvider.GetRequiredService<TContext>();
-
-    /// <summary>
-    /// 获取 <see cref="DbSet{TEntity}"/> 实例。
-    /// </summary>
-    protected DbSet<TEntity> Set => Context.Set<TEntity>();
-
-    /// <summary>
-    /// 获取 <c>AsNoTracking</c> 的查询结果。
-    /// </summary>
-    protected IQueryable<TEntity> Query => Set.AsNoTracking();
-
-
 
     /// <summary>
     /// <inheritdoc/>

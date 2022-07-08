@@ -1,4 +1,7 @@
-﻿using FocusOn.Framework.Business.Contract;
+﻿using System.Net.Http.Json;
+using System.Text.Json;
+
+using FocusOn.Framework.Business.Contract;
 using FocusOn.Framework.Business.Contract.DTO;
 
 using Microsoft.Extensions.DependencyInjection;
@@ -54,7 +57,7 @@ public abstract class HttpApiClientProxyBase : BusinessService, IHttpApiClientPr
     /// <param name="queryParameters">一个查询参数对象，属性字段将生成为 query 部分的 key=value 字符串。</param>
     /// <param name="relativeUri">请求的 HTTP API 路由。该路由是相对路径，并且会与 <see cref="RootPath"/> 的值组合成最终请求路由。</param>
     /// <returns>请求 HTTP API 的 URI 资源。</returns>
-    protected Uri GetRequestUri(string relativeUri = default, object queryParameters = default)
+    protected Uri GetRequestUri(string? relativeUri = default, object? queryParameters = default)
     {
         string? queryString = default;
         if (queryParameters is not null)
@@ -62,7 +65,7 @@ public abstract class HttpApiClientProxyBase : BusinessService, IHttpApiClientPr
             queryString = queryParameters.GetType().GetProperties().Where(p => p.CanRead).Select(m => $"{m.Name}={m.GetValue(queryParameters)}").Aggregate((prev, next) => $"{prev}&{next}");
         }
 
-        var hasQueryMark = relativeUri.IndexOf('?') > -1;
+        var hasQueryMark = relativeUri?.IndexOf('?') > -1;
 
 
         return new(BaseAddress, $"{RootPath}/{relativeUri}{(hasQueryMark ? queryString : $"?{queryString}")}");
@@ -151,6 +154,193 @@ public abstract class HttpApiClientProxyBase : BusinessService, IHttpApiClientPr
     /// 记录 HTTP 请求的绝对路径。
     /// </summary>
     /// <param name="response">响应结果。</param>
-    protected void LogRequestUri(HttpResponseMessage response) => Logger.LogError("Request uri is {0}", response?.RequestMessage?.RequestUri?.AbsolutePath);
+    void LogRequestUri(HttpResponseMessage response) => Logger.LogError("Request uri is {0}", response?.RequestMessage?.RequestUri?.AbsolutePath);
 
+    /// <summary>
+    /// 发送指定请求消息并返回 <see cref="OutputResult{TResult}"/> 结果。
+    /// </summary>
+    /// <typeparam name="TResult">结果类型。</typeparam>
+    /// <param name="request">请求消息。</param>
+    /// <param name="option">请求完成选项。</param>
+    protected virtual async Task<OutputResult<TResult>> SendAsync<TResult>(HttpRequestMessage request, HttpCompletionOption option = HttpCompletionOption.ResponseContentRead)
+    {
+        try
+        {
+            var response = await Client.SendAsync(request, option, CancellationToken);
+            return await HandleOutputResultAsync<TResult>(response);
+        }
+        catch (Exception ex)
+        {
+            return OutputResult<TResult>.Failed(Logger, ex);
+        }
+    }
+
+    /// <summary>
+    /// 发送指定请求消息并返回 <see cref="OutputResult"/> 结果。
+    /// </summary>
+    /// <param name="request">请求消息。</param>
+    /// <param name="option">请求完成选项。</param>
+    protected virtual async Task<OutputResult> SendAsync(HttpRequestMessage request, HttpCompletionOption option = HttpCompletionOption.ResponseContentRead)
+    {
+        try
+        {
+            var response = await Client.SendAsync(request, option, CancellationToken);
+            return await HandleOutputResultAsync(response);
+        }
+        catch (Exception ex)
+        {
+            return OutputResult.Failed(Logger, ex);
+        }
+    }
+
+    /// <summary>
+    /// 以 JSON 方法发送 POST 请求。
+    /// </summary>
+    /// <typeparam name="TValue">值的类型。</typeparam>
+    /// <typeparam name="TResult">结果类型。</typeparam>
+    /// <param name="requestUri">请求地址。</param>
+    /// <param name="value">发送的值。</param>
+    /// <param name="options">JSON 序列号配置。</param>
+    /// <returns></returns>
+    protected virtual async Task<OutputResult<TResult>> PostAsync<TValue, TResult>(string requestUri, TValue value, JsonSerializerOptions? options = default)
+    {
+        try
+        {
+            var response = await Client.PostAsJsonAsync(requestUri, value, options, CancellationToken);
+            return await HandleOutputResultAsync<TResult>(response);
+        }
+        catch (Exception ex)
+        {
+            return OutputResult<TResult>.Failed(Logger, ex);
+        }
+    }
+
+    /// <summary>
+    /// 以 JSON 方法发送 POST 请求。
+    /// </summary>
+    /// <typeparam name="TValue">值的类型。</typeparam>
+    /// <param name="requestUri">请求地址。</param>
+    /// <param name="value">发送的值。</param>
+    /// <param name="options">JSON 序列号配置。</param>
+    /// <returns></returns>
+    protected virtual async Task<OutputResult> PostAsync<TValue>(string requestUri, TValue value, JsonSerializerOptions? options = default)
+    {
+        try
+        {
+            var response = await Client.PostAsJsonAsync(requestUri, value, options, CancellationToken);
+            return await HandleOutputResultAsync(response);
+        }
+        catch (Exception ex)
+        {
+            return OutputResult.Failed(Logger, ex);
+        }
+    }
+
+    /// <summary>
+    /// 发送 GET 请求。
+    /// </summary>
+    /// <typeparam name="TResult">结果类型。</typeparam>
+    /// <param name="requestUri">请求地址。</param>
+    /// <returns></returns>
+    protected virtual async Task<OutputResult<TResult>> GetAsync<TResult>(string requestUri)
+    {
+        try
+        {
+            var response = await Client.GetAsync(requestUri, CancellationToken);
+            return await HandleOutputResultAsync<TResult>(response);
+        }
+        catch (Exception ex)
+        {
+            return OutputResult<TResult>.Failed(Logger, ex);
+        }
+    }
+    /// <summary>
+    /// 发送 GET 请求。
+    /// </summary>
+    /// <param name="requestUri">请求地址。</param>
+    /// <returns></returns>
+    protected virtual async Task<OutputResult> GetAsync(string requestUri)
+    {
+        try
+        {
+            var response = await Client.GetAsync(requestUri, CancellationToken);
+            return await HandleOutputResultAsync(response);
+        }
+        catch (Exception ex)
+        {
+            return OutputResult.Failed(Logger, ex);
+        }
+    }
+    /// <summary>
+    /// 以 JSON 的方式发送 PUT 请求。
+    /// </summary>
+    /// <typeparam name="TValue">值的类型。</typeparam>
+    /// <typeparam name="TResult">结果类型。</typeparam>
+    /// <param name="requestUri">请求地址。</param>
+    /// <param name="value">发送的值。</param>
+    /// <param name="options">JSON 序列号配置。</param>
+    protected virtual async Task<OutputResult<TResult>> PutAsync<TValue, TResult>(string requestUri, TValue value, JsonSerializerOptions? options = default)
+    {
+        try
+        {
+            var response = await Client.PutAsJsonAsync(requestUri, value, options, CancellationToken);
+            return await HandleOutputResultAsync<TResult>(response);
+        }
+        catch (Exception ex)
+        {
+            return OutputResult<TResult>.Failed(Logger, ex);
+        }
+    }
+    /// <summary>
+    /// 以 JSON 的方式发送 PUT 请求。
+    /// </summary>
+    /// <typeparam name="TValue">值的类型。</typeparam>
+    /// <param name="requestUri">请求地址。</param>
+    /// <param name="value">发送的值。</param>
+    /// <param name="options">JSON 序列号配置。</param>
+    protected virtual async Task<OutputResult> PutAsync<TValue>(string requestUri, TValue value, JsonSerializerOptions? options = default)
+    {
+        try
+        {
+            var response = await Client.PutAsJsonAsync(requestUri, value, options, CancellationToken);
+            return await HandleOutputResultAsync(response);
+        }
+        catch (Exception ex)
+        {
+            return OutputResult.Failed(Logger, ex);
+        }
+    }
+    /// <summary>
+    /// 发送 DELETE 请求。
+    /// </summary>
+    /// <typeparam name="TResult">结果类型。</typeparam>
+    /// <param name="requestUri">请求地址。</param>
+    protected virtual async Task<OutputResult<TResult>> DeleteAsync<TResult>(string requestUri)
+    {
+        try
+        {
+            var response = await Client.DeleteAsync(requestUri, CancellationToken);
+            return await HandleOutputResultAsync<TResult>(response);
+        }
+        catch (Exception ex)
+        {
+            return OutputResult<TResult>.Failed(Logger, ex);
+        }
+    }
+    /// <summary>
+    /// 发送 DELETE 请求。
+    /// </summary>
+    /// <param name="requestUri">请求地址。</param>
+    protected virtual async Task<OutputResult> DeleteAsync(string requestUri)
+    {
+        try
+        {
+            var response = await Client.DeleteAsync(requestUri, CancellationToken);
+            return await HandleOutputResultAsync(response);
+        }
+        catch (Exception ex)
+        {
+            return OutputResult.Failed(Logger, ex);
+        }
+    }
 }

@@ -51,6 +51,6 @@ public interface IReadOnlyBusinessService<TKey, TDetailOutput, TListOutput, TLis
     /// 以异步的方式获取指定分页的结果列表。
     /// </summary>
     /// <param name="model">获取列表的过滤输入模型。</param>
-    /// <returns>一个获取分页结果的方法，返回 <see cref="OutputResult{PagedOutputDto{TListOutput}}"/> 结果。</returns>
-    Task<OutputResult<PagedOutputDto<TListOutput>>> GetListAsync(TListSearchInput model);
+    /// <returns>一个获取分页结果的方法，返回 <see cref="OutputResult{PagedOutput{TListOutput}}"/> 结果。</returns>
+    Task<OutputResult<PagedOutput<TListOutput>>> GetListAsync(TListSearchInput model);
 }

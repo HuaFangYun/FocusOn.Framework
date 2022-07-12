@@ -31,13 +31,13 @@ public class IdentityRoleConfiguration<TRole, TKey> : IEntityTypeConfiguration<T
         builder.TryConfigureMultiTenancy();
         builder.ToTable(TableName);
 
-        ConfigureUserName(builder);
+        ConfigureName(builder);
     }
     /// <summary>
     /// 配置角色名的数据库字段。
     /// </summary>
     /// <param name="builder"><see cref="EntityTypeBuilder{TEntity}"/> 实例。</param>
-    protected virtual void ConfigureUserName(EntityTypeBuilder<TRole> builder)
+    protected virtual void ConfigureName(EntityTypeBuilder<TRole> builder)
     {
         builder.Property(m => m.Name).IsRequired().HasMaxLength(30);
         builder.HasIndex(m => m.Name).IsUnique();

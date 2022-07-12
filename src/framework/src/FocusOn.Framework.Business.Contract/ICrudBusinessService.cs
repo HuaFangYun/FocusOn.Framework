@@ -72,18 +72,18 @@ public interface ICrudBusinessService<TKey, TDetailOutput, TListOutput, TListSea
     /// </summary>
     /// <param name="model">要创建的模型。</param>
     /// <returns>一个创建方法，返回 <see cref="OutputResult"/> 结果。</returns>
-    ValueTask<OutputResult> CreateAsync(TCreateInput model);
+    ValueTask<OutputResult<TDetailOutput>> CreateAsync(TCreateInput model);
     /// <summary>
     /// 以异步的方式更新指定 id 的输入模型对象。
     /// </summary>
     /// <param name="id">要更新的 id。</param>
     /// <param name="model">要更新的输入模型。</param>
     /// <returns>一个更新方法，返回 <see cref="OutputResult"/> 结果。</returns>
-    ValueTask<OutputResult> UpdateAsync(TKey id, TUpdateInput model);
+    ValueTask<OutputResult<TDetailOutput>> UpdateAsync(TKey id, TUpdateInput model);
     /// <summary>
     /// 以异步的方式删除指定的 id。
     /// </summary>
     /// <param name="id">要删除的 id。</param>
     /// <returns>一个删除方法，返回 <see cref="OutputResult"/> 结果。</returns>
-    ValueTask<OutputResult> DeleteAsync(TKey id);
+    ValueTask<OutputResult<TDetailOutput>> DeleteAsync(TKey id);
 }

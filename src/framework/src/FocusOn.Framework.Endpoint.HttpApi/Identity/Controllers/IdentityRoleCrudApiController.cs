@@ -19,7 +19,12 @@ public class IdentityRoleCrudApiController<TContext, TKey> : IdentityRoleCrudApi
     where TContext : DbContext
     where TKey : IEquatable<TKey>
 {
-
+    /// <summary>
+    /// 初始化 <see cref="IdentityRoleCrudApiController{TContext, TKey}"/> 类的新实例。
+    /// </summary>
+    public IdentityRoleCrudApiController(IServiceProvider serviceProvider) : base(serviceProvider)
+    {
+    }
 }
 
 /// <summary>
@@ -33,7 +38,12 @@ public class IdentityRoleCrudApiController<TContext, TRole, TKey> : IdentityRole
     where TRole : IdentityRole<TKey>
     where TKey : IEquatable<TKey>
 {
-
+    /// <summary>
+    /// 初始化 <see cref="IdentityRoleCrudApiController{TContext, TRole, TKey}"/> 类的新实例。
+    /// </summary>
+    public IdentityRoleCrudApiController(IServiceProvider serviceProvider) : base(serviceProvider)
+    {
+    }
 }
 
 /// <summary>
@@ -55,7 +65,12 @@ public class IdentityRoleCrudApiController<TContext, TRole, TKey, TDetailOutput,
     where TListOutput : class
     where TCreateOrUpdateInput : class
 {
-
+    /// <summary>
+    /// 初始化 <see cref="IdentityRoleCrudApiController{TContext, TRole, TKey, TDetailOutput, TListOutput, TListSearchInput, TCreateOrUpdateInput}"/> 类的新实例。
+    /// </summary>
+    public IdentityRoleCrudApiController(IServiceProvider serviceProvider) : base(serviceProvider)
+    {
+    }
 }
 
 /// <summary>
@@ -81,11 +96,18 @@ public class IdentityRoleCrudApiController<TContext, TRole, TKey, TDetailOutput,
     where TUpdateInput : class
 {
     /// <summary>
+    /// 初始化 <see cref="IdentityRoleCrudApiController{TContext, TRole, TKey, TDetailOutput, TListOutput, TListSearchInput, TCreateInput, TUpdateInput}"/> 类的新实例。
+    /// </summary>
+    public IdentityRoleCrudApiController(IServiceProvider serviceProvider) : base(serviceProvider)
+    {
+    }
+
+    /// <summary>
     /// 获取指定角色名的角色。
     /// </summary>
     /// <param name="name">角色名称。</param>
-    [HttpGet]
-    public virtual async Task<OutputResult<TDetailOutput>> GetByNameAsync([FromQuery] string name)
+    [HttpGet("name/{name}")]
+    public virtual async Task<OutputResult<TDetailOutput>> GetByNameAsync(string name)
     {
         var role = await Query.SingleOrDefaultAsync(m => m.Name.Equals(name), CancellationToken);
         if (role is null)
@@ -101,34 +123,37 @@ public class IdentityRoleCrudApiController<TContext, TRole, TKey, TDetailOutput,
     /// </summary>
     /// <param name="model">要创建的模型。</param>
     /// <returns></returns>
-    public override async ValueTask<OutputResult> CreateAsync([FromBody] TCreateInput model)
+    public override async ValueTask<OutputResult<TDetailOutput>> CreateAsync([FromBody] TCreateInput model)
     {
         var valid = Validator.TryValidate(model, out var errors);
         if (!valid)
         {
-            return OutputResult.Failed(errors);
+            return OutputResult<TDetailOutput>.Failed(errors);
         }
 
         if (model.GetType() == typeof(TRole))
         {
-            Set.Add(model as TRole);
-            return await SaveChangesAsync();
+            var entity = model as TRole;
+            Set.Add(entity);
+            await SaveChangesAsync();
+            return OutputResult<TDetailOutput>.Success(MapToDetail(entity));
         }
-
         if (model is IdentityRoleCreateInput createInput)
         {
             var result = await GetByNameAsync(createInput.Name);
             if (result.Succeed)
             {
-                return OutputResult.Failed(Locale.Message_Role_NameDuplicate.StringFormat(createInput.Name));
+                return OutputResult<TDetailOutput>.Failed(Locale.Message_Role_NameDuplicate.StringFormat(createInput.Name));
             }
 
-            var entity = Mapper.Map<TRole>(createInput);
+            var entity = MapToEntity(model);
             Set.Add(entity);
-            return await SaveChangesAsync();
+            await SaveChangesAsync();
+
+            return OutputResult<TDetailOutput>.Success(MapToDetail(entity));
         }
 
 
-        return OutputResult.Failed($"{nameof(model)} 不是派生自 {nameof(IdentityRoleCreateInput)} 类，请重写并自己实现业务逻辑");
+        return OutputResult<TDetailOutput>.Failed($"{nameof(model)} 不是派生自 {nameof(IdentityRoleCreateInput)} 类，请重写并自己实现业务逻辑");
     }
 }

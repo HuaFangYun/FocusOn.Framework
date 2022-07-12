@@ -35,9 +35,11 @@ public static class IdentityModelBuilderExtensions
             ;
 
         modelBuilder.Entity<TUser>()
-            .HasMany<TUserRole>().WithOne().HasForeignKey(m => m.UserId).OnDelete(DeleteBehavior.Cascade);
+            .HasMany<TUserRole>().WithOne().HasForeignKey(m => m.UserId).IsRequired().OnDelete(DeleteBehavior.Cascade);
 
-        modelBuilder.Entity<TRole>().HasMany<TUserRole>().WithOne().HasForeignKey(m => m.RoleId).OnDelete(DeleteBehavior.Cascade);
+        modelBuilder.Entity<TRole>().HasMany<TUserRole>().WithOne().HasForeignKey(m => m.RoleId).IsRequired().OnDelete(DeleteBehavior.Cascade);
+
+        modelBuilder.Entity<TUserRole>().HasKey(m => new { m.UserId, m.RoleId });
 
         return modelBuilder;
     }

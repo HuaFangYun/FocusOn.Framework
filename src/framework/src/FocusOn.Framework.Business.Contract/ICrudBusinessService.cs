@@ -6,11 +6,27 @@ namespace FocusOn.Framework.Business.Contract;
 /// 提供具备增删改查的业务服务。
 /// </summary>
 /// <typeparam name="TKey">主键类型。</typeparam>
-/// <typeparam name="TModel">输出、输出模型。</typeparam>
+/// <typeparam name="TModel">增改查的输出、输出模型类型。</typeparam>
 public interface ICrudBusinessService<TKey, TModel>
-    : ICrudBusinessService<TKey, TModel, TModel, TModel, TModel>, IReadOnlyBusinessService<TKey, TModel>
+    : ICrudBusinessService<TKey, TModel, TModel, TModel>, IReadOnlyBusinessService<TKey, TModel>
     where TKey : IEquatable<TKey>
     where TModel : class
+{
+
+}
+/// <summary>
+/// 提供具备增删改查的业务服务。
+/// </summary>
+/// <typeparam name="TKey">主键类型。</typeparam>
+/// <typeparam name="TDetailOrListOutput">列表或详情的输出模型类型。</typeparam>
+/// <typeparam name="TListSearchInput">获取列表结果的输入类型。</typeparam>
+/// <typeparam name="TCreateOrUpdateInput">创建或更新数据的输入类型。</typeparam>
+public interface ICrudBusinessService<TKey, TDetailOrListOutput, TListSearchInput, TCreateOrUpdateInput>
+    : ICrudBusinessService<TKey, TDetailOrListOutput, TDetailOrListOutput, TListSearchInput, TCreateOrUpdateInput, TCreateOrUpdateInput>, IReadOnlyBusinessService<TKey, TDetailOrListOutput, TListSearchInput>
+    where TKey : IEquatable<TKey>
+    where TListSearchInput : class
+    where TDetailOrListOutput : class
+    where TCreateOrUpdateInput : class
 {
 
 }
@@ -24,7 +40,7 @@ public interface ICrudBusinessService<TKey, TModel>
 /// <typeparam name="TListSearchInput">获取列表结果的输入类型。</typeparam>
 /// <typeparam name="TCreateOrUpdateInput">创建或更新数据的输入类型。</typeparam>
 public interface ICrudBusinessService<TKey, TDetailOutput, TListOutput, TListSearchInput, TCreateOrUpdateInput>
-    : ICrudBusinessService<TKey, TDetailOutput, TListOutput, TListSearchInput, TCreateOrUpdateInput, TCreateOrUpdateInput>
+    : ICrudBusinessService<TKey, TDetailOutput, TListOutput, TListSearchInput, TCreateOrUpdateInput, TCreateOrUpdateInput>, IReadOnlyBusinessService<TKey, TDetailOutput, TListOutput, TListSearchInput>
     where TKey : IEquatable<TKey>
     where TListSearchInput : class
     where TListOutput : class

@@ -12,7 +12,7 @@ namespace FocusOn.Framework.Endpoint.HttpProxy;
 /// <summary>
 /// 表示 HTTP API 的客户端代理。这是一个抽象类。
 /// </summary>
-public abstract class HttpApiClientProxyBase : BusinessService, IHttpApiClientProxy
+public abstract class HttpApiClientProxyBase : BusinessServiceBase, IHttpApiClientProxy
 {
     /// <summary>
     /// 初始化 <see cref="HttpApiClientProxyBase"/> 类的新实例。

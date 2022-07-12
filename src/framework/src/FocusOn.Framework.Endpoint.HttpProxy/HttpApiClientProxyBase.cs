@@ -1,14 +1,11 @@
-﻿using System.Net.Http.Json;
+﻿using Newtonsoft.Json;
 using System.Text.Json;
-
-using FocusOn.Framework.Business.Contract;
-using FocusOn.Framework.Business.Contract.DTO;
-
-using Microsoft.Extensions.DependencyInjection;
+using System.Net.Http.Json;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-
-using Newtonsoft.Json;
+using FocusOn.Framework.Business.Contract;
+using FocusOn.Framework.Business.Contract.DTO;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace FocusOn.Framework.Endpoint.HttpProxy;
 
@@ -139,7 +136,7 @@ public abstract class HttpApiClientProxyBase : BusinessServiceBase, IBusinessSer
             }
             if (!result.Succeed)
             {
-                Logger.LogDebug(JsonConvert.SerializeObject(result));
+                Logger?.LogDebug(JsonConvert.SerializeObject(result));
             }
             return result;
 
@@ -154,7 +151,7 @@ public abstract class HttpApiClientProxyBase : BusinessServiceBase, IBusinessSer
     /// 记录 HTTP 请求的绝对路径。
     /// </summary>
     /// <param name="response">响应结果。</param>
-    void LogRequestUri(HttpResponseMessage response) => Logger.LogError("Request uri is {0}", response?.RequestMessage?.RequestUri?.AbsolutePath);
+    void LogRequestUri(HttpResponseMessage response) => Logger?.LogError("Request uri is {0}", response?.RequestMessage?.RequestUri?.AbsolutePath);
 
     /// <summary>
     /// 发送指定请求消息并返回 <see cref="OutputResult{TResult}"/> 结果。

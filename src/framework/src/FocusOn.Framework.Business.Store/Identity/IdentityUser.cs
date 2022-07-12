@@ -35,7 +35,7 @@ public class IdentityUser<TKey> : EntityBase<TKey>, IUser<TKey> where TKey : IEq
     public virtual string? PasswordHash { get; set; }
 
     /// <summary>
-    /// 获取或设置当前用户拥有的角色集合。
+    /// 重写输出 <see cref="UserName"/> 的字符串。
     /// </summary>
-    public virtual ICollection<IdentityRole<TKey>> Roles { get; set; } = new HashSet<IdentityRole<TKey>>();
+    public override string ToString() => UserName;
 }

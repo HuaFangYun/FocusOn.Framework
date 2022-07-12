@@ -23,7 +23,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FocusOn.Framework.Infrastru
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FocusOn.Framework.Endpoint.HttpProxy.Test.Host", "src\framework\test\FocusOn.Endpoints.Test.HttpApi.ProxyHost\FocusOn.Framework.Endpoint.HttpProxy.Test.Host.csproj", "{04F8AABC-981A-4D7C-AD60-AB9712D58EFF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FocusOn.Framework.Business.Store", "src\framework\src\FocusOn.Framework.Business.Store\FocusOn.Framework.Business.Store.csproj", "{B56CD0C2-8B69-4B82-AE49-F35C262F66C1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FocusOn.Framework.Business.Store", "src\framework\src\FocusOn.Framework.Business.Store\FocusOn.Framework.Business.Store.csproj", "{B56CD0C2-8B69-4B82-AE49-F35C262F66C1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FocusOn.Framework.Endpoint.HttpApi.UnitTest", "src\framework\test\FocusOn.Framework.Endpoint.HttpApi.UnitTest\FocusOn.Framework.Endpoint.HttpApi.UnitTest.csproj", "{91EE4C33-E296-4779-849F-168E6AC2C0C9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -63,6 +65,10 @@ Global
 		{B56CD0C2-8B69-4B82-AE49-F35C262F66C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B56CD0C2-8B69-4B82-AE49-F35C262F66C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B56CD0C2-8B69-4B82-AE49-F35C262F66C1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{91EE4C33-E296-4779-849F-168E6AC2C0C9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{91EE4C33-E296-4779-849F-168E6AC2C0C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{91EE4C33-E296-4779-849F-168E6AC2C0C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{91EE4C33-E296-4779-849F-168E6AC2C0C9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -78,6 +84,7 @@ Global
 		{A7731B6C-24E2-42B1-A382-0A61DB204DBD} = {FFBA0600-7085-4A66-B81D-C036EC876904}
 		{04F8AABC-981A-4D7C-AD60-AB9712D58EFF} = {FFBA0600-7085-4A66-B81D-C036EC876904}
 		{B56CD0C2-8B69-4B82-AE49-F35C262F66C1} = {4C8D0E61-7EF5-4726-AB38-DBD0FF9F885D}
+		{91EE4C33-E296-4779-849F-168E6AC2C0C9} = {FFBA0600-7085-4A66-B81D-C036EC876904}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {60D7014C-4C59-4127-9CB5-A4402740E525}

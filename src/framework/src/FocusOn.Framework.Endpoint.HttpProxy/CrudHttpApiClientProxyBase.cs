@@ -76,7 +76,7 @@ where TUpdateInput : class
     /// </summary>
     /// <param name="model">要推送的创建数据模型。</param>
     /// <exception cref="ArgumentNullException"><paramref name="model"/> 是 null。</exception>
-    public virtual async ValueTask<OutputResult> CreateAsync(TCreateInput model)
+    public virtual async ValueTask<OutputResult<TDetailOutput>> CreateAsync(TCreateInput model)
     {
         if (model is null)
         {
@@ -85,21 +85,21 @@ where TUpdateInput : class
 
         if (!Validator.TryValidate(model, out var errors))
         {
-            return OutputResult.Failed(errors);
+            return OutputResult<TDetailOutput>.Failed(errors);
         }
 
         var response = await Client.PostAsJsonAsync(GetRequestUri(), model);
-        return await HandleOutputResultAsync(response);
+        return await HandleOutputResultAsync<TDetailOutput>(response);
     }
 
     /// <summary>
     /// 以异步的方式使用 HttpDelete 方式请求 HTTP API 删除指定 id 的数据。
     /// </summary>
     /// <param name="id">要删除的 id。</param>
-    public virtual async ValueTask<OutputResult> DeleteAsync(TKey id)
+    public virtual async ValueTask<OutputResult<TDetailOutput>> DeleteAsync(TKey id)
     {
         var response = await Client.DeleteAsync(GetRequestUri(id.ToString()));
-        return await HandleOutputResultAsync(response);
+        return await HandleOutputResultAsync<TDetailOutput>(response);
     }
 
     /// <summary>
@@ -108,7 +108,7 @@ where TUpdateInput : class
     /// <param name="id">要更新的 id。</param>
     /// <param name="model">要更新的数据。</param>
     /// <exception cref="ArgumentNullException"><paramref name="model"/> 是 null。</exception>
-    public virtual async ValueTask<OutputResult> UpdateAsync(TKey id, TUpdateInput model)
+    public virtual async ValueTask<OutputResult<TDetailOutput>> UpdateAsync(TKey id, TUpdateInput model)
     {
         if (model is null)
         {
@@ -117,11 +117,11 @@ where TUpdateInput : class
 
         if (!Validator.TryValidate(model, out var errors))
         {
-            return OutputResult.Failed(errors);
+            return OutputResult<TDetailOutput>.Failed(errors);
         }
 
         var response = await Client.PutAsJsonAsync(GetRequestUri(), model);
-        return await HandleOutputResultAsync(response);
+        return await HandleOutputResultAsync<TDetailOutput>(response);
     }
 
 }

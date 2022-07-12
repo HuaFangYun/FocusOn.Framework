@@ -1,5 +1,6 @@
 ﻿using FocusOn.Framework.Business.Contract;
 using FocusOn.Framework.Business.Contract.DTO;
+using FocusOn.Framework.Modules;
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -18,7 +19,7 @@ namespace FocusOn.Framework.Endpoint.HttpApi.Controllers;
 /// <typeparam name="TListOutput">获取列表结果的输出类型。</typeparam>
 /// <typeparam name="TListSearchInput">获取列表结果的输入类型。</typeparam>
 [Produces("application/json")]
-public abstract class ReadOnlyApiControllerBase<TContext, TEntity, TKey, TDetailOutput, TListOutput, TListSearchInput> : ApiControllerBase, IReadOnlyBusinessService<TKey, TDetailOutput, TListOutput, TListSearchInput>
+public abstract class ReadOnlyApiControllerBase<TContext, TEntity, TKey, TDetailOutput, TListOutput, TListSearchInput> : EfCoreApiControllerBase<TContext,TEntity,TKey>, IReadOnlyBusinessService<TKey, TDetailOutput, TListOutput, TListSearchInput>
     where TContext : DbContext
     where TEntity : class
     where TKey : IEquatable<TKey>
@@ -26,22 +27,13 @@ public abstract class ReadOnlyApiControllerBase<TContext, TEntity, TKey, TDetail
     where TListOutput : class
     where TDetailOutput : class
 {
-    /// <summary>
-    /// 获取 <typeparamref name="TContext"/> 实例。
-    /// </summary>
-    protected TContext Context => ServiceProvider.GetRequiredService<TContext>();
 
     /// <summary>
-    /// 获取 <see cref="DbSet{TEntity}"/> 实例。
+    /// 初始化 <see cref="ReadOnlyApiControllerBase{TContext, TEntity, TKey, TDetailOutput, TListOutput, TListSearchInput}"/> 类的新实例。
     /// </summary>
-    protected DbSet<TEntity> Set => Context.Set<TEntity>();
-
-    /// <summary>
-    /// 获取 <c>AsNoTracking</c> 的查询结果。
-    /// </summary>
-    protected IQueryable<TEntity> Query => Set.AsNoTracking();
-
-
+    protected ReadOnlyApiControllerBase(IServiceProvider serviceProvider) : base(serviceProvider)
+    {
+    }
 
     /// <summary>
     /// <inheritdoc/>
@@ -55,7 +47,7 @@ public abstract class ReadOnlyApiControllerBase<TContext, TEntity, TKey, TDetail
         {
             return OutputResult<TDetailOutput?>.Failed(GetEntityNotFoundMessage(id));
         }
-        var output = MapToModel(entity);
+        var output = MapToDetail(entity);
         return OutputResult<TDetailOutput?>.Success(output);
     }
 
@@ -73,6 +65,8 @@ public abstract class ReadOnlyApiControllerBase<TContext, TEntity, TKey, TDetail
             query = query.Skip((pagedInputDto.Page - 1) * pagedInputDto.Size).Take(pagedInputDto.Page * pagedInputDto.Size);
         }
 
+        query = ApplyOrderBy(query);
+
         try
         {
             var data = await Mapper.ProjectTo<TListOutput>(query).ToListAsync(CancellationToken);
@@ -81,7 +75,7 @@ public abstract class ReadOnlyApiControllerBase<TContext, TEntity, TKey, TDetail
         }
         catch (AggregateException ex)
         {
-            Logger.LogError(ex, ex.Message);
+            Logger?.LogError(ex, ex.Message);
             return OutputResult<PagedOutputDto<TListOutput>>.Failed(ex.Message);
         }
     }
@@ -106,13 +100,31 @@ public abstract class ReadOnlyApiControllerBase<TContext, TEntity, TKey, TDetail
     protected virtual string GetEntityNotFoundMessage(TKey id)
         => "实体 '{0}' 不存在".StringFormat(id);
 
-    protected virtual TDetailOutput? MapToModel(TEntity entity)
+    /// <summary>
+    /// 将 <typeparamref name="TEntity"/> 类型映射到 <typeparamref name="TDetailOutput"/> 类型。
+    /// </summary>
+    /// <param name="entity">要映射的实体。</param>
+    /// <returns>输出类型。</returns>
+    protected virtual TDetailOutput? MapToDetail(TEntity entity) => Mapper.Map<TEntity, TDetailOutput>(entity);
+
+    /// <summary>
+    /// 应用列表排序算法。
+    /// </summary>
+    /// <param name="source">要排序的数据源。</param>
+    /// <returns>排序后的数据源。</returns>
+    /// <exception cref="InvalidOperationException">无法完成排序。</exception>
+    protected virtual IQueryable<TEntity> ApplyOrderBy(IQueryable<TEntity> source)
     {
-        if (typeof(TEntity) == typeof(TDetailOutput))
+        if (typeof(TEntity).IsAssignableTo(typeof(IHasCreateTime)))
         {
-            return entity as TDetailOutput;
+            return source.OrderByDescending(e => ((IHasCreateTime)e).CreateTime);
         }
 
-        return Mapper.Map<TEntity, TDetailOutput>(entity);
+        if (typeof(TEntity).IsAssignableTo(typeof(IHasId<TKey>)))
+        {
+            return source.OrderByDescending(e => ((IHasId<TKey>)e).Id);
+        }
+
+        throw new InvalidOperationException($"没有找到列表的排序算法，请重写'{nameof(ApplyOrderBy)}'方法实现列表排序算法");
     }
 }

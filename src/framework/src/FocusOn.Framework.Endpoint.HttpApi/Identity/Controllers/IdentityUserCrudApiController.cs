@@ -7,10 +7,10 @@ using FocusOn.Framework.Business.Contract.Identity.DTO;
 using FocusOn.Framework.Business.Store.Identity;
 using FocusOn.Framework.Endpoint.HttpApi.Controllers;
 using FocusOn.Framework.Endpoint.HttpApi.Localizations;
+using FocusOn.Framework.Modules.Identity;
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 
 namespace FocusOn.Framework.Endpoint.HttpApi.Identity.Controllers;
 
@@ -25,7 +25,12 @@ public class IdentityUserCrudApiController<TContext, TUser, TKey> : IdentityUser
     where TUser : IdentityUser<TKey>, new()
     where TKey : IEquatable<TKey>
 {
-
+    /// <summary>
+    /// 初始化 <see cref="IdentityUserCrudApiController{TContext, TUser, TKey}"/> 类的新实例。
+    /// </summary>
+    public IdentityUserCrudApiController(IServiceProvider serviceProvider) : base(serviceProvider)
+    {
+    }
 }
 
 /// <summary>
@@ -46,15 +51,10 @@ public class IdentityUserCrudApiController<TContext, TUser, TKey, TDetailOutput,
     where TDetailOutput : class
 {
     /// <summary>
-    /// <inheritdoc/>
+    /// 初始化 <see cref="IdentityUserCrudApiController{TContext, TUser, TKey, TDetailOutput, TListOutput, TListSearchInput}"/> 类的新实例。
     /// </summary>
-    /// <param name="model"></param>
-    /// <returns></returns>
-    [HttpPost]
-    public override async ValueTask<OutputResult> CreateAsync([FromBody] TUser model)
+    public IdentityUserCrudApiController(IServiceProvider serviceProvider) : base(serviceProvider)
     {
-        Set.Add(model);
-        return await SaveChangesAsync();
     }
 }
 
@@ -81,6 +81,13 @@ public class IdentityUserCrudApiController<TContext, TUser, TKey, TDetailOutput,
     where TUpdateInput : class
 {
     /// <summary>
+    /// 初始化 <see cref="IdentityUserCrudApiController{TContext, TUser, TKey, TDetailOutput, TListOutput, TListSearchInput, TCreateInput, TUpdateInput}"/> 类的新实例。
+    /// </summary>
+    public IdentityUserCrudApiController(IServiceProvider serviceProvider) : base(serviceProvider)
+    {
+    }
+
+    /// <summary>
     /// 获取指定用户名的用户详情。
     /// </summary>
     /// <param name="userName">用户名。</param>
@@ -102,18 +109,20 @@ public class IdentityUserCrudApiController<TContext, TUser, TKey, TDetailOutput,
     /// </summary>
     /// <param name="model">用户创建模型。</param>
     [HttpPost]
-    public override async ValueTask<OutputResult> CreateAsync([FromBody] TCreateInput model)
+    public override async ValueTask<OutputResult<TDetailOutput>> CreateAsync([FromBody] TCreateInput model)
     {
         var valid = Validator.TryValidate(model, out var errors);
         if (!valid)
         {
-            return OutputResult.Failed(errors);
+            return OutputResult<TDetailOutput>.Failed(errors);
         }
 
         if (model.GetType() == typeof(TUser))
         {
-            Set.Add(model as TUser);
-            return await SaveChangesAsync();
+            var user = model as TUser;
+            Set.Add(user);
+            await SaveChangesAsync();
+            return OutputResult<TDetailOutput>.Success(MapToDetail(user));
         }
 
         if (model is IdentityUserCreateInput createInput)
@@ -121,7 +130,7 @@ public class IdentityUserCrudApiController<TContext, TUser, TKey, TDetailOutput,
             var result = await GetByUserNameAsync(createInput.UserName);
             if (result.Succeed)//用户名重复
             {
-                return OutputResult.Failed(Locale.Message_User_UserNameDuplicate.StringFormat(createInput.UserName));
+                return OutputResult<TDetailOutput>.Failed(Locale.Message_User_UserNameDuplicate.StringFormat(createInput.UserName));
             }
 
             var user = new TUser
@@ -136,10 +145,11 @@ public class IdentityUserCrudApiController<TContext, TUser, TKey, TDetailOutput,
 
             Set.Add(user);
 
-            return await SaveChangesAsync();
+            await SaveChangesAsync();
+            return OutputResult<TDetailOutput>.Success(MapToDetail(user));
         }
 
-        return OutputResult.Failed($"{nameof(model)} 不是派生自 {nameof(IdentityUserCreateInput)} 类，请重写并自己实现业务逻辑");
+        return OutputResult<TDetailOutput>.Failed($"{nameof(model)} 不是派生自 {nameof(IdentityUserCreateInput)} 类，请重写并自己实现业务逻辑");
     }
 
     /// <summary>

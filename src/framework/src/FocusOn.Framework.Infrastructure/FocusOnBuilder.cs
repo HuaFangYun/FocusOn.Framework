@@ -1,5 +1,7 @@
 ﻿using System.Reflection;
 
+using AutoMapper;
+
 using Microsoft.Extensions.DependencyInjection;
 
 namespace FocusOn;
@@ -29,6 +31,28 @@ public class FocusOnBuilder
     public FocusOnBuilder AddAutoMapper(params Assembly[] assemblies)
     {
         Services.AddAutoMapper(assemblies);
+        return this;
+    }
+
+    /// <summary>
+    /// 添加映射关系并注册到服务中。
+    /// </summary>
+    /// <param name="configure">配置 AutoMapper 的委托。</param>
+    /// <param name="assemblies">要添加的程序集。</param>
+    public FocusOnBuilder AddAutoMapper(Action<IMapperConfigurationExpression> configure, params Assembly[] assemblies)
+    {
+        Services.AddAutoMapper(configure,assemblies);
+        return this;
+    }
+
+    /// <summary>
+    /// 添加映射关系并注册到服务中。
+    /// </summary>
+    /// <param name="configure">配置 AutoMapper 的委托。</param>
+    /// <param name="assemblies">要添加的程序集。</param>
+    public FocusOnBuilder AddAutoMapper(Action<IServiceProvider,IMapperConfigurationExpression> configure,params Assembly[] assemblies)
+    {
+        Services.AddAutoMapper(configure, assemblies);
         return this;
     }
 }

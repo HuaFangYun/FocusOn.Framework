@@ -33,9 +33,14 @@ public abstract class EfCoreApiControllerBase<TContext, TEntity, TKey> : ApiCont
     protected DbSet<TEntity> Set => GetDbSet<TEntity>();
 
     /// <summary>
+    /// 获取 <c>AsNoTracking</c> 的查询结果。
+    /// </summary>
+    protected IQueryable<TEntity> Query => Set.AsNoTracking();
+
+    /// <summary>
     /// 获取 <c>AsNoTrackingWithIdentityResolution</c> 的查询结果。
     /// </summary>
-    protected IQueryable<TEntity> Query => Set.AsNoTrackingWithIdentityResolution();
+    protected IQueryable<TEntity> QueryWithIdentityResolution => Set.AsNoTrackingWithIdentityResolution();
 
     /// <summary>
     /// 获取指定的数据集。
@@ -43,6 +48,14 @@ public abstract class EfCoreApiControllerBase<TContext, TEntity, TKey> : ApiCont
     /// <typeparam name="T">实体类型。</typeparam>
     protected DbSet<T> GetDbSet<T>() where T : class
         => Context.Set<T>();
+
+    /// <summary>
+    /// 获取只读查询的数据集。
+    /// </summary>
+    /// <typeparam name="T">实体类型。</typeparam>
+    protected IQueryable<T> GetDbQuery<T>() where T : class
+        => GetDbSet<T>().AsNoTrackingWithIdentityResolution();
+
     /// <summary>
     /// 获取可跟踪的实体。
     /// </summary>

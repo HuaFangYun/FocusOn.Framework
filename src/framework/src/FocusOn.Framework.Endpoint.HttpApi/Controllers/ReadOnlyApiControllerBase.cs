@@ -4,7 +4,6 @@ using FocusOn.Framework.Modules;
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace FocusOn.Framework.Endpoint.HttpApi.Controllers;
 
@@ -19,7 +18,13 @@ public abstract class ReadOnlyApiControllerBase<TContext, TEntity, TKey> : ReadO
     where TEntity : class
     where TKey : IEquatable<TKey>
 {
-
+    /// <summary>
+    /// 初始化 <see cref="ReadOnlyApiControllerBase{TContext, TEntity, TKey}"/> 类的新实例。
+    /// </summary>
+    /// <param name="serviceProvider"></param>
+    protected ReadOnlyApiControllerBase(IServiceProvider serviceProvider) : base(serviceProvider)
+    {
+    }
 }
 
 /// <summary>
@@ -35,7 +40,13 @@ public abstract class ReadOnlyApiControllerBase<TContext, TEntity, TKey, TModel>
     where TKey : IEquatable<TKey>
     where TModel : class
 {
-
+    /// <summary>
+    /// 初始化 <see cref="ReadOnlyApiControllerBase{TContext, TEntity, TKey, TModel}"/> 类的新实例。
+    /// </summary>
+    /// <param name="serviceProvider"></param>
+    protected ReadOnlyApiControllerBase(IServiceProvider serviceProvider) : base(serviceProvider)
+    {
+    }
 }
 
 
@@ -55,7 +66,13 @@ public abstract class ReadOnlyApiControllerBase<TContext, TEntity, TKey, TDetail
     where TListSearchInput : class
     where TDetailOrListOutput : class
 {
-
+    /// <summary>
+    /// 初始化 <see cref="ReadOnlyApiControllerBase{TContext, TEntity, TKey, TDetailOrListOutput, TListSearchInput}"/> 类的新实例。
+    /// </summary>
+    /// <param name="serviceProvider"></param>
+    protected ReadOnlyApiControllerBase(IServiceProvider serviceProvider) : base(serviceProvider)
+    {
+    }
 }
 
 
@@ -69,7 +86,7 @@ public abstract class ReadOnlyApiControllerBase<TContext, TEntity, TKey, TDetail
 /// <typeparam name="TListOutput">列表的输出类型。</typeparam>
 /// <typeparam name="TListSearchInput">列表查询的输入类型。</typeparam>
 [Produces("application/json")]
-public abstract class ReadOnlyApiControllerBase<TContext, TEntity, TKey, TDetailOutput, TListOutput, TListSearchInput> : EfCoreApiControllerBase<TContext,TEntity,TKey>, IReadOnlyBusinessService<TKey, TDetailOutput, TListOutput, TListSearchInput>
+public abstract class ReadOnlyApiControllerBase<TContext, TEntity, TKey, TDetailOutput, TListOutput, TListSearchInput> : EfCoreApiControllerBase<TContext, TEntity, TKey>, IReadOnlyBusinessService<TKey, TDetailOutput, TListOutput, TListSearchInput>
     where TContext : DbContext
     where TEntity : class
     where TKey : IEquatable<TKey>
@@ -85,15 +102,6 @@ public abstract class ReadOnlyApiControllerBase<TContext, TEntity, TKey, TDetail
     {
     }
 
-    /// <summary>
-    /// 获取 <c>AsNoTracking</c> 的查询结果。
-    /// </summary>
-    protected IQueryable<TEntity> Query => Set.AsNoTracking();
-
-    /// <summary>
-    /// 获取 <c>AsNoTrackingWithIdentityResolution</c> 的查询结果。
-    /// </summary>
-    protected IQueryable<TEntity> QueryWithIdentityResolution => Set.AsNoTrackingWithIdentityResolution();
 
     /// <summary>
     /// <inheritdoc/>

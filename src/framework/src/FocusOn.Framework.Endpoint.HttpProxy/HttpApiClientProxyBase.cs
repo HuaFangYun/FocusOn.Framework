@@ -15,7 +15,7 @@ namespace FocusOn.Framework.Endpoint.HttpProxy;
 /// <summary>
 /// 表示 HTTP API 的客户端代理。这是一个抽象类。
 /// </summary>
-public abstract class HttpApiClientProxyBase : BusinessServiceBase, IHttpApiClientProxy
+public abstract class HttpApiClientProxyBase : BusinessServiceBase, IBusinessSerivce, IHttpApiClientProxy
 {
     /// <summary>
     /// 初始化 <see cref="HttpApiClientProxyBase"/> 类的新实例。
@@ -42,7 +42,7 @@ public abstract class HttpApiClientProxyBase : BusinessServiceBase, IHttpApiClie
     /// <summary>
     /// 获取基本请求的 URI 地址。
     /// </summary>
-    protected virtual Uri BaseAddress =>Client.BaseAddress ?? throw new ArgumentNullException(nameof(Client.BaseAddress));
+    protected virtual Uri BaseAddress => Client.BaseAddress ?? throw new ArgumentNullException(nameof(Client.BaseAddress));
 
 
     /// <summary>

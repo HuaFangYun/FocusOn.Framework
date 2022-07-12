@@ -1,5 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace FocusOn.Framework.Business.Contract;
 
@@ -29,7 +29,7 @@ public abstract class BusinessServiceBase : IBusinessSerivce
     /// <summary>
     /// 获取 <see cref="ILogger"/> 实例。
     /// </summary>
-    protected virtual ILogger Logger => LoggerFactory.CreateLogger(GetType().Name);
+    protected virtual ILogger? Logger => LoggerFactory.CreateLogger(GetType().Name);
     /// <summary>
     /// 取消异步操作的令牌，默认是1分钟。
     /// </summary>

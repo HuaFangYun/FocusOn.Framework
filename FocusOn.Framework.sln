@@ -25,7 +25,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FocusOn.Framework.Endpoint.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FocusOn.Framework.Business.Store", "src\framework\src\FocusOn.Framework.Business.Store\FocusOn.Framework.Business.Store.csproj", "{B56CD0C2-8B69-4B82-AE49-F35C262F66C1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FocusOn.Framework.Endpoint.HttpApi.UnitTest", "src\framework\test\FocusOn.Framework.Endpoint.HttpApi.UnitTest\FocusOn.Framework.Endpoint.HttpApi.UnitTest.csproj", "{91EE4C33-E296-4779-849F-168E6AC2C0C9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FocusOn.Framework.Endpoint.HttpApi.UnitTest", "src\framework\test\FocusOn.Framework.Endpoint.HttpApi.UnitTest\FocusOn.Framework.Endpoint.HttpApi.UnitTest.csproj", "{91EE4C33-E296-4779-849F-168E6AC2C0C9}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "sln", "sln", "{FAFFF62D-2CA6-4174-820A-862B8D48A5E9}"
+	ProjectSection(SolutionItems) = preProject
+		common.props = common.props
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

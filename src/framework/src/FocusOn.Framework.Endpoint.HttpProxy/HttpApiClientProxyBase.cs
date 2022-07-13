@@ -1,21 +1,18 @@
-﻿using System.Net.Http.Json;
+﻿using Newtonsoft.Json;
 using System.Text.Json;
-
-using FocusOn.Framework.Business.Contract;
-using FocusOn.Framework.Business.Contract.DTO;
-
-using Microsoft.Extensions.DependencyInjection;
+using System.Net.Http.Json;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-
-using Newtonsoft.Json;
+using FocusOn.Framework.Business.Contract;
+using FocusOn.Framework.Business.Contract.DTO;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace FocusOn.Framework.Endpoint.HttpProxy;
 
 /// <summary>
 /// 表示 HTTP API 的客户端代理。这是一个抽象类。
 /// </summary>
-public abstract class HttpApiClientProxyBase : BusinessService, IHttpApiClientProxy
+public abstract class HttpApiClientProxyBase : BusinessServiceBase, IBusinessSerivce, IHttpApiClientProxy
 {
     /// <summary>
     /// 初始化 <see cref="HttpApiClientProxyBase"/> 类的新实例。
@@ -42,7 +39,7 @@ public abstract class HttpApiClientProxyBase : BusinessService, IHttpApiClientPr
     /// <summary>
     /// 获取基本请求的 URI 地址。
     /// </summary>
-    protected virtual Uri BaseAddress =>Client.BaseAddress ?? throw new ArgumentNullException(nameof(Client.BaseAddress));
+    protected virtual Uri BaseAddress => Client.BaseAddress ?? throw new ArgumentNullException(nameof(Client.BaseAddress));
 
 
     /// <summary>
@@ -139,7 +136,7 @@ public abstract class HttpApiClientProxyBase : BusinessService, IHttpApiClientPr
             }
             if (!result.Succeed)
             {
-                Logger.LogDebug(JsonConvert.SerializeObject(result));
+                Logger?.LogDebug(JsonConvert.SerializeObject(result));
             }
             return result;
 
@@ -154,7 +151,7 @@ public abstract class HttpApiClientProxyBase : BusinessService, IHttpApiClientPr
     /// 记录 HTTP 请求的绝对路径。
     /// </summary>
     /// <param name="response">响应结果。</param>
-    void LogRequestUri(HttpResponseMessage response) => Logger.LogError("Request uri is {0}", response?.RequestMessage?.RequestUri?.AbsolutePath);
+    void LogRequestUri(HttpResponseMessage response) => Logger?.LogError("Request uri is {0}", response?.RequestMessage?.RequestUri?.AbsolutePath);
 
     /// <summary>
     /// 发送指定请求消息并返回 <see cref="OutputResult{TResult}"/> 结果。

@@ -67,7 +67,9 @@ namespace FocusOn.Framework.Endpoint.HttpApi.UnitTest
 
         public void Dispose()
         {
-            var db = _provider.GetService<TestDbContext>();
+            using var scope = _provider.CreateScope();
+
+            var db = scope.ServiceProvider.GetService<TestDbContext>();
 
             var users = db.Set<User>().ToList();
 

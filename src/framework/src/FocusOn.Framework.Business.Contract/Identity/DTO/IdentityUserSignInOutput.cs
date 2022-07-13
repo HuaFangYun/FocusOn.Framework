@@ -18,5 +18,8 @@ public class IdentityUserSignInOutput
     /// </summary>
     public string Token { get; }
 
+    /// <summary>
+    /// 获取或设置过期时间。
+    /// </summary>
     public DateTimeOffset? ExpiredAt { get; set; }
 }

@@ -11,6 +11,11 @@ namespace FocusOn.Framework.Business.Store.Configurations;
 /// </summary>
 public static class EntityTypeBuilderExtensions
 {
+    /// <summary>
+    /// 配置数据库字段的兼容。
+    /// </summary>
+    /// <typeparam name="TEntity">实体。</typeparam>
+    /// <param name="builder"><see cref="EntityTypeBuilder{TEntity}"/> 实例。</param>
     public static EntityTypeBuilder<TEntity> ConfigureConvensions<TEntity>(this EntityTypeBuilder<TEntity> builder) where TEntity : class
         => builder.TryConfigureMultiTenancy()
                  .TryConfigureCreateTime();

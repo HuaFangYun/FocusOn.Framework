@@ -1,5 +1,4 @@
-﻿
-using FocusOn.Framework.Business.Contract;
+﻿using FocusOn.Framework.Business.Contract;
 using FocusOn.Framework.Business.Contract.DTO;
 using FocusOn.Framework.Business.Store;
 using FocusOn.Framework.Modules;
@@ -17,7 +16,7 @@ namespace FocusOn.Framework.Endpoint.HttpApi.Controllers;
 /// <typeparam name="TEntity">实体类型。</typeparam>
 /// <typeparam name="TKey">主键类型。</typeparam>
 public abstract class CrudApiControllerBase<TContext, TEntity, TKey>
-    : CrudApiControllerBase<TContext, TEntity, TKey, TEntity, TEntity, TEntity, TEntity>,ICrudBusinessService<TKey,TEntity>
+    : CrudApiControllerBase<TContext, TEntity, TKey, TEntity, TEntity, TEntity, TEntity>, ICrudBusinessService<TKey, TEntity>
     where TContext : DbContext
     where TEntity : class
     where TKey : IEquatable<TKey>
@@ -41,7 +40,7 @@ public abstract class CrudApiControllerBase<TContext, TEntity, TKey>
 /// <typeparam name="TListSearchInput">获取列表结果的输入类型。</typeparam>
 /// <typeparam name="TCreateOrUpdateInput">创建或更新数据的输入类型。</typeparam>
 public abstract class CrudApiControllerBase<TContext, TEntity, TKey, TDetailOutput, TListOutput, TListSearchInput, TCreateOrUpdateInput>
-    : CrudApiControllerBase<TContext, TEntity, TKey, TDetailOutput, TListOutput, TListSearchInput, TCreateOrUpdateInput, TCreateOrUpdateInput>,ICrudBusinessService<TKey, TDetailOutput, TListOutput, TListSearchInput, TCreateOrUpdateInput>
+    : CrudApiControllerBase<TContext, TEntity, TKey, TDetailOutput, TListOutput, TListSearchInput, TCreateOrUpdateInput, TCreateOrUpdateInput>, ICrudBusinessService<TKey, TDetailOutput, TListOutput, TListSearchInput, TCreateOrUpdateInput>
     where TContext : DbContext
     where TEntity : class
     where TKey : IEquatable<TKey>
@@ -110,7 +109,7 @@ public abstract class CrudApiControllerBase<TContext, TEntity, TKey, TDetailOutp
         Set.Add(entity);
         await SaveChangesAsync();
 
-        var detail= MapToDetail(entity);
+        var detail = MapToDetail(entity);
         return OutputResult<TDetailOutput>.Success(detail);
     }
 
@@ -157,9 +156,9 @@ public abstract class CrudApiControllerBase<TContext, TEntity, TKey, TDetailOutp
         {
             return OutputResult<TDetailOutput>.Failed(Logger, GetEntityNotFoundMessage(id));
         }
-                
+
         entity = MapToEntity(model, entity);
-        
+
         await SaveChangesAsync();
 
         var detail = MapToDetail(entity);
@@ -205,9 +204,9 @@ public abstract class CrudApiControllerBase<TContext, TEntity, TKey, TDetailOutp
     /// <param name="model">要映射的输入模型。</param>
     /// <param name="entity">现有的实体。</param>
     /// <returns>映射成功的实体。</returns>
-    protected virtual TEntity MapToEntity(TUpdateInput model,TEntity entity)
+    protected virtual TEntity MapToEntity(TUpdateInput model, TEntity entity)
     {
-        if(model is IHasId<TKey> idModel && entity is EntityBase<TKey> idEntity)
+        if (model is IHasId<TKey> idModel && entity is EntityBase<TKey> idEntity)
         {
             idModel.Id = idEntity.Id;
         }

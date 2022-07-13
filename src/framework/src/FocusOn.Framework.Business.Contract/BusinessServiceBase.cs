@@ -1,5 +1,4 @@
-﻿
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 namespace FocusOn.Framework.Business.Contract;
@@ -7,13 +6,13 @@ namespace FocusOn.Framework.Business.Contract;
 /// <summary>
 /// 表示业务服务的基类。
 /// </summary>
-public abstract class BusinessService : IBusinessSerivce
+public abstract class BusinessServiceBase : IBusinessSerivce
 {
     /// <summary>
-    /// 初始化 <see cref="BusinessService"/> 类的新实例。
+    /// 初始化 <see cref="BusinessServiceBase"/> 类的新实例。
     /// </summary>
     /// <param name="serviceProvider">服务注册提供者。</param>
-    protected BusinessService(IServiceProvider serviceProvider)
+    protected BusinessServiceBase(IServiceProvider serviceProvider)
     {
         ServiceProvider = serviceProvider;
     }
@@ -30,7 +29,7 @@ public abstract class BusinessService : IBusinessSerivce
     /// <summary>
     /// 获取 <see cref="ILogger"/> 实例。
     /// </summary>
-    protected virtual ILogger Logger => LoggerFactory.CreateLogger(GetType().Name);
+    protected virtual ILogger? Logger => LoggerFactory.CreateLogger(GetType().Name);
     /// <summary>
     /// 取消异步操作的令牌，默认是1分钟。
     /// </summary>

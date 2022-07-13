@@ -1,5 +1,6 @@
-﻿
-using AutoMapper;
+﻿using AutoMapper;
+
+using FocusOn.Framework.Business.Contract;
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
@@ -11,7 +12,7 @@ namespace FocusOn.Framework.Endpoint.HttpApi.Controllers;
 /// 表示具备 HTTP API 功能的控制器基类。
 /// </summary>
 [Route("[controller]")]
-public abstract class ApiControllerBase : ControllerBase
+public abstract class ApiControllerBase : ControllerBase, IBusinessSerivce
 {
     /// <summary>
     /// 初始化 <see cref="ApiControllerBase"/> 类的新实例。

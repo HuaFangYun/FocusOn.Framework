@@ -1,7 +1,4 @@
-﻿
-using Microsoft.AspNetCore.Mvc;
-
-using FocusOn;
+﻿using FocusOn;
 
 using Swashbuckle.AspNetCore.SwaggerGen;
 
@@ -17,7 +14,6 @@ public static class FocusOnDependencyInjectionExtensions
     /// </summary>
     /// <param name="builder"><see cref="FocusOnBuilder"/> 实例。</param>
     /// <param name="configure">Swagger 配置。</param>
-    /// <returns></returns>
     public static FocusOnBuilder AddSwagger(this FocusOnBuilder builder, Action<SwaggerGenOptions> configure = default)
     {
         builder.Services.AddEndpointsApiExplorer();
@@ -26,6 +22,19 @@ public static class FocusOnDependencyInjectionExtensions
         return builder;
     }
 
+    /// <summary>
+    /// 向 <see cref="FocusOnBuilder"/> 添加契约与业务的服务。
+    /// </summary>
+    /// <typeparam name="TContractService">契约类型。</typeparam>
+    /// <typeparam name="TBusinessService">业务服务类型。</typeparam>
+    /// <param name="builder"><see cref="FocusOnBuilder"/> 实例。</param>
+    public static FocusOnBuilder AddBusinessService<TContractService, TBusinessService>(this FocusOnBuilder builder)
+        where TContractService : class
+        where TBusinessService : class, TContractService
+    {
+        builder.Services.AddScoped<TContractService, TBusinessService>();
+        return builder;
+    }
     ///// <summary>
     ///// 添加可自动识别实现 <see cref="FocusOn.Framework.Business.Contract.IRemotingService"/> 的类型作为 HTTP API 。
     ///// </summary>

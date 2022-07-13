@@ -1,5 +1,4 @@
-﻿
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 
 namespace FocusOn.Framework.Business.Contract.DTO;
 
@@ -18,11 +17,11 @@ public record class OutputResult
         Errors = errors ?? Array.Empty<string?>();
     }
 
-    
+
     /// <summary>
     /// 获取返回的错误信息数组。
     /// </summary>
-    public IEnumerable<string?> Errors { get;private set; } = Array.Empty<string?>();
+    public IEnumerable<string?> Errors { get; private set; } = Array.Empty<string?>();
 
     /// <summary>
     /// 获取一个布尔值，表示返回结果是否成功。
@@ -32,7 +31,7 @@ public record class OutputResult
     /// <summary>
     /// 表示操作结果是成功的。
     /// </summary>
-    public static OutputResult Success() => new (Array.Empty<string?>());
+    public static OutputResult Success() => new(Array.Empty<string?>());
     /// <summary>
     /// 表示操作结果是失败的。
     /// </summary>
@@ -49,9 +48,9 @@ public record class OutputResult
     /// </summary>
     /// <param name="logger"><see cref="ILogger"/> 实例。</param>
     /// <param name="errors">操作失败的错误信息数组。</param>
-    public static OutputResult Failed(ILogger logger, params string[] errors)
+    public static OutputResult Failed(ILogger? logger, params string[] errors)
     {
-        logger.LogError(errors.JoinString(";"));
+        logger?.LogError(errors.JoinString(";"));
         return Failed(errors);
     }
     /// <summary>
@@ -59,16 +58,16 @@ public record class OutputResult
     /// </summary>
     /// <param name="logger"><see cref="ILogger"/> 实例。</param>
     /// <param name="errors">操作失败的错误信息数组。</param>
-    public static new OutputResult Failed(ILogger logger, IEnumerable<string> errors)
+    public static new OutputResult Failed(ILogger? logger, IEnumerable<string> errors)
         => Failed(logger, errors.ToArray());
     /// <summary>
     /// 表示操作结果是失败的，并记录异常日志。
     /// </summary>
     /// <param name="logger"><see cref="ILogger"/> 实例。</param>
     /// <param name="ex">要记录的异常。</param>
-    public static OutputResult Failed(ILogger logger,Exception ex)
+    public static OutputResult Failed(ILogger? logger, Exception ex)
     {
-        logger.LogError(ex, ex.Message);
+        logger?.LogError(ex, ex.Message);
         return new(new[] { ex.Message });
     }
 }
@@ -95,7 +94,7 @@ public record class OutputResult<TResult> : OutputResult
     /// <summary>
     /// 表示操作结果是成功的，并设置返回的数据。
     /// </summary>
-    public static OutputResult<TResult> Success(TResult data) => new(data, null);
+    public static OutputResult<TResult?> Success(TResult? data) => new(data, null);
     /// <summary>
     /// 表示操作结果是失败的。
     /// </summary>
@@ -111,9 +110,9 @@ public record class OutputResult<TResult> : OutputResult
     /// </summary>
     /// <param name="logger"><see cref="ILogger"/> 实例。</param>
     /// <param name="errors">操作失败的错误信息数组。</param>
-    public static new OutputResult<TResult> Failed(ILogger logger, params string[] errors)
+    public static new OutputResult<TResult> Failed(ILogger? logger, params string[] errors)
     {
-        logger.LogError(errors.JoinString(";"));
+        logger?.LogError(errors.JoinString(";"));
         return Failed(errors);
     }
     /// <summary>
@@ -121,7 +120,7 @@ public record class OutputResult<TResult> : OutputResult
     /// </summary>
     /// <param name="logger"><see cref="ILogger"/> 实例。</param>
     /// <param name="errors">操作失败的错误信息数组。</param>
-    public static new OutputResult<TResult> Failed(ILogger logger, IEnumerable<string> errors)
+    public static new OutputResult<TResult> Failed(ILogger? logger, IEnumerable<string> errors)
         => Failed(logger, errors.ToArray());
 
     /// <summary>
@@ -129,9 +128,9 @@ public record class OutputResult<TResult> : OutputResult
     /// </summary>
     /// <param name="logger"><see cref="ILogger"/> 实例。</param>
     /// <param name="ex">要记录的异常。</param>
-    public static new OutputResult<TResult> Failed(ILogger logger, Exception ex)
+    public static new OutputResult<TResult> Failed(ILogger? logger, Exception ex)
     {
-        logger.LogError(ex, ex.Message);
+        logger?.LogError(ex, ex.Message);
         return Failed(ex.Message);
     }
 }

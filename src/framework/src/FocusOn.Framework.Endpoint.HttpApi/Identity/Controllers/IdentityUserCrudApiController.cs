@@ -7,7 +7,6 @@ using FocusOn.Framework.Business.Contract.Identity.DTO;
 using FocusOn.Framework.Business.Store.Identity;
 using FocusOn.Framework.Endpoint.HttpApi.Controllers;
 using FocusOn.Framework.Endpoint.HttpApi.Localizations;
-using FocusOn.Framework.Modules.Identity;
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -133,10 +132,7 @@ public class IdentityUserCrudApiController<TContext, TUser, TKey, TDetailOutput,
                 return OutputResult<TDetailOutput>.Failed(Locale.Message_User_UserNameDuplicate.StringFormat(createInput.UserName));
             }
 
-            var user = new TUser
-            {
-                UserName = createInput.UserName
-            };
+            var user = MapToEntity(model);
 
             if (model is IdentityUserPasswordCreateInput passwordCreateInput)
             {

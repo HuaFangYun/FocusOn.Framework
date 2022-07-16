@@ -1,14 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-
-using AutoMapper;
-using AutoMapper.EquivalencyExpression;
-
-using FocusOn.Framework.Endpoint.HttpApi.Test.Host.BusinessServices;
+﻿using FocusOn.Framework.Endpoint.HttpApi.Test.Host.BusinessServices;
 using FocusOn.Framework.Endpoint.HttpApi.Test.Host.Controllers;
 using FocusOn.Framework.Endpoint.HttpApi.Test.WebHost.BusinessServices.Entities;
 
@@ -43,6 +33,9 @@ namespace FocusOn.Framework.Endpoint.HttpApi.UnitTest
                     mapper.CreateMap<User, User>();
 
                 }, typeof(TestDbContext).Assembly);
+
+
+                options.AddIdentity();
             });
 
             services.AddTransient<ITestUserBusinessService, UserController>();

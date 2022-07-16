@@ -14,6 +14,7 @@ builder.Services.AddFocusOn(configure =>
 
     configure.AddSwagger();
     configure.AddAutoMapper(typeof(Program).Assembly);
+    configure.AddIdentity().AddDefaultHashPasswordService();
 });
 
 var app = builder.Build();

@@ -1,4 +1,5 @@
 ﻿using FocusOn;
+using FocusOn.Framework.Endpoint.HttpApi.Identity;
 
 using Swashbuckle.AspNetCore.SwaggerGen;
 
@@ -35,6 +36,13 @@ public static class FocusOnDependencyInjectionExtensions
         builder.Services.AddScoped<TContractService, TBusinessService>();
         return builder;
     }
+
+    /// <summary>
+    /// 添加 Identity 模块。
+    /// </summary>
+    /// <param name="builder"><see cref="FocusOnBuilder"/> 实例。</param>
+    public static IdentityFocusOnBuilder AddIdentity(this FocusOnBuilder builder)
+        => new(builder);
     ///// <summary>
     ///// 添加可自动识别实现 <see cref="FocusOn.Framework.Business.Contract.IRemotingService"/> 的类型作为 HTTP API 。
     ///// </summary>

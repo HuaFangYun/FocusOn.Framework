@@ -50,7 +50,7 @@ public abstract class CrudMapProfile<TEntity, TDetailOutput, TListOutput, TCreat
     /// <summary>
     /// 初始化 <see cref="CrudMapProfile{TEntity, TDetailOutput, TListOutput, TCreateOrUpdateInput}"/> 类的新实例。
     /// </summary>
-    protected CrudMapProfile():base()
+    protected CrudMapProfile() : base()
     {
     }
 }
@@ -71,9 +71,27 @@ where TEntity : class
     /// </summary>
     protected CrudMapProfile() : base()
     {
-        CreateMap<TCreateInput, TEntity>();
-        CreateMap<TUpdateInput, TEntity>();
+        ConfigureMapCreateToEntity();
+        ConfigureMapUpdateToEntity();
+        ConfigureMapDetailToUpdate();
     }
+
+    /// <summary>
+    /// 重写创建 <typeparamref name="TCreateInput"/> 到 <typeparamref name="TEntity"/> 的映射。
+    /// </summary>
+    protected virtual void ConfigureMapCreateToEntity() =>
+        CreateMap<TCreateInput, TEntity>();
+
+    /// <summary>
+    /// 重写配置 <typeparamref name="TUpdateInput"/> 到 <typeparamref name="TEntity"/> 的映射。
+    /// </summary>
+    protected virtual void ConfigureMapUpdateToEntity() =>
+        CreateMap<TUpdateInput, TEntity>();
+
+    /// <summary>
+    /// 重写配置 <typeparamref name="TDetailOutput"/> 到 <typeparamref name="TUpdateInput"/> 的映射。
+    /// </summary>
+    protected virtual void ConfigureMapDetailToUpdate() => CreateMap<TDetailOutput, TUpdateInput>();
 }
 
 
@@ -106,7 +124,17 @@ public abstract class ReadOnlyProfile<TEntity, TDetailOutput, TListOutput> : Pro
     /// </summary>
     protected ReadOnlyProfile()
     {
-        CreateMap<TEntity, TListOutput>();
-        CreateMap<TEntity, TDetailOutput>();
+        ConfigureEntityToDetail();
+        ConfigureMapEntityToList();
     }
+
+    /// <summary>
+    /// 重写配置 <typeparamref name="TEntity"/> 到 <typeparamref name="TDetailOutput"/> 的映射。
+    /// </summary>
+    private void ConfigureMapEntityToList() => CreateMap<TEntity, TDetailOutput>();
+
+    /// <summary>
+    /// 重写配置 <typeparamref name="TEntity"/> 到 <typeparamref name="TListOutput"/> 的映射。
+    /// </summary>
+    protected virtual void ConfigureEntityToDetail() => CreateMap<TEntity, TListOutput>();
 }

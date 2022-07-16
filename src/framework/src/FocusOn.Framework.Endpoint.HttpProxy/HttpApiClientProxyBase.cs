@@ -1,11 +1,14 @@
-﻿using Newtonsoft.Json;
+﻿using System.Net.Http.Json;
 using System.Text.Json;
-using System.Net.Http.Json;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
+
 using FocusOn.Framework.Business.Contract;
 using FocusOn.Framework.Business.Contract.DTO;
+
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+
+using Newtonsoft.Json;
 
 namespace FocusOn.Framework.Endpoint.HttpProxy;
 
@@ -189,21 +192,21 @@ public abstract class HttpApiClientProxyBase : BusinessServiceBase, IBusinessSer
             return OutputResult.Failed(Logger, ex);
         }
     }
-
+    #region POST
     /// <summary>
     /// 以 JSON 方法发送 POST 请求。
     /// </summary>
-    /// <typeparam name="TValue">值的类型。</typeparam>
+    /// <typeparam name="TBody">主体的类型。</typeparam>
     /// <typeparam name="TResult">结果类型。</typeparam>
     /// <param name="requestUri">请求地址。</param>
-    /// <param name="value">发送的值。</param>
+    /// <param name="body">请求传送的主体。</param>
     /// <param name="options">JSON 序列号配置。</param>
     /// <returns></returns>
-    protected virtual async Task<OutputResult<TResult>> PostAsync<TValue, TResult>(string requestUri, TValue value, JsonSerializerOptions? options = default)
+    protected virtual async Task<OutputResult<TResult>> PostAsync<TBody, TResult>(string requestUri, TBody body, JsonSerializerOptions? options = default)
     {
         try
         {
-            var response = await Client.PostAsJsonAsync(requestUri, value, options, CancellationToken);
+            var response = await Client.PostAsJsonAsync(requestUri, body, options, CancellationToken);
             return await HandleOutputResultAsync<TResult>(response);
         }
         catch (Exception ex)
@@ -215,16 +218,28 @@ public abstract class HttpApiClientProxyBase : BusinessServiceBase, IBusinessSer
     /// <summary>
     /// 以 JSON 方法发送 POST 请求。
     /// </summary>
-    /// <typeparam name="TValue">值的类型。</typeparam>
+    /// <typeparam name="TBody">主体的类型。</typeparam>
+    /// <typeparam name="TResult">结果类型。</typeparam>
     /// <param name="requestUri">请求地址。</param>
-    /// <param name="value">发送的值。</param>
+    /// <param name="body">请求传送的主体。</param>
+    /// <param name="options">JSON 序列号配置。</param>
+    protected virtual Task<OutputResult<TResult>> PostAsync<TBody
+        , TResult>(Uri requestUri, TBody body, JsonSerializerOptions? options = default)
+        => PostAsync<TBody, TResult>(requestUri.ToString(), body, options);
+
+    /// <summary>
+    /// 以 JSON 方法发送 POST 请求。
+    /// </summary>
+    /// <typeparam name="TBody">主体的类型。</typeparam>
+    /// <param name="requestUri">请求地址。</param>
+    /// <param name="body">请求传送的主体。</param>
     /// <param name="options">JSON 序列号配置。</param>
     /// <returns></returns>
-    protected virtual async Task<OutputResult> PostAsync<TValue>(string requestUri, TValue value, JsonSerializerOptions? options = default)
+    protected virtual async Task<OutputResult> PostAsync<TBody>(string requestUri, TBody body, JsonSerializerOptions? options = default)
     {
         try
         {
-            var response = await Client.PostAsJsonAsync(requestUri, value, options, CancellationToken);
+            var response = await Client.PostAsJsonAsync(requestUri, body, options, CancellationToken);
             return await HandleOutputResultAsync(response);
         }
         catch (Exception ex)
@@ -233,6 +248,18 @@ public abstract class HttpApiClientProxyBase : BusinessServiceBase, IBusinessSer
         }
     }
 
+    /// <summary>
+    /// 以 JSON 方法发送 POST 请求。
+    /// </summary>
+    /// <typeparam name="TBody">主体的类型。</typeparam>
+    /// <param name="requestUri">请求地址。</param>
+    /// <param name="body">请求传送的主体。</param>
+    /// <param name="options">JSON 序列号配置。</param>
+    protected virtual Task<OutputResult> PostAsync<TBody>(Uri requestUri, TBody body, JsonSerializerOptions? options = default)
+        => PostAsync(requestUri.ToString(), body, options);
+    #endregion
+
+    #region GET
     /// <summary>
     /// 发送 GET 请求。
     /// </summary>
@@ -251,11 +278,19 @@ public abstract class HttpApiClientProxyBase : BusinessServiceBase, IBusinessSer
             return OutputResult<TResult>.Failed(Logger, ex);
         }
     }
+
+    /// <summary>
+    /// 发送 GET 请求。
+    /// </summary>
+    /// <typeparam name="TResult">结果类型。</typeparam>
+    /// <param name="requestUri">请求地址。</param>
+    protected virtual Task<OutputResult<TResult>> GetAsync<TResult>(Uri requestUri)
+        => GetAsync<TResult>(requestUri.ToString());
+
     /// <summary>
     /// 发送 GET 请求。
     /// </summary>
     /// <param name="requestUri">请求地址。</param>
-    /// <returns></returns>
     protected virtual async Task<OutputResult> GetAsync(string requestUri)
     {
         try
@@ -269,18 +304,27 @@ public abstract class HttpApiClientProxyBase : BusinessServiceBase, IBusinessSer
         }
     }
     /// <summary>
+    /// 发送 GET 请求。
+    /// </summary>
+    /// <param name="requestUri">请求地址。</param>
+    protected virtual Task<OutputResult> GetAsync(Uri requestUri)
+        => GetAsync(requestUri.ToString());
+    #endregion
+
+    #region PUT
+    /// <summary>
     /// 以 JSON 的方式发送 PUT 请求。
     /// </summary>
-    /// <typeparam name="TValue">值的类型。</typeparam>
+    /// <typeparam name="TBody">主体的类型。</typeparam>
     /// <typeparam name="TResult">结果类型。</typeparam>
     /// <param name="requestUri">请求地址。</param>
-    /// <param name="value">发送的值。</param>
+    /// <param name="body">请求传送的主体。</param>
     /// <param name="options">JSON 序列号配置。</param>
-    protected virtual async Task<OutputResult<TResult>> PutAsync<TValue, TResult>(string requestUri, TValue value, JsonSerializerOptions? options = default)
+    protected virtual async Task<OutputResult<TResult>> PutAsync<TBody, TResult>(string requestUri, TBody body, JsonSerializerOptions? options = default)
     {
         try
         {
-            var response = await Client.PutAsJsonAsync(requestUri, value, options, CancellationToken);
+            var response = await Client.PutAsJsonAsync(requestUri, body, options, CancellationToken);
             return await HandleOutputResultAsync<TResult>(response);
         }
         catch (Exception ex)
@@ -291,15 +335,25 @@ public abstract class HttpApiClientProxyBase : BusinessServiceBase, IBusinessSer
     /// <summary>
     /// 以 JSON 的方式发送 PUT 请求。
     /// </summary>
-    /// <typeparam name="TValue">值的类型。</typeparam>
+    /// <typeparam name="TBody">主体的类型。</typeparam>
+    /// <typeparam name="TResult">结果类型。</typeparam>
     /// <param name="requestUri">请求地址。</param>
-    /// <param name="value">发送的值。</param>
+    /// <param name="body">请求传送的主体。</param>
     /// <param name="options">JSON 序列号配置。</param>
-    protected virtual async Task<OutputResult> PutAsync<TValue>(string requestUri, TValue value, JsonSerializerOptions? options = default)
+    protected virtual Task<OutputResult<TResult>> PutAsync<TBody, TResult>(Uri requestUri, TBody body, JsonSerializerOptions? options = default)
+        => PutAsync<TBody, TResult>(requestUri.ToString(), body, options);
+    /// <summary>
+    /// 以 JSON 的方式发送 PUT 请求。
+    /// </summary>
+    /// <typeparam name="TBody">主体的类型。</typeparam>
+    /// <param name="requestUri">请求地址。</param>
+    /// <param name="body">请求传送的主体。</param>
+    /// <param name="options">JSON 序列号配置。</param>
+    protected virtual async Task<OutputResult> PutAsync<TBody>(string requestUri, TBody body, JsonSerializerOptions? options = default)
     {
         try
         {
-            var response = await Client.PutAsJsonAsync(requestUri, value, options, CancellationToken);
+            var response = await Client.PutAsJsonAsync(requestUri, body, options, CancellationToken);
             return await HandleOutputResultAsync(response);
         }
         catch (Exception ex)
@@ -307,6 +361,17 @@ public abstract class HttpApiClientProxyBase : BusinessServiceBase, IBusinessSer
             return OutputResult.Failed(Logger, ex);
         }
     }
+    /// <summary>
+    /// 以 JSON 的方式发送 PUT 请求。
+    /// </summary>
+    /// <typeparam name="TBody">主体的类型。</typeparam>
+    /// <param name="requestUri">请求地址。</param>
+    /// <param name="body">请求传送的主体。</param>
+    /// <param name="options">JSON 序列号配置。</param>
+    protected virtual Task<OutputResult> PutAsync<TBody>(Uri requestUri, TBody body, JsonSerializerOptions? options = default)
+         => PutAsync<TBody>(requestUri.ToString(), body, options);
+    #endregion
+    #region DELETE
     /// <summary>
     /// 发送 DELETE 请求。
     /// </summary>
@@ -327,6 +392,13 @@ public abstract class HttpApiClientProxyBase : BusinessServiceBase, IBusinessSer
     /// <summary>
     /// 发送 DELETE 请求。
     /// </summary>
+    /// <typeparam name="TResult">结果类型。</typeparam>
+    /// <param name="requestUri">请求地址。</param>
+    protected virtual Task<OutputResult<TResult>> DeleteAsync<TResult>(Uri requestUri)
+        => DeleteAsync<TResult>(requestUri.ToString());
+    /// <summary>
+    /// 发送 DELETE 请求。
+    /// </summary>
     /// <param name="requestUri">请求地址。</param>
     protected virtual async Task<OutputResult> DeleteAsync(string requestUri)
     {
@@ -340,4 +412,11 @@ public abstract class HttpApiClientProxyBase : BusinessServiceBase, IBusinessSer
             return OutputResult.Failed(Logger, ex);
         }
     }
+    /// <summary>
+    /// 发送 DELETE 请求。
+    /// </summary>
+    /// <param name="requestUri">请求地址。</param>
+    protected virtual Task<OutputResult> DeleteAsync(Uri requestUri)
+        => DeleteAsync(requestUri.ToString());
+    #endregion
 }

@@ -14,9 +14,5 @@ public static class ReflectionExtensions
     /// <param name="type"><see cref="Type"/> 的实例。</param>
     /// <param name="attribute">返回获取到的 <typeparamref name="TAttribute"/> 类型。</param>
     /// <returns>若能获取到指定的 <typeparamref name="TAttribute"/> 类型，则返回 <c>true</c>；否则返回 <c>false</c>。</returns>
-    public static bool TryGetCustomAttribute<TAttribute>(this Type type, out TAttribute? attribute) where TAttribute : Attribute
-    {
-        attribute = type.GetCustomAttribute<TAttribute>();
-        return attribute != null;
-    }
+    public static bool TryGetCustomAttribute<TAttribute>(this Type type, out TAttribute? attribute) where TAttribute : Attribute => (attribute = type.GetCustomAttribute<TAttribute>()) != null;
 }

@@ -127,6 +127,6 @@
     <value>用户名</value>
   </data>
   <data name="Message_Validation_FieldIsRequired" xml:space="preserve">
-    <value>{0} 是必填字段</value>
+    <value>{0}是必填字段</value>
   </data>
 </root>

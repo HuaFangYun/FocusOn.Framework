@@ -15,7 +15,7 @@ public static class FocusOnDependencyInjectionExtensions
     /// </summary>
     /// <param name="builder"><see cref="FocusOnBuilder"/> 实例。</param>
     /// <param name="configure">Swagger 配置。</param>
-    public static FocusOnBuilder AddSwagger(this FocusOnBuilder builder, Action<SwaggerGenOptions> configure = default)
+    public static FocusOnBuilder AddSwagger(this FocusOnBuilder builder, Action<SwaggerGenOptions>? configure = default)
     {
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen(configure);

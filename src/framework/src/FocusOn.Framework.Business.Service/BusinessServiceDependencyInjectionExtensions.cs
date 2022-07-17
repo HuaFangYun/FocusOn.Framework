@@ -1,8 +1,4 @@
-﻿
-using Microsoft.Extensions.DependencyInjection;
-
-using FocusOn;
-using FocusOn.Business.Contracts;
+﻿using FocusOn;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
@@ -12,16 +8,16 @@ namespace Microsoft.Extensions.DependencyInjection;
 public static class BusinessServiceDependencyInjectionExtensions
 {
     /// <summary>
-    /// 向 <see cref="IServiceCollection"/> 添加业务服务的注入并使用 Scoped 生命周期模式。
+    /// 向 <see cref="FocusOnBuilder"/> 添加契约与业务的服务。
     /// </summary>
-    /// <typeparam name="TService">服务类型。</typeparam>
-    /// <typeparam name="TImplementation">服务的实现类型。</typeparam>
-    /// <param name="builder"><see cref="FocusOnBuilder"/> 实现。</param>
-    public static FocusOnBuilder AddBusinessService<TService, TImplementation>(this FocusOnBuilder builder)
-        where TService : class, IBusinessSerivce
-        where TImplementation : class, TService
+    /// <typeparam name="TContractService">契约类型。</typeparam>
+    /// <typeparam name="TBusinessService">业务服务类型。</typeparam>
+    /// <param name="builder"><see cref="FocusOnBuilder"/> 实例。</param>
+    public static FocusOnBuilder AddBusinessService<TContractService, TBusinessService>(this FocusOnBuilder builder)
+        where TContractService : class
+        where TBusinessService : class, TContractService
     {
-        builder.Services.AddScoped<TService, TImplementation>();
+        builder.Services.AddScoped<TContractService, TBusinessService>();
         return builder;
     }
 }

@@ -1,7 +1,11 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using AutoMapper;
+
+using FocusOn.Framework.Business.Contract;
+
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-namespace FocusOn.Framework.Business.Contract;
+namespace FocusOn.Framework.Business.Services;
 
 /// <summary>
 /// 表示业务服务的基类。
@@ -21,6 +25,10 @@ public abstract class BusinessServiceBase : IBusinessSerivce
     /// </summary>
     public IServiceProvider ServiceProvider { get; }
 
+    /// <summary>
+    /// 获取 <see cref="IMapper"/> 实例。
+    /// </summary>
+    protected IMapper Mapper => ServiceProvider.GetRequiredService<IMapper>();
     /// <summary>
     /// 获取注册的 <see cref="ILoggerFactory"/> 实例。
     /// </summary>

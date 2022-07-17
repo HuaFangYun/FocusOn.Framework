@@ -2,13 +2,12 @@
 
 	<Import Project="../../../../common.props" />
   <ItemGroup>
-	  <PackageReference Include="AutoMapper.Collection" Version="8.0.0" />
-	  <PackageReference Include="AutoMapper.Extensions.ExpressionMapping" Version="5.0.2" />
-	  <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="6.0.0" />
+    <PackageReference Include="AutoMapper.Collection" Version="8.0.0" />
+    <PackageReference Include="AutoMapper.Extensions.ExpressionMapping" Version="5.0.2" />
   </ItemGroup>
-
   <ItemGroup>
-    <ProjectReference Include="..\FocusOn.Business.Contracts\FocusOn.Business.Contracts.csproj" />
+    <ProjectReference Include="..\FocusOn.Framework.Business.Contract\FocusOn.Framework.Business.Contract.csproj" />
+    <ProjectReference Include="..\FocusOn.Framework.Business.Store\FocusOn.Framework.Business.Store.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,4 +1,5 @@
 ﻿using FocusOn.Framework.Business.Contract.DTO;
+using FocusOn.Framework.Business.Contract.Http;
 
 namespace FocusOn.Framework.Business.Contract;
 
@@ -46,11 +47,13 @@ public interface IReadOnlyBusinessService<TKey, TDetailOutput, TListOutput, TLis
     /// </summary>
     /// <param name="id">要获取的 id 。</param>
     /// <returns>一个获取结果的方法，返回 <see cref="OutputResult{TDetailOutput}"/> 结果。</returns>
+    [Get("{id}")]
     ValueTask<OutputResult<TDetailOutput?>> GetAsync(TKey id);
     /// <summary>
     /// 以异步的方式获取指定分页的结果列表。
     /// </summary>
     /// <param name="model">获取列表的过滤输入模型。</param>
-    /// <returns>一个获取分页结果的方法，返回 <see cref="OutputResult{PagedOutput{TListOutput}}"/> 结果。</returns>
-    Task<OutputResult<PagedOutput<TListOutput>>> GetListAsync(TListSearchInput model=default);
+    /// <returns>一个获取分页结果的方法，返回 <see cref="OutputResult{TListOutput}"/> 结果。</returns>
+    [Get]
+    Task<OutputResult<PagedOutput<TListOutput>>> GetListAsync([Query] TListSearchInput? model = default);
 }

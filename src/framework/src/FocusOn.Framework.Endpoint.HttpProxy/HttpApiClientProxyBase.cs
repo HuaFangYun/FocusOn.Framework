@@ -1,7 +1,8 @@
 ﻿using System.Net.Http.Json;
 using System.Text.Json;
 
-using FocusOn.Framework.Business.Contract;
+using AutoMapper;
+
 using FocusOn.Framework.Business.Contract.DTO;
 
 using Microsoft.Extensions.DependencyInjection;
@@ -15,16 +16,40 @@ namespace FocusOn.Framework.Endpoint.HttpProxy;
 /// <summary>
 /// 表示 HTTP API 的客户端代理。这是一个抽象类。
 /// </summary>
-public abstract class HttpApiClientProxyBase : BusinessServiceBase, IBusinessSerivce, IHttpApiClientProxy
+public abstract class HttpApiClientProxyBase : IHttpApiClientProxy
 {
     /// <summary>
     /// 初始化 <see cref="HttpApiClientProxyBase"/> 类的新实例。
     /// </summary>
-    /// <param name="services"><see cref="IServiceProvider"/> 实例。</param>
-    protected HttpApiClientProxyBase(IServiceProvider services) : base(services)
+    /// <param name="serviceProvider"><see cref="IServiceProvider"/> 实例。</param>
+    protected HttpApiClientProxyBase(IServiceProvider serviceProvider)
     {
+        ServiceProvider = serviceProvider;
     }
+    /// <summary>
+    /// 获取 <see cref="IMapper"/> 实例。
+    /// </summary>
+    protected IMapper Mapper => ServiceProvider.GetRequiredService<IMapper>();
+    /// <summary>
+    /// 获取注册的 <see cref="ILoggerFactory"/> 实例。
+    /// </summary>
+    protected ILoggerFactory LoggerFactory => ServiceProvider.GetRequiredService<ILoggerFactory>();
 
+    /// <summary>
+    /// 获取 <see cref="ILogger"/> 实例。
+    /// </summary>
+    protected virtual ILogger? Logger => LoggerFactory.CreateLogger(GetType().Name);
+    /// <summary>
+    /// 取消异步操作的令牌，默认是1分钟。
+    /// </summary>
+    protected virtual CancellationToken CancellationToken
+    {
+        get
+        {
+            var tokenSource = new CancellationTokenSource(TimeSpan.FromMinutes(1));
+            return tokenSource.Token;
+        }
+    }
     /// <summary>
     /// 获取注入的 <see cref="IHttpClientFactory"/> 的服务。
     /// </summary>
@@ -49,6 +74,7 @@ public abstract class HttpApiClientProxyBase : BusinessServiceBase, IBusinessSer
     /// 获取 HTTP API 的根路径。
     /// </summary>
     protected virtual string? RootPath { get; }
+    public IServiceProvider ServiceProvider { get; }
 
 
     /// <summary>

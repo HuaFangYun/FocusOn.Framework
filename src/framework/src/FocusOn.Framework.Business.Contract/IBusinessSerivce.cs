@@ -3,7 +3,7 @@
 /// <summary>
 /// 提供业务服务的功能。
 /// </summary>
-public interface IBusinessSerivce
+public interface IBusinessSerivce : IRemotingService
 {
     /// <summary>
     /// 获取注入的服务提供者。

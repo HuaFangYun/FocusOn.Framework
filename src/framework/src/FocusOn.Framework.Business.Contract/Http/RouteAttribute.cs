@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 
 namespace FocusOn.Framework.Business.Contract.Http;
-[AttributeUsage(AttributeTargets.Class | AttributeTargets.Interface)]
+[AttributeUsage(AttributeTargets.Interface)]
 public class RouteAttribute : Attribute
 {
     public RouteAttribute([NotNull] string template)
@@ -10,4 +10,6 @@ public class RouteAttribute : Attribute
     }
 
     public string Template { get; }
+
+    public int Order { get; set; } = 1000;
 }

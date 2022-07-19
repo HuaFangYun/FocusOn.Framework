@@ -113,7 +113,7 @@ internal class DynamicHttpApiConvention : IApplicationModelConvention
                 .ToList().ForEach(s => selectors.Remove(s));
     }
 
-    private static void ConfigureParameters(ControllerModel controller)
+    private void ConfigureParameters(ControllerModel controller)
     {
         foreach (var action in controller.Actions)
         {
@@ -123,24 +123,54 @@ internal class DynamicHttpApiConvention : IApplicationModelConvention
                 {
                     continue;
                 }
+                var method = FindInterfaceMethod(action);
 
-                parameter.ParameterType.GetInterfaces().Where(m => m.IsDefined(typeof(HttpParameterAttribute)));
+                var methodParameter = method.GetParameters().SingleOrDefault(m => m.Name == parameter.Name);
 
-                if (parameter.ParameterType.IsClass &&
-                    parameter.ParameterType != typeof(string) &&
-                    parameter.ParameterType != typeof(IFormFile))
+                if (methodParameter is null)
                 {
-                    var httpMethods = action.Selectors.SelectMany(temp => temp.ActionConstraints).OfType<HttpMethodActionConstraint>().SelectMany(temp => temp.HttpMethods).ToList();
-
-                    if (httpMethods.Contains(HttpMethods.Get) ||
-                        httpMethods.Contains(HttpMethods.Delete) ||
-                        httpMethods.Contains(HttpMethods.Trace) ||
-                        httpMethods.Contains(HttpMethods.Head))
-                    {
-                        continue;
-                    }
-                    parameter.BindingInfo = BindingInfo.GetBindingInfo(new[] { new FromBodyAttribute() });
+                    continue;
                 }
+
+                var httpParameterAttribute = methodParameter.GetCustomAttribute<HttpParameterAttribute>();
+                if (httpParameterAttribute is null)
+                {
+                    parameter.BindingInfo = BindingInfo.GetBindingInfo(new[] { new FromRouteAttribute() });
+                    continue;
+                }
+                switch (httpParameterAttribute.Type)
+                {
+                    case HttpParameterType.FromBody:
+                        parameter.BindingInfo = BindingInfo.GetBindingInfo(new[] { new FromBodyAttribute() });
+                        break;
+                    case HttpParameterType.FromQuery:
+                        parameter.BindingInfo = BindingInfo.GetBindingInfo(new[] { new FromQueryAttribute() { Name = httpParameterAttribute.Name } });
+                        break;
+                    case HttpParameterType.FromHeader:
+                        parameter.BindingInfo = BindingInfo.GetBindingInfo(new[] { new FromHeaderAttribute() { Name = httpParameterAttribute.Name } });
+                        break;
+                    default:
+                        parameter.BindingInfo = BindingInfo.GetBindingInfo(new[] { new FromRouteAttribute() { Name = httpParameterAttribute.Name } });
+                        break;
+                }
+
+                //parameter.ParameterType.GetInterfaces().Where(m => m.IsDefined(typeof(HttpParameterAttribute)));
+
+                //if (parameter.ParameterType.IsClass &&
+                //    parameter.ParameterType != typeof(string) &&
+                //    parameter.ParameterType != typeof(IFormFile))
+                //{
+                //    var httpMethods = action.Selectors.SelectMany(temp => temp.ActionConstraints).OfType<HttpMethodActionConstraint>().SelectMany(temp => temp.HttpMethods).ToList();
+
+                //    if (httpMethods.Contains(HttpMethods.Get) ||
+                //        httpMethods.Contains(HttpMethods.Delete) ||
+                //        httpMethods.Contains(HttpMethods.Trace) ||
+                //        httpMethods.Contains(HttpMethods.Head))
+                //    {
+                //        continue;
+                //    }
+                //    parameter.BindingInfo = BindingInfo.GetBindingInfo(new[] { new FromBodyAttribute() });
+                //}
             }
         }
     }
@@ -179,9 +209,13 @@ internal class DynamicHttpApiConvention : IApplicationModelConvention
 
         routeTemplateBuilder.Append($"/{controllerName}");
 
-        var attr = FindHttpMethodFromAction(action);
+        var httpMethodAttribute = FindHttpMethodFromAction(action);
+        if (httpMethodAttribute is null)
+        {
+            throw new InvalidOperationException($"Action {action.ActionMethod.Name} 必须设置 {nameof(HttpMethodAttribute)} 特性才能生成路由");
+        }
 
-        routeTemplateBuilder.Append($"{attr?.Template}");
+        routeTemplateBuilder.Append($"/{httpMethodAttribute?.Template}");
 
         //else
         //{
@@ -205,30 +239,36 @@ internal class DynamicHttpApiConvention : IApplicationModelConvention
 
     private HttpMethodAttribute? FindHttpMethodFromAction(ActionModel action)
     {
-        var actionName = action.ActionName;
-        var actionMethod = _controllerType.GetMethod(actionName);
+        MethodInfo? actionMethod = FindInterfaceMethod(action);
+
         if (actionMethod is null)
         {
-            throw new InvalidOperationException($"找不到 {actionName} 方法");
+            throw new InvalidOperationException($"找不到 {actionMethod.Name} 方法");
         }
 
         var attr = actionMethod.GetCustomAttribute<HttpMethodAttribute>();
-        if (attr is null)
-        {
-
-        }
-
         return attr;
+    }
+
+    private MethodInfo? FindInterfaceMethod(ActionModel action)
+    {
+        var allmethods = _controllerType.GetInterfaces().SelectMany(m => m.GetMethods());
+
+        var methodName = action.ActionMethod.Name;
+
+        var actionMethod = allmethods.SingleOrDefault(m => m.Name == methodName);
+        return actionMethod;
     }
 
     string GetHttpMethod(ActionModel action)
     {
-        if (!TryGetAttribute<HttpMethodAttribute>(action, out var httpMethod))
+        var httpMethodAttribute = FindHttpMethodFromAction(action);
+        if (httpMethodAttribute is null)
         {
             throw new InvalidOperationException($"方法必须定义 {nameof(HttpMethodAttribute)} 特性");
         }
 
-        return httpMethod.Method.Method;
+        return httpMethodAttribute.Method.Method;
 
         //foreach (var item in Action_HttpMethod_Mapping.Keys)
         //{

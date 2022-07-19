@@ -1,4 +1,5 @@
 ﻿using FocusOn;
+using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using FocusOn.Framework.Business.Services.Mvc;
 
@@ -37,7 +38,11 @@ public static class BusinessServiceDependencyInjectionExtensions
     }
     public static FocusOnBuilder AddAutoWebApi(this FocusOnBuilder builder)
     {
-        builder.Services.AddMvcCore(options => options.Conventions.Add(new DynamicHttpApiConvention()))
+        builder.Services.AddMvcCore(options =>
+        {
+            options.Conventions.Add(new DynamicHttpApiConvention());
+            options.Filters.Add(new ProducesAttribute("application/json"));
+        })
             .ConfigureApplicationPartManager(applicationPart => applicationPart.FeatureProviders.Add(new DynamicHttpApiControllerFeatureProvider())
             )
             ;

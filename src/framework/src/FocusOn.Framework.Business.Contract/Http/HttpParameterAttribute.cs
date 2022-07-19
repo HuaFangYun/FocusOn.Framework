@@ -2,10 +2,21 @@
 [AttributeUsage(AttributeTargets.Parameter)]
 public class HttpParameterAttribute : Attribute
 {
-    public HttpParameterAttribute(string? name = default)
+    public HttpParameterAttribute(HttpParameterType type = HttpParameterType.FromRoute, string? name = default)
     {
+        Type = type;
         Name = name;
     }
 
+    public HttpParameterType Type { get; }
     public string? Name { get; }
+}
+
+
+public enum HttpParameterType
+{
+    FromRoute,
+    FromBody,
+    FromQuery,
+    FromHeader
 }

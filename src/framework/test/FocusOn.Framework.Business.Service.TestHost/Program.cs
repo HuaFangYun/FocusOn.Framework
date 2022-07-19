@@ -4,20 +4,28 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
+builder.Services.AddControllers();
 builder.Services.AddFocusOn(configure =>
 {
     configure.AddAutoWebApi();
-    configure.AddSwagger();
+    configure.AddSwagger().AddAutoMapper(typeof(Program).Assembly);
     configure.AddBusinessService<ITestService, TestService>();
+    configure.Services.AddDbContext<TestDbContext>();
 });
 
 var app = builder.Build();
-
+app.UseStaticFiles();
 app.UseSwagger().UseSwaggerUI();
+app.UseRouting();
 // Configure the HTTP request pipeline.
 app.MapGet("", context =>
 {
     context.Response.Redirect("/swagger");
     return Task.CompletedTask;
+});
+app.UseEndpoints(configure =>
+{
+    configure.MapControllers();
+    //configure.MapSwagger();
 });
 app.Run();

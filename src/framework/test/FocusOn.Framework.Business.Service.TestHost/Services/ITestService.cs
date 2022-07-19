@@ -8,6 +8,7 @@ namespace FocusOn.Framework.Business.Service.TestHost.Services
     [Route("api/test")]
     public interface ITestService : ICrudBusinessService<int, TestEntity>
     {
+
     }
 
     public class TestService : CrudBusinessService<TestDbContext, TestEntity, int>, ITestService
@@ -22,6 +23,11 @@ namespace FocusOn.Framework.Business.Service.TestHost.Services
         public DbSet<TestEntity> TestEntities { get; set; }
         public TestDbContext(DbContextOptions options) : base(options)
         {
+        }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseInMemoryDatabase("db");
         }
     }
 }

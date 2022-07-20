@@ -35,6 +35,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FocusOn.Framework.Business.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FocusOn.Framework.Business.Service.TestHost", "src\framework\test\FocusOn.Framework.Business.Service.TestHost\FocusOn.Framework.Business.Service.TestHost.csproj", "{25219738-E4CD-4BBC-851F-C96C78C9DB64}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FocusOn.Framework.DynamicHttpProxy.Test", "src\framework\test\FocusOn.Framework.DynamicHttpProxy.Test\FocusOn.Framework.DynamicHttpProxy.Test.csproj", "{F9D3F141-45D9-4B21-A949-07351ECBC42C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -85,6 +87,10 @@ Global
 		{25219738-E4CD-4BBC-851F-C96C78C9DB64}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{25219738-E4CD-4BBC-851F-C96C78C9DB64}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{25219738-E4CD-4BBC-851F-C96C78C9DB64}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F9D3F141-45D9-4B21-A949-07351ECBC42C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F9D3F141-45D9-4B21-A949-07351ECBC42C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F9D3F141-45D9-4B21-A949-07351ECBC42C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F9D3F141-45D9-4B21-A949-07351ECBC42C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -101,6 +107,7 @@ Global
 		{91EE4C33-E296-4779-849F-168E6AC2C0C9} = {FFBA0600-7085-4A66-B81D-C036EC876904}
 		{204D31AE-4B20-4CF9-88AC-D000FC9EBC7F} = {4C8D0E61-7EF5-4726-AB38-DBD0FF9F885D}
 		{25219738-E4CD-4BBC-851F-C96C78C9DB64} = {FFBA0600-7085-4A66-B81D-C036EC876904}
+		{F9D3F141-45D9-4B21-A949-07351ECBC42C} = {FFBA0600-7085-4A66-B81D-C036EC876904}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {60D7014C-4C59-4127-9CB5-A4402740E525}

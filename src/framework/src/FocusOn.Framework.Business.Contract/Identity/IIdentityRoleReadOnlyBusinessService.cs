@@ -1,4 +1,4 @@
-﻿using FocusOn.Framework.Business.Contract.DTO;
+﻿using FocusOn.Framework.Business.Contract.Http;
 
 namespace FocusOn.Framework.Business.Contract.Identity;
 
@@ -23,13 +23,14 @@ public interface IIdentityRoleReadOnlyBusinessService<TKey, TModel> : IIdentityR
 /// <typeparam name="TListSearchInput">列表查询输入类型。</typeparam>
 public interface IIdentityRoleReadOnlyBusinessService<TKey, TDetailOutput, TListOutput, TListSearchInput> : IReadOnlyBusinessService<TKey, TDetailOutput, TListOutput, TListSearchInput>
     where TKey : IEquatable<TKey>
-    where TDetailOutput : class
-    where TListOutput : class
+    where TDetailOutput : notnull
+    where TListOutput : notnull
     where TListSearchInput : class
 {
     /// <summary>
     /// 以异步的方式使用角色名称获取角色的详情。
     /// </summary>
     /// <param name="name">角色名称。</param>
-    Task<OutputResult<TDetailOutput>> GetByNameAsync(string name);
+    [Get("by-name/{name}")]
+    Task<Return<TDetailOutput>> GetByNameAsync(string name);
 }

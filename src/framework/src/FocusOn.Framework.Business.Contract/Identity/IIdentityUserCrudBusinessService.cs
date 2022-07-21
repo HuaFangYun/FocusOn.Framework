@@ -43,10 +43,10 @@ public interface IIdentityUserCrudBusinessService<TKey, TDetailOutput, TListOutp
 /// <typeparam name="TUpdateInput">更新输入类型。</typeparam>
 public interface IIdentityUserCrudBusinessService<TKey, TDetailOutput, TListOutput, TListSearchInput, TCreateInput, TUpdateInput> : IIdentityUserReadOnlyBusinessService<TKey, TDetailOutput, TListOutput, TListSearchInput>, ICrudBusinessService<TKey, TDetailOutput, TListOutput, TListSearchInput, TCreateInput, TUpdateInput>
     where TKey : IEquatable<TKey>
-    where TDetailOutput : class
-    where TListOutput : class
+    where TDetailOutput : notnull
+    where TListOutput : notnull
     where TListSearchInput : class
-    where TCreateInput : class
-    where TUpdateInput : class
+    where TCreateInput : notnull
+    where TUpdateInput : notnull
 {
 }

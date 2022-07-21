@@ -3,8 +3,6 @@ using System.Text.Json;
 
 using AutoMapper;
 
-using FocusOn.Framework.Business.Contract.DTO;
-
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -98,11 +96,11 @@ public abstract class HttpApiClientProxyBase : IHttpApiClientProxy
     }
 
     /// <summary>
-    /// 以异步的方式处理 <see cref="HttpResponseMessage"/> 并解析为 <see cref="OutputResult"/> 对象。
+    /// 以异步的方式处理 <see cref="HttpResponseMessage"/> 并解析为 <see cref="Return"/> 对象。
     /// </summary>
     /// <param name="response">HTTP 请求的响应消息。</param>
     /// <exception cref="ArgumentNullException"><paramref name="response"/> 是 null。</exception>
-    protected async Task<OutputResult> HandleOutputResultAsync(HttpResponseMessage response)
+    protected async Task<Return> HandleOutputResultAsync(HttpResponseMessage response)
     {
         if (response is null)
         {
@@ -117,12 +115,12 @@ public abstract class HttpApiClientProxyBase : IHttpApiClientProxy
             var content = await response.Content.ReadAsStringAsync();
             if (content.IsNullOrEmpty())
             {
-                return OutputResult.Failed(Logger, "Content from HttpContent is null or empty");
+                return Return.Failed(Logger, "Content from HttpContent is null or empty");
             }
-            var result = JsonConvert.DeserializeObject<OutputResult>(content);
+            var result = JsonConvert.DeserializeObject<Return>(content);
             if (result is null)
             {
-                return OutputResult.Failed(Logger, $"Deserialize {nameof(OutputResult)} from content failed");
+                return Return.Failed(Logger, $"Deserialize {nameof(Return)} from content failed");
             }
             if (!result.Succeed)
             {
@@ -132,16 +130,16 @@ public abstract class HttpApiClientProxyBase : IHttpApiClientProxy
         }
         catch (Exception ex)
         {
-            return OutputResult.Failed(Logger, ex);
+            return Return.Failed(Logger, ex);
         }
     }
 
     /// <summary>
-    /// 以异步的方式处理 <see cref="HttpResponseMessage"/> 并解析为 <see cref="OutputResult{TResult}"/> 对象。
+    /// 以异步的方式处理 <see cref="HttpResponseMessage"/> 并解析为 <see cref="Return{TResult}"/> 对象。
     /// </summary>
     /// <param name="response">HTTP 请求的响应消息。</param>
     /// <exception cref="ArgumentNullException"><paramref name="response"/> 是 null。</exception>
-    protected async Task<OutputResult<TResult>> HandleOutputResultAsync<TResult>(HttpResponseMessage response)
+    protected async Task<Return<TResult>> HandleOutputResultAsync<TResult>(HttpResponseMessage response)
     {
         if (response is null)
         {
@@ -156,12 +154,12 @@ public abstract class HttpApiClientProxyBase : IHttpApiClientProxy
             var content = await response.Content.ReadAsStringAsync();
             if (content.IsNullOrEmpty())
             {
-                return OutputResult<TResult>.Failed(Logger, "Content from HttpContent is null or empty");
+                return Return<TResult>.Failed(Logger, "Content from HttpContent is null or empty");
             }
-            var result = JsonConvert.DeserializeObject<OutputResult<TResult>>(content);
+            var result = JsonConvert.DeserializeObject<Return<TResult>>(content);
             if (result is null)
             {
-                return OutputResult<TResult>.Failed(Logger, $"Deserialize {nameof(OutputResult)} from content failed");
+                return Return<TResult>.Failed(Logger, $"Deserialize {nameof(Return)} from content failed");
             }
             if (!result.Succeed)
             {
@@ -172,7 +170,7 @@ public abstract class HttpApiClientProxyBase : IHttpApiClientProxy
         }
         catch (Exception ex)
         {
-            return OutputResult<TResult>.Failed(Logger, ex);
+            return Return<TResult>.Failed(Logger, ex);
         }
     }
 
@@ -183,12 +181,12 @@ public abstract class HttpApiClientProxyBase : IHttpApiClientProxy
     void LogRequestUri(HttpResponseMessage response) => Logger?.LogError("Request uri is {0}", response?.RequestMessage?.RequestUri?.AbsolutePath);
 
     /// <summary>
-    /// 发送指定请求消息并返回 <see cref="OutputResult{TResult}"/> 结果。
+    /// 发送指定请求消息并返回 <see cref="Return{TResult}"/> 结果。
     /// </summary>
     /// <typeparam name="TResult">结果类型。</typeparam>
     /// <param name="request">请求消息。</param>
     /// <param name="option">请求完成选项。</param>
-    protected virtual async Task<OutputResult<TResult>> SendAsync<TResult>(HttpRequestMessage request, HttpCompletionOption option = HttpCompletionOption.ResponseContentRead)
+    protected virtual async Task<Return<TResult>> SendAsync<TResult>(HttpRequestMessage request, HttpCompletionOption option = HttpCompletionOption.ResponseContentRead)
     {
         try
         {
@@ -197,16 +195,16 @@ public abstract class HttpApiClientProxyBase : IHttpApiClientProxy
         }
         catch (Exception ex)
         {
-            return OutputResult<TResult>.Failed(Logger, ex);
+            return Return<TResult>.Failed(Logger, ex);
         }
     }
 
     /// <summary>
-    /// 发送指定请求消息并返回 <see cref="OutputResult"/> 结果。
+    /// 发送指定请求消息并返回 <see cref="Return"/> 结果。
     /// </summary>
     /// <param name="request">请求消息。</param>
     /// <param name="option">请求完成选项。</param>
-    protected virtual async Task<OutputResult> SendAsync(HttpRequestMessage request, HttpCompletionOption option = HttpCompletionOption.ResponseContentRead)
+    protected virtual async Task<Return> SendAsync(HttpRequestMessage request, HttpCompletionOption option = HttpCompletionOption.ResponseContentRead)
     {
         try
         {
@@ -215,7 +213,7 @@ public abstract class HttpApiClientProxyBase : IHttpApiClientProxy
         }
         catch (Exception ex)
         {
-            return OutputResult.Failed(Logger, ex);
+            return Return.Failed(Logger, ex);
         }
     }
     #region POST
@@ -228,7 +226,7 @@ public abstract class HttpApiClientProxyBase : IHttpApiClientProxy
     /// <param name="body">请求传送的主体。</param>
     /// <param name="options">JSON 序列号配置。</param>
     /// <returns></returns>
-    protected virtual async Task<OutputResult<TResult>> PostAsync<TBody, TResult>(string requestUri, TBody body, JsonSerializerOptions? options = default)
+    protected virtual async Task<Return<TResult>> PostAsync<TBody, TResult>(string requestUri, TBody body, JsonSerializerOptions? options = default)
     {
         try
         {
@@ -237,7 +235,7 @@ public abstract class HttpApiClientProxyBase : IHttpApiClientProxy
         }
         catch (Exception ex)
         {
-            return OutputResult<TResult>.Failed(Logger, ex);
+            return Return<TResult>.Failed(Logger, ex);
         }
     }
 
@@ -249,7 +247,7 @@ public abstract class HttpApiClientProxyBase : IHttpApiClientProxy
     /// <param name="requestUri">请求地址。</param>
     /// <param name="body">请求传送的主体。</param>
     /// <param name="options">JSON 序列号配置。</param>
-    protected virtual Task<OutputResult<TResult>> PostAsync<TBody
+    protected virtual Task<Return<TResult>> PostAsync<TBody
         , TResult>(Uri requestUri, TBody body, JsonSerializerOptions? options = default)
         => PostAsync<TBody, TResult>(requestUri.ToString(), body, options);
 
@@ -261,7 +259,7 @@ public abstract class HttpApiClientProxyBase : IHttpApiClientProxy
     /// <param name="body">请求传送的主体。</param>
     /// <param name="options">JSON 序列号配置。</param>
     /// <returns></returns>
-    protected virtual async Task<OutputResult> PostAsync<TBody>(string requestUri, TBody body, JsonSerializerOptions? options = default)
+    protected virtual async Task<Return> PostAsync<TBody>(string requestUri, TBody body, JsonSerializerOptions? options = default)
     {
         try
         {
@@ -270,7 +268,7 @@ public abstract class HttpApiClientProxyBase : IHttpApiClientProxy
         }
         catch (Exception ex)
         {
-            return OutputResult.Failed(Logger, ex);
+            return Return.Failed(Logger, ex);
         }
     }
 
@@ -281,7 +279,7 @@ public abstract class HttpApiClientProxyBase : IHttpApiClientProxy
     /// <param name="requestUri">请求地址。</param>
     /// <param name="body">请求传送的主体。</param>
     /// <param name="options">JSON 序列号配置。</param>
-    protected virtual Task<OutputResult> PostAsync<TBody>(Uri requestUri, TBody body, JsonSerializerOptions? options = default)
+    protected virtual Task<Return> PostAsync<TBody>(Uri requestUri, TBody body, JsonSerializerOptions? options = default)
         => PostAsync(requestUri.ToString(), body, options);
     #endregion
 
@@ -292,7 +290,7 @@ public abstract class HttpApiClientProxyBase : IHttpApiClientProxy
     /// <typeparam name="TResult">结果类型。</typeparam>
     /// <param name="requestUri">请求地址。</param>
     /// <returns></returns>
-    protected virtual async Task<OutputResult<TResult>> GetAsync<TResult>(string requestUri)
+    protected virtual async Task<Return<TResult>> GetAsync<TResult>(string requestUri)
     {
         try
         {
@@ -301,7 +299,7 @@ public abstract class HttpApiClientProxyBase : IHttpApiClientProxy
         }
         catch (Exception ex)
         {
-            return OutputResult<TResult>.Failed(Logger, ex);
+            return Return<TResult>.Failed(Logger, ex);
         }
     }
 
@@ -310,14 +308,14 @@ public abstract class HttpApiClientProxyBase : IHttpApiClientProxy
     /// </summary>
     /// <typeparam name="TResult">结果类型。</typeparam>
     /// <param name="requestUri">请求地址。</param>
-    protected virtual Task<OutputResult<TResult>> GetAsync<TResult>(Uri requestUri)
+    protected virtual Task<Return<TResult>> GetAsync<TResult>(Uri requestUri)
         => GetAsync<TResult>(requestUri.ToString());
 
     /// <summary>
     /// 发送 GET 请求。
     /// </summary>
     /// <param name="requestUri">请求地址。</param>
-    protected virtual async Task<OutputResult> GetAsync(string requestUri)
+    protected virtual async Task<Return> GetAsync(string requestUri)
     {
         try
         {
@@ -326,14 +324,14 @@ public abstract class HttpApiClientProxyBase : IHttpApiClientProxy
         }
         catch (Exception ex)
         {
-            return OutputResult.Failed(Logger, ex);
+            return Return.Failed(Logger, ex);
         }
     }
     /// <summary>
     /// 发送 GET 请求。
     /// </summary>
     /// <param name="requestUri">请求地址。</param>
-    protected virtual Task<OutputResult> GetAsync(Uri requestUri)
+    protected virtual Task<Return> GetAsync(Uri requestUri)
         => GetAsync(requestUri.ToString());
     #endregion
 
@@ -346,7 +344,7 @@ public abstract class HttpApiClientProxyBase : IHttpApiClientProxy
     /// <param name="requestUri">请求地址。</param>
     /// <param name="body">请求传送的主体。</param>
     /// <param name="options">JSON 序列号配置。</param>
-    protected virtual async Task<OutputResult<TResult>> PutAsync<TBody, TResult>(string requestUri, TBody body, JsonSerializerOptions? options = default)
+    protected virtual async Task<Return<TResult>> PutAsync<TBody, TResult>(string requestUri, TBody body, JsonSerializerOptions? options = default)
     {
         try
         {
@@ -355,7 +353,7 @@ public abstract class HttpApiClientProxyBase : IHttpApiClientProxy
         }
         catch (Exception ex)
         {
-            return OutputResult<TResult>.Failed(Logger, ex);
+            return Return<TResult>.Failed(Logger, ex);
         }
     }
     /// <summary>
@@ -366,7 +364,7 @@ public abstract class HttpApiClientProxyBase : IHttpApiClientProxy
     /// <param name="requestUri">请求地址。</param>
     /// <param name="body">请求传送的主体。</param>
     /// <param name="options">JSON 序列号配置。</param>
-    protected virtual Task<OutputResult<TResult>> PutAsync<TBody, TResult>(Uri requestUri, TBody body, JsonSerializerOptions? options = default)
+    protected virtual Task<Return<TResult>> PutAsync<TBody, TResult>(Uri requestUri, TBody body, JsonSerializerOptions? options = default)
         => PutAsync<TBody, TResult>(requestUri.ToString(), body, options);
     /// <summary>
     /// 以 JSON 的方式发送 PUT 请求。
@@ -375,7 +373,7 @@ public abstract class HttpApiClientProxyBase : IHttpApiClientProxy
     /// <param name="requestUri">请求地址。</param>
     /// <param name="body">请求传送的主体。</param>
     /// <param name="options">JSON 序列号配置。</param>
-    protected virtual async Task<OutputResult> PutAsync<TBody>(string requestUri, TBody body, JsonSerializerOptions? options = default)
+    protected virtual async Task<Return> PutAsync<TBody>(string requestUri, TBody body, JsonSerializerOptions? options = default)
     {
         try
         {
@@ -384,7 +382,7 @@ public abstract class HttpApiClientProxyBase : IHttpApiClientProxy
         }
         catch (Exception ex)
         {
-            return OutputResult.Failed(Logger, ex);
+            return Return.Failed(Logger, ex);
         }
     }
     /// <summary>
@@ -394,7 +392,7 @@ public abstract class HttpApiClientProxyBase : IHttpApiClientProxy
     /// <param name="requestUri">请求地址。</param>
     /// <param name="body">请求传送的主体。</param>
     /// <param name="options">JSON 序列号配置。</param>
-    protected virtual Task<OutputResult> PutAsync<TBody>(Uri requestUri, TBody body, JsonSerializerOptions? options = default)
+    protected virtual Task<Return> PutAsync<TBody>(Uri requestUri, TBody body, JsonSerializerOptions? options = default)
          => PutAsync<TBody>(requestUri.ToString(), body, options);
     #endregion
     #region DELETE
@@ -403,7 +401,7 @@ public abstract class HttpApiClientProxyBase : IHttpApiClientProxy
     /// </summary>
     /// <typeparam name="TResult">结果类型。</typeparam>
     /// <param name="requestUri">请求地址。</param>
-    protected virtual async Task<OutputResult<TResult>> DeleteAsync<TResult>(string requestUri)
+    protected virtual async Task<Return<TResult>> DeleteAsync<TResult>(string requestUri)
     {
         try
         {
@@ -412,7 +410,7 @@ public abstract class HttpApiClientProxyBase : IHttpApiClientProxy
         }
         catch (Exception ex)
         {
-            return OutputResult<TResult>.Failed(Logger, ex);
+            return Return<TResult>.Failed(Logger, ex);
         }
     }
     /// <summary>
@@ -420,13 +418,13 @@ public abstract class HttpApiClientProxyBase : IHttpApiClientProxy
     /// </summary>
     /// <typeparam name="TResult">结果类型。</typeparam>
     /// <param name="requestUri">请求地址。</param>
-    protected virtual Task<OutputResult<TResult>> DeleteAsync<TResult>(Uri requestUri)
+    protected virtual Task<Return<TResult>> DeleteAsync<TResult>(Uri requestUri)
         => DeleteAsync<TResult>(requestUri.ToString());
     /// <summary>
     /// 发送 DELETE 请求。
     /// </summary>
     /// <param name="requestUri">请求地址。</param>
-    protected virtual async Task<OutputResult> DeleteAsync(string requestUri)
+    protected virtual async Task<Return> DeleteAsync(string requestUri)
     {
         try
         {
@@ -435,14 +433,14 @@ public abstract class HttpApiClientProxyBase : IHttpApiClientProxy
         }
         catch (Exception ex)
         {
-            return OutputResult.Failed(Logger, ex);
+            return Return.Failed(Logger, ex);
         }
     }
     /// <summary>
     /// 发送 DELETE 请求。
     /// </summary>
     /// <param name="requestUri">请求地址。</param>
-    protected virtual Task<OutputResult> DeleteAsync(Uri requestUri)
+    protected virtual Task<Return> DeleteAsync(Uri requestUri)
         => DeleteAsync(requestUri.ToString());
     #endregion
 }

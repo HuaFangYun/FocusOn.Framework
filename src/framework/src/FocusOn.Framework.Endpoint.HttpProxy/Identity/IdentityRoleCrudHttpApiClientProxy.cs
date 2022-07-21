@@ -1,5 +1,4 @@
-﻿using FocusOn.Framework.Business.Contract.DTO;
-using FocusOn.Framework.Business.Contract.Identity;
+﻿using FocusOn.Framework.Business.Contract.Identity;
 using FocusOn.Framework.Business.Contract.Identity.DTO;
 
 namespace FocusOn.Framework.Endpoint.HttpProxy.Identity;
@@ -52,7 +51,7 @@ public class IdentityRoleCrudHttpApiClientProxy<TKey, TDetailOutput, TListOutput
     /// 获取指定角色名称的角色远程服务。
     /// </summary>
     /// <param name="name">角色名称。</param>
-    public virtual async Task<OutputResult<TDetailOutput>> GetByNameAsync(string name)
+    public virtual async Task<Return<TDetailOutput>> GetByNameAsync(string name)
     {
         var uri = GetRequestUri(queryParameters: new { name });
         var response = await Client.GetAsync(uri);

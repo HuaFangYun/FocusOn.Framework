@@ -1,5 +1,4 @@
-﻿using FocusOn.Framework.Business.Contract.DTO;
-using FocusOn.Framework.Business.Contract.Http;
+﻿using FocusOn.Framework.Business.Contract.Http;
 
 namespace FocusOn.Framework.Business.Contract;
 
@@ -26,8 +25,8 @@ public interface ICrudBusinessService<TKey, TDetailOrListOutput, TListSearchInpu
     : ICrudBusinessService<TKey, TDetailOrListOutput, TDetailOrListOutput, TListSearchInput, TCreateOrUpdateInput, TCreateOrUpdateInput>, IReadOnlyBusinessService<TKey, TDetailOrListOutput, TListSearchInput>
     where TKey : IEquatable<TKey>
     where TListSearchInput : class
-    where TDetailOrListOutput : class
-    where TCreateOrUpdateInput : class
+    where TDetailOrListOutput : notnull
+    where TCreateOrUpdateInput : notnull
 {
 
 }
@@ -44,9 +43,9 @@ public interface ICrudBusinessService<TKey, TDetailOutput, TListOutput, TListSea
     : ICrudBusinessService<TKey, TDetailOutput, TListOutput, TListSearchInput, TCreateOrUpdateInput, TCreateOrUpdateInput>, IReadOnlyBusinessService<TKey, TDetailOutput, TListOutput, TListSearchInput>
     where TKey : IEquatable<TKey>
     where TListSearchInput : class
-    where TListOutput : class
-    where TDetailOutput : class
-    where TCreateOrUpdateInput : class
+    where TListOutput : notnull
+    where TDetailOutput : notnull
+    where TCreateOrUpdateInput : notnull
 {
 
 }
@@ -63,31 +62,31 @@ public interface ICrudBusinessService<TKey, TDetailOutput, TListOutput, TListSea
 public interface ICrudBusinessService<TKey, TDetailOutput, TListOutput, TListSearchInput, TCreateInput, TUpdateInput> : IReadOnlyBusinessService<TKey, TDetailOutput, TListOutput, TListSearchInput>
     where TKey : IEquatable<TKey>
     where TListSearchInput : class
-    where TListOutput : class
-    where TDetailOutput : class
-    where TCreateInput : class
-    where TUpdateInput : class
+    where TListOutput : notnull
+    where TDetailOutput : notnull
+    where TCreateInput : notnull
+    where TUpdateInput : notnull
 {
     /// <summary>
     /// 以异步的方式创建指定的输入模型对象。
     /// </summary>
     /// <param name="model">要创建的模型。</param>
-    /// <returns>一个创建方法，返回 <see cref="OutputResult"/> 结果。</returns>
+    /// <returns>一个创建方法，返回 <see cref="Return"/> 结果。</returns>
     [Post]
-    ValueTask<OutputResult<TDetailOutput>> CreateAsync([Body] TCreateInput model);
+    ValueTask<Return<TDetailOutput>> CreateAsync([Body] TCreateInput model);
     /// <summary>
     /// 以异步的方式更新指定 id 的输入模型对象。
     /// </summary>
     /// <param name="id">要更新的 id。</param>
     /// <param name="model">要更新的输入模型。</param>
-    /// <returns>一个更新方法，返回 <see cref="OutputResult"/> 结果。</returns>
+    /// <returns>一个更新方法，返回 <see cref="Return"/> 结果。</returns>
     [Put("{id}")]
-    ValueTask<OutputResult<TDetailOutput>> UpdateAsync(TKey id, [Body] TUpdateInput model);
+    ValueTask<Return<TDetailOutput>> UpdateAsync(TKey id, [Body] TUpdateInput model);
     /// <summary>
     /// 以异步的方式删除指定的 id。
     /// </summary>
     /// <param name="id">要删除的 id。</param>
-    /// <returns>一个删除方法，返回 <see cref="OutputResult"/> 结果。</returns>
+    /// <returns>一个删除方法，返回 <see cref="Return"/> 结果。</returns>
     [Delete("{id}")]
-    ValueTask<OutputResult<TDetailOutput>> DeleteAsync(TKey id);
+    ValueTask<Return<TDetailOutput>> DeleteAsync(TKey id);
 }

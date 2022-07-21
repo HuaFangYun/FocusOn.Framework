@@ -1,5 +1,4 @@
-﻿using FocusOn.Framework.Business.Contract.DTO;
-using FocusOn.Framework.Business.Contract.Identity;
+﻿using FocusOn.Framework.Business.Contract.Identity;
 
 namespace FocusOn.Framework.Endpoint.HttpProxy.Identity;
 
@@ -53,7 +52,7 @@ public class IdentityUserCrudHttpApiClientProxy<TKey, TDetailOutput, TListOutput
     /// </summary>
     /// <param name="userName">用户名。</param>
     /// <returns></returns>
-    public virtual async Task<OutputResult<TDetailOutput>> GetByUserNameAsync(string userName)
+    public virtual async Task<Return<TDetailOutput>> GetByUserNameAsync(string userName)
     {
         var uri = GetRequestUri($"username/{userName}");
         var response = await Client.GetAsync(uri);

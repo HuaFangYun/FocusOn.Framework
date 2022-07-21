@@ -1,5 +1,4 @@
 ﻿using FocusOn.Framework.Business.Contract;
-using FocusOn.Framework.Business.Contract.DTO;
 using FocusOn.Framework.Business.Store;
 using FocusOn.Framework.Modules;
 
@@ -93,7 +92,7 @@ public abstract class CrudApiControllerBase<TContext, TEntity, TKey, TDetailOutp
     /// <param name="model">要创建的输入。</param>
     /// <exception cref="ArgumentNullException"><paramref name="model"/> 是 null。</exception>
     [HttpPost]
-    public virtual async ValueTask<OutputResult<TDetailOutput>> CreateAsync([FromBody] TCreateInput model)
+    public virtual async ValueTask<Return<TDetailOutput>> CreateAsync([FromBody] TCreateInput model)
     {
         if (model is null)
         {
@@ -102,7 +101,7 @@ public abstract class CrudApiControllerBase<TContext, TEntity, TKey, TDetailOutp
 
         if (!Validator.TryValidate(model, out var errors))
         {
-            return OutputResult<TDetailOutput>.Failed(Logger, errors);
+            return Return<TDetailOutput>.Failed(Logger, errors);
         }
 
         var entity = MapToEntity(model);
@@ -110,7 +109,7 @@ public abstract class CrudApiControllerBase<TContext, TEntity, TKey, TDetailOutp
         await SaveChangesAsync();
 
         var detail = MapToDetail(entity);
-        return OutputResult<TDetailOutput>.Success(detail);
+        return Return<TDetailOutput>.Success(detail);
     }
 
     /// <summary>
@@ -118,18 +117,18 @@ public abstract class CrudApiControllerBase<TContext, TEntity, TKey, TDetailOutp
     /// </summary>
     /// <param name="id">要删除的 Id。</param>
     [HttpDelete("{id}")]
-    public virtual async ValueTask<OutputResult<TDetailOutput>> DeleteAsync(TKey id)
+    public virtual async ValueTask<Return<TDetailOutput>> DeleteAsync(TKey id)
     {
         var entity = await FindAsync(id);
         if (entity is null)
         {
-            return OutputResult<TDetailOutput>.Failed(Logger, GetEntityNotFoundMessage(id));
+            return Return<TDetailOutput>.Failed(Logger, GetEntityNotFoundMessage(id));
         }
         Set.Remove(entity);
         await SaveChangesAsync();
 
         var detail = MapToDetail(entity);
-        return OutputResult<TDetailOutput>.Success(detail);
+        return Return<TDetailOutput>.Success(detail);
     }
 
     /// <summary>
@@ -139,7 +138,7 @@ public abstract class CrudApiControllerBase<TContext, TEntity, TKey, TDetailOutp
     /// <param name="model">要更新的字段。</param>
     /// <exception cref="ArgumentNullException"><paramref name="model"/> 是 null。</exception>
     [HttpPut("{id}")]
-    public virtual async ValueTask<OutputResult<TDetailOutput>> UpdateAsync(TKey id, [FromBody] TUpdateInput model)
+    public virtual async ValueTask<Return<TDetailOutput>> UpdateAsync(TKey id, [FromBody] TUpdateInput model)
     {
         if (model is null)
         {
@@ -148,13 +147,13 @@ public abstract class CrudApiControllerBase<TContext, TEntity, TKey, TDetailOutp
 
         if (!Validator.TryValidate(model, out var errors))
         {
-            return OutputResult<TDetailOutput>.Failed(Logger, errors);
+            return Return<TDetailOutput>.Failed(Logger, errors);
         }
 
         var entity = await FindAsync(id);
         if (entity is null)
         {
-            return OutputResult<TDetailOutput>.Failed(Logger, GetEntityNotFoundMessage(id));
+            return Return<TDetailOutput>.Failed(Logger, GetEntityNotFoundMessage(id));
         }
 
         entity = MapToEntity(model, entity);
@@ -162,13 +161,13 @@ public abstract class CrudApiControllerBase<TContext, TEntity, TKey, TDetailOutp
         await SaveChangesAsync();
 
         var detail = MapToDetail(entity);
-        return OutputResult<TDetailOutput>.Success(detail);
+        return Return<TDetailOutput>.Success(detail);
     }
 
     /// <summary>
-    /// 保存数据库并返回 <see cref="OutputResult"/> 的结果。
+    /// 保存数据库并返回 <see cref="Return"/> 的结果。
     /// </summary>
-    protected virtual async Task<OutputResult> SaveChangesAsync()
+    protected virtual async Task<Return> SaveChangesAsync()
     {
         try
         {
@@ -176,15 +175,15 @@ public abstract class CrudApiControllerBase<TContext, TEntity, TKey, TDetailOutp
             if (rows > 0)
             {
                 Logger?.LogInformation("数据保存成功");
-                return OutputResult.Success();
+                return Return.Success();
             }
             Logger?.LogWarning("因为影响行数是0，保存失败");
-            return OutputResult.Failed("数据保存失败，请查看日志");
+            return Return.Failed("数据保存失败，请查看日志");
         }
         catch (AggregateException ex)
         {
             Logger?.LogError(ex, string.Join(";", ex.InnerExceptions.Select(m => m.Message)));
-            return OutputResult.Failed("保存发生异常，请查看日志以获得详情");
+            return Return.Failed("保存发生异常，请查看日志以获得详情");
         }
     }
 

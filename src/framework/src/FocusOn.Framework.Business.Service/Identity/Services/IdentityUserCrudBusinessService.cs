@@ -1,14 +1,14 @@
-﻿using FocusOn.Framework.Business.Contract.Identity;
-using FocusOn.Framework.Business.Contract.Identity.DTO;
-using FocusOn.Framework.Business.Store.Identity;
-using FocusOn.Framework.Endpoint.HttpApi.Controllers;
-using FocusOn.Framework.Endpoint.HttpApi.Localizations;
-
+﻿using FocusOn;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using FocusOn.Framework.Business.Store.Identity;
+using FocusOn.Framework.Endpoint.HttpApi.Identity;
+using FocusOn.Framework.Business.Contract.Identity;
+using FocusOn.Framework.Business.Contract.Identity.DTO;
+using FocusOn.Framework.Business.Services.Localizations;
 
-namespace FocusOn.Framework.Endpoint.HttpApi.Identity.Controllers;
+namespace FocusOn.Framework.Business.Services.Identity.Services;
 
 /// <summary>
 ///  提供对用户进行 CRUD 操作的 HTTP API 控制器。
@@ -16,15 +16,15 @@ namespace FocusOn.Framework.Endpoint.HttpApi.Identity.Controllers;
 /// <typeparam name="TContext">数据库上下文类型。</typeparam>
 /// <typeparam name="TUser">用户类型。</typeparam>
 /// <typeparam name="TKey">主键类型。</typeparam>
-public class IdentityUserCrudApiController<TContext, TUser, TKey> : IdentityUserCrudApiController<TContext, TUser, TKey, TUser, TUser, TUser>, IIdentityUserCrudBusinessService<TKey, TUser>
+public class IdentityUserCrudBusinessService<TContext, TUser, TKey> : IdentityUserCrudBusinessService<TContext, TUser, TKey, TUser, TUser, TUser>, IIdentityUserCrudBusinessService<TKey, TUser>
     where TContext : DbContext
     where TUser : IdentityUser<TKey>, new()
     where TKey : IEquatable<TKey>
 {
     /// <summary>
-    /// 初始化 <see cref="IdentityUserCrudApiController{TContext, TUser, TKey}"/> 类的新实例。
+    /// 初始化 <see cref="IdentityUserCrudBusinessService{TContext, TUser, TKey}"/> 类的新实例。
     /// </summary>
-    public IdentityUserCrudApiController(IServiceProvider serviceProvider) : base(serviceProvider)
+    public IdentityUserCrudBusinessService(IServiceProvider serviceProvider) : base(serviceProvider)
     {
     }
 }
@@ -38,18 +38,18 @@ public class IdentityUserCrudApiController<TContext, TUser, TKey> : IdentityUser
 /// <typeparam name="TDetailOutput">详情输出类型。</typeparam>
 /// <typeparam name="TListOutput">列表输出类型。</typeparam>
 /// <typeparam name="TListSearchInput">列表搜索输入类型。</typeparam>
-public class IdentityUserCrudApiController<TContext, TUser, TKey, TDetailOutput, TListOutput, TListSearchInput> : IdentityUserCrudApiController<TContext, TUser, TKey, TDetailOutput, TListOutput, TListSearchInput, TUser, TUser>, IIdentityUserCrudBusinessService<TKey, TDetailOutput, TListOutput, TListSearchInput, TUser, TUser>
+public class IdentityUserCrudBusinessService<TContext, TUser, TKey, TDetailOutput, TListOutput, TListSearchInput> : IdentityUserCrudBusinessService<TContext, TUser, TKey, TDetailOutput, TListOutput, TListSearchInput, TUser, TUser>, IIdentityUserCrudBusinessService<TKey, TDetailOutput, TListOutput, TListSearchInput, TUser, TUser>
     where TContext : DbContext
     where TUser : IdentityUser<TKey>, new()
     where TKey : IEquatable<TKey>
     where TListSearchInput : class
-    where TListOutput : class
-    where TDetailOutput : class
+    where TListOutput : notnull
+    where TDetailOutput : notnull
 {
     /// <summary>
-    /// 初始化 <see cref="IdentityUserCrudApiController{TContext, TUser, TKey, TDetailOutput, TListOutput, TListSearchInput}"/> 类的新实例。
+    /// 初始化 <see cref="IdentityUserCrudBusinessService{TContext, TUser, TKey, TDetailOutput, TListOutput, TListSearchInput}"/> 类的新实例。
     /// </summary>
-    public IdentityUserCrudApiController(IServiceProvider serviceProvider) : base(serviceProvider)
+    public IdentityUserCrudBusinessService(IServiceProvider serviceProvider) : base(serviceProvider)
     {
     }
 }
@@ -65,21 +65,20 @@ public class IdentityUserCrudApiController<TContext, TUser, TKey, TDetailOutput,
 /// <typeparam name="TListSearchInput">列表搜索输入类型。</typeparam>
 /// <typeparam name="TCreateInput">创建输入类型。</typeparam>
 /// <typeparam name="TUpdateInput">更新输入类型。</typeparam>
-[Route("api/users")]
-public class IdentityUserCrudApiController<TContext, TUser, TKey, TDetailOutput, TListOutput, TListSearchInput, TCreateInput, TUpdateInput> : CrudApiControllerBase<TContext, TUser, TKey, TDetailOutput, TListOutput, TListSearchInput, TCreateInput, TUpdateInput>, IIdentityUserCrudBusinessService<TKey, TDetailOutput, TListOutput, TListSearchInput, TCreateInput, TUpdateInput>
+public class IdentityUserCrudBusinessService<TContext, TUser, TKey, TDetailOutput, TListOutput, TListSearchInput, TCreateInput, TUpdateInput> : CrudBusinessService<TContext, TUser, TKey, TDetailOutput, TListOutput, TListSearchInput, TCreateInput, TUpdateInput>, IIdentityUserCrudBusinessService<TKey, TDetailOutput, TListOutput, TListSearchInput, TCreateInput, TUpdateInput>
     where TContext : DbContext
     where TUser : IdentityUser<TKey>, new()
     where TKey : IEquatable<TKey>
     where TListSearchInput : class
-    where TListOutput : class
-    where TDetailOutput : class
-    where TCreateInput : class
-    where TUpdateInput : class
+    where TListOutput : notnull
+    where TDetailOutput : notnull
+    where TCreateInput : notnull
+    where TUpdateInput : notnull
 {
     /// <summary>
-    /// 初始化 <see cref="IdentityUserCrudApiController{TContext, TUser, TKey, TDetailOutput, TListOutput, TListSearchInput, TCreateInput, TUpdateInput}"/> 类的新实例。
+    /// 初始化 <see cref="IdentityUserCrudBusinessService{TContext, TUser, TKey, TDetailOutput, TListOutput, TListSearchInput, TCreateInput, TUpdateInput}"/> 类的新实例。
     /// </summary>
-    public IdentityUserCrudApiController(IServiceProvider serviceProvider) : base(serviceProvider)
+    public IdentityUserCrudBusinessService(IServiceProvider serviceProvider) : base(serviceProvider)
     {
     }
 
@@ -92,7 +91,6 @@ public class IdentityUserCrudApiController<TContext, TUser, TKey, TDetailOutput,
     /// 获取指定用户名的用户详情。
     /// </summary>
     /// <param name="userName">用户名。</param>
-    [HttpGet("username/{userName}")]
     public virtual async Task<Return<TDetailOutput>> GetByUserNameAsync(string userName)
     {
         var user = await Query.SingleOrDefaultAsync(m => m.UserName.Equals(userName), CancellationToken);

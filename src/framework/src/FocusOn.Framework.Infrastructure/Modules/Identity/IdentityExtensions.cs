@@ -37,9 +37,13 @@ public static class IdentityExtensions
         return default;
     }
     /// <summary>
-    /// 获取声明类型是 <see cref="IdentityClaimTypes.UserName"/> 的用户 Id。
+    /// 获取声明类型是 <see cref="IdentityClaimTypes.UserId"/> 的用户。
     /// </summary>
     public static string? GetUserId(this IIdentity identity) => identity.FindFirstClaimValue(IdentityClaimTypes.UserId);
+    /// <summary>
+    /// 获取声明类型是 <see cref="IdentityClaimTypes.UserName"/> 的用户。
+    /// </summary>
+    public static string? GetUserName(this IIdentity identity) => identity.FindFirstClaimValue(IdentityClaimTypes.UserName);
 
     /// <summary>
     /// 获取声明类型是 <see cref="IdentityClaimTypes.TenantName"/> 的租户名称。

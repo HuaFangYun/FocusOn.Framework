@@ -2,7 +2,6 @@
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using FocusOn.Framework.Business.Contract;
-using FocusOn.Framework.Business.Contract.DTO;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace FocusOn.Framework.Endpoint.HttpProxy.Dynamic;
@@ -22,7 +21,7 @@ internal class DynamicHttpClientProxy<TService> : IHttpApiClientProxy
 
     public DynamicHttpProxyOptions Options => ServiceProvider.GetRequiredService<IOptions<DynamicHttpProxyOptions>>().Value;
 
-    public HttpClient CreateClient()
+    protected virtual HttpClient CreateClient()
     {
         var serviceType = typeof(TService);
         var configuration = Options.HttpProxies[serviceType];
@@ -39,7 +38,7 @@ internal class DynamicHttpClientProxy<TService> : IHttpApiClientProxy
     }
 
     /// <summary>
-    /// 以异步的方式处理 <see cref="HttpResponseMessage"/> 并解析为 <see cref="OutputResult"/> 对象。
+    /// 以异步的方式处理 <see cref="HttpResponseMessage"/> 并解析为 <see cref="Return"/> 对象。
     /// </summary>
     /// <param name="response">HTTP 请求的响应消息。</param>
     /// <exception cref="ArgumentNullException"><paramref name="response"/> 是 null。</exception>

@@ -108,15 +108,15 @@ public abstract class ReadOnlyApiControllerBase<TContext, TEntity, TKey, TDetail
     /// </summary>
     /// <param name="id">要获取的 Id。</param>
     [HttpGet("{id}")]
-    public virtual async ValueTask<OutputResult<TDetailOutput?>> GetAsync(TKey id)
+    public virtual async ValueTask<Return<TDetailOutput?>> GetAsync(TKey id)
     {
         var entity = await FindAsync(id);
         if (entity is null)
         {
-            return OutputResult<TDetailOutput?>.Failed(GetEntityNotFoundMessage(id));
+            return Return<TDetailOutput?>.Failed(GetEntityNotFoundMessage(id));
         }
         var output = MapToDetail(entity);
-        return OutputResult<TDetailOutput?>.Success(output);
+        return Return<TDetailOutput?>.Success(output);
     }
 
     /// <summary>
@@ -124,7 +124,7 @@ public abstract class ReadOnlyApiControllerBase<TContext, TEntity, TKey, TDetail
     /// </summary>
     /// <param name="model">列表检索的输入。</param>
     [HttpGet]
-    public virtual async Task<OutputResult<PagedOutput<TListOutput>>> GetListAsync(TListSearchInput? model = default)
+    public virtual async Task<Return<PagedOutput<TListOutput>>> GetListAsync(TListSearchInput? model = default)
     {
         var query = CreateQuery(model);
 
@@ -139,11 +139,11 @@ public abstract class ReadOnlyApiControllerBase<TContext, TEntity, TKey, TDetail
         {
             var data = await Mapper.ProjectTo<TListOutput>(query).ToListAsync(CancellationToken);
             var total = await query.CountAsync(CancellationToken);
-            return OutputResult<PagedOutput<TListOutput>>.Success(new(data, total));
+            return Return<PagedOutput<TListOutput>>.Success(new(data, total));
         }
         catch (AggregateException ex)
         {
-            return OutputResult<PagedOutput<TListOutput>>.Failed(Logger, ex);
+            return Return<PagedOutput<TListOutput>>.Failed(Logger, ex);
         }
     }
 

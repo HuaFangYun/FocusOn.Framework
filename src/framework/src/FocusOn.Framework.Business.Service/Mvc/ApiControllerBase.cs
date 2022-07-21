@@ -9,7 +9,7 @@ namespace FocusOn.Framework.Business.Services.Mvc;
 /// <summary>
 /// 表示具备 HTTP API 功能的控制器基类。
 /// </summary>
-[Route("[controller]")]
+[Route("api/[controller]")]
 public abstract class ApiControllerBase : ControllerBase, IBusinessSerivce
 {
     /// <summary>

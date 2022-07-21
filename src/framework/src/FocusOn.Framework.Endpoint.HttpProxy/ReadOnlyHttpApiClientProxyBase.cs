@@ -60,12 +60,12 @@ public abstract class ReadOnlyHttpApiClientProxy<TKey, TDetailOutput, TListOutpu
     /// <summary>
     /// 以异步的方式使用 HttpGet 方式请求 HTTP API 获取指定 id 的数据。
     /// </summary>
-    public virtual ValueTask<OutputResult<TDetailOutput?>> GetAsync(TKey id)
+    public virtual ValueTask<Return<TDetailOutput?>> GetAsync(TKey id)
         => GetAsync<TDetailOutput?>(GetRequestUri(id.ToString())).ToValueTask();
 
     /// <summary>
     /// 以异步的方式使用 HttpGet 方式请求 HTTP API 获取指定数据筛选输入的数据。
     /// </summary>
-    public virtual Task<OutputResult<PagedOutput<TListOutput>>> GetListAsync(TListSearchInput model)
+    public virtual Task<Return<PagedOutput<TListOutput>>> GetListAsync(TListSearchInput model)
         => GetAsync<PagedOutput<TListOutput>>(GetRequestUri(queryParameters: model));
 }

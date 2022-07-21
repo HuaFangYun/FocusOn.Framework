@@ -1,5 +1,4 @@
 ﻿using FocusOn.Framework.Business.Contract;
-using FocusOn.Framework.Business.Contract.DTO;
 
 namespace FocusOn.Framework.Endpoint.HttpProxy;
 
@@ -74,7 +73,7 @@ where TUpdateInput : class
     /// </summary>
     /// <param name="model">要推送的创建数据模型。</param>
     /// <exception cref="ArgumentNullException"><paramref name="model"/> 是 null。</exception>
-    public virtual ValueTask<OutputResult<TDetailOutput>> CreateAsync(TCreateInput model)
+    public virtual ValueTask<Return<TDetailOutput>> CreateAsync(TCreateInput model)
     {
         if (model is null)
         {
@@ -83,7 +82,7 @@ where TUpdateInput : class
 
         if (!Validator.TryValidate(model, out var errors))
         {
-            return OutputResult<TDetailOutput>.Failed(errors).ToValueTask();
+            return Return<TDetailOutput>.Failed(errors).ToValueTask();
         }
 
         return PostAsync<TCreateInput, TDetailOutput>(GetRequestUri(), model).ToValueTask();
@@ -93,7 +92,7 @@ where TUpdateInput : class
     /// 以异步的方式使用 HttpDelete 方式请求 HTTP API 删除指定 id 的数据。
     /// </summary>
     /// <param name="id">要删除的 id。</param>
-    public virtual ValueTask<OutputResult<TDetailOutput>> DeleteAsync(TKey id)
+    public virtual ValueTask<Return<TDetailOutput>> DeleteAsync(TKey id)
         => DeleteAsync<TDetailOutput>(GetRequestUri(id.ToString())).ToValueTask();
 
     /// <summary>
@@ -102,7 +101,7 @@ where TUpdateInput : class
     /// <param name="id">要更新的 id。</param>
     /// <param name="model">要更新的数据。</param>
     /// <exception cref="ArgumentNullException"><paramref name="model"/> 是 null。</exception>
-    public virtual ValueTask<OutputResult<TDetailOutput>> UpdateAsync(TKey id, TUpdateInput model)
+    public virtual ValueTask<Return<TDetailOutput>> UpdateAsync(TKey id, TUpdateInput model)
     {
         if (model is null)
         {
@@ -111,7 +110,7 @@ where TUpdateInput : class
 
         if (!Validator.TryValidate(model, out var errors))
         {
-            return OutputResult<TDetailOutput>.Failed(errors).ToValueTask();
+            return Return<TDetailOutput>.Failed(errors).ToValueTask();
         }
 
         return PutAsync<TUpdateInput, TDetailOutput>(GetRequestUri(), model).ToValueTask();

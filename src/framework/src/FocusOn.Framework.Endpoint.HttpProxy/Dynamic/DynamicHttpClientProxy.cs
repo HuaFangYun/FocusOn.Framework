@@ -1,9 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Text;
-using Newtonsoft.Json;
-using System.Threading.Tasks;
-using System.Collections.Generic;
+﻿using Newtonsoft.Json;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using FocusOn.Framework.Business.Contract;
@@ -11,7 +6,7 @@ using FocusOn.Framework.Business.Contract.DTO;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace FocusOn.Framework.Endpoint.HttpProxy.Dynamic;
-internal class DynamicHttpClientProxy : IHttpApiClientProxy
+internal class DynamicHttpClientProxy<TService> : IHttpApiClientProxy
 {
     public DynamicHttpClientProxy(IServiceProvider serviceProvider)
     {
@@ -27,7 +22,14 @@ internal class DynamicHttpClientProxy : IHttpApiClientProxy
 
     public DynamicHttpProxyOptions Options => ServiceProvider.GetRequiredService<IOptions<DynamicHttpProxyOptions>>().Value;
 
-    public HttpClient CreateClient() => HttpClientFactory.CreateClient(Options.Name);
+    public HttpClient CreateClient()
+    {
+        var serviceType = typeof(TService);
+        var configuration = Options.HttpProxies[serviceType];
+        var client = HttpClientFactory.CreateClient(configuration.Name);
+        client.BaseAddress = new(configuration.BaseAddress);
+        return client;
+    }
 
     public virtual async Task<Return> SendAsync(HttpRequestMessage request)
     {

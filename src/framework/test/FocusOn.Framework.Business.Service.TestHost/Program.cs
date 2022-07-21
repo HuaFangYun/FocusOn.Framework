@@ -13,10 +13,13 @@ builder.Services.AddFocusOn(configure =>
     configure.Services.AddDbContext<TestDbContext>();
 });
 
+builder.Services.AddCors(options => options.AddPolicy("All", builder => builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod()));
+
 var app = builder.Build();
 app.UseStaticFiles();
 app.UseSwagger().UseSwaggerUI();
 app.UseRouting();
+app.UseCors();
 // Configure the HTTP request pipeline.
 app.MapGet("", context =>
 {
@@ -28,4 +31,5 @@ app.UseEndpoints(configure =>
     configure.MapControllers();
     //configure.MapSwagger();
 });
+
 app.Run();

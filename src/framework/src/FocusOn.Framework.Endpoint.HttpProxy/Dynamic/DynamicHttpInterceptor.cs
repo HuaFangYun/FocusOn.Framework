@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using Microsoft.Extensions.Logging;
 using System.Text.RegularExpressions;
 using System.Runtime.CompilerServices;
+using FocusOn.Framework.Business.Contract;
 using Microsoft.Extensions.DependencyInjection;
 using FocusOn.Framework.Business.Contract.Http;
 
@@ -26,20 +27,22 @@ internal class DynamicHttpInterceptor<TService> : IInterceptor where TService : 
 
     public IHttpClientFactory HttpClientFactory { get; }
 
-    protected ILoggerFactory LoggerFactory => ServiceProvider.GetRequiredService<ILoggerFactory>();
+    protected ILoggerFactory? LoggerFactory => ServiceProvider.GetService<ILoggerFactory>();
 
-    public ILogger Logger => LoggerFactory.CreateLogger(GetType().Name);
+    public ILogger? Logger => LoggerFactory?.CreateLogger(GetType().Name);
 
 
-    DynamicHttpClientProxy DynamicHttpClientProxy => ServiceProvider.GetRequiredService<DynamicHttpClientProxy>();
+    DynamicHttpClientProxy<TService> DynamicHttpClientProxy => (DynamicHttpClientProxy<TService>)ServiceProvider.GetRequiredService(typeof(DynamicHttpClientProxy<>).MakeGenericType(typeof(TService)));
 
     public void Intercept(IInvocation invocation)
     {
-        Logger.LogTrace($"调用方法：{invocation.Method.Name}");
+        Logger?.LogTrace($"调用方法：{invocation.Method.Name}");
 
         var requestMessage = CreateRequestMessage(invocation.Method);
 
-        invocation.ReturnValue = DynamicHttpClientProxy.SendAsync(requestMessage).Result;
+        var returnValue = DynamicHttpClientProxy.SendAsync(requestMessage).Result;
+
+        invocation.ReturnValue = returnValue;
     }
 
     /// <summary>
@@ -95,17 +98,23 @@ internal class DynamicHttpInterceptor<TService> : IInterceptor where TService : 
 
             var name = param.Name;
 
-            if (parameterAttribute is not null && !parameterAttribute.Name.IsNullOrEmpty())
+            if (parameterAttribute is not null && !string.IsNullOrEmpty(parameterAttribute.Name))
             {
                 name = parameterAttribute.Name;
             }
 
+            Logger?.LogTrace($"Parameter Name:{name}");
+
             var value = param.RawDefaultValue;
+
+
 
             switch (parameterAttribute.Type)
             {
                 case HttpParameterType.FromBody:
-                    request.Content = new StringContent(JsonConvert.SerializeObject(value));
+                    var json = JsonConvert.SerializeObject(value);
+                    Logger?.LogTrace($"Parameter Value(Body):{json}");
+                    request.Content = new StringContent(json);
                     break;
                 case HttpParameterType.FromQuery:
                     queryBuilder.AppendFormat("{0}={1}", name, value);
@@ -118,8 +127,21 @@ internal class DynamicHttpInterceptor<TService> : IInterceptor where TService : 
             }
         }
 
-        request.RequestUri = new($"{pathBuilder}{(queryBuilder.Length > 0 ? $"?{queryBuilder}" : String.Empty)}", UriKind.Relative);
+        var uriString = $"{pathBuilder}{(queryBuilder.Length > 0 ? $"?{queryBuilder}" : String.Empty)}";
+        Logger?.LogTrace("Request Uri:{0}", uriString);
+        request.RequestUri = new(uriString, UriKind.Relative);
 
         return request;
+    }
+
+
+    protected virtual async Task<Return> GetResultAsync(Task task, Type resultType)
+    {
+        await task;
+        var resultProperty = typeof(Task<>)
+            .MakeGenericType(resultType)
+            .GetProperty(nameof(Task<Return>.Result), BindingFlags.Instance | BindingFlags.Public);
+
+        return (Return)resultProperty.GetValue(task);
     }
 }

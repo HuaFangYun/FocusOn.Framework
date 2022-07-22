@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 
-namespace FocusOn.Framework.Endpoint.HttpApi.Identity;
+namespace FocusOn.Framework.Business.Services.Identity;
 
 /// <summary>
 /// 表示 Identity 模块的构建。

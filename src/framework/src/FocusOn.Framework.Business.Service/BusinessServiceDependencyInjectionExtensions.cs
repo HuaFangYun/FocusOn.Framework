@@ -1,7 +1,5 @@
 ﻿using FocusOn;
-using Microsoft.AspNetCore.Mvc;
-using Swashbuckle.AspNetCore.SwaggerGen;
-using FocusOn.Framework.Business.Services.Mvc;
+using FocusOn.Framework.Business.Services.Identity;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
@@ -25,27 +23,9 @@ public static class BusinessServiceDependencyInjectionExtensions
     }
 
     /// <summary>
-    /// 添加 Swagger 功能服务。
+    /// 添加 Identity 模块。
     /// </summary>
     /// <param name = "builder" ><see cref="FocusOnBuilder"/> 实例。</param>
-    /// <param name = "configure"> Swagger 配置。</param>
-    public static FocusOnBuilder AddSwagger(this FocusOnBuilder builder, Action<SwaggerGenOptions>? configure = default)
-    {
-        builder.Services.AddEndpointsApiExplorer();
-        builder.Services.AddSwaggerGen(configure);
-
-        return builder;
-    }
-    public static FocusOnBuilder AddAutoWebApi(this FocusOnBuilder builder)
-    {
-        builder.Services.AddMvcCore(options =>
-        {
-            options.Conventions.Add(new DynamicHttpApiConvention());
-            options.Filters.Add(new ProducesAttribute("application/json"));
-        })
-            .ConfigureApplicationPartManager(applicationPart => applicationPart.FeatureProviders.Add(new DynamicHttpApiControllerFeatureProvider())
-            )
-            ;
-        return builder;
-    }
+    public static IdentityFocusOnBuilder AddIdentity(this FocusOnBuilder builder)
+        => new(builder);
 }

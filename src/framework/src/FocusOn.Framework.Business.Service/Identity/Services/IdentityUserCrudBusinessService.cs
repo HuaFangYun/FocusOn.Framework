@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using FocusOn.Framework.Business.Store.Identity;
-using FocusOn.Framework.Endpoint.HttpApi.Identity;
 using FocusOn.Framework.Business.Contract.Identity;
 using FocusOn.Framework.Business.Contract.Identity.DTO;
 using FocusOn.Framework.Business.Services.Localizations;

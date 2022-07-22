@@ -1,6 +1,6 @@
 ﻿using System.Security.Cryptography;
 
-namespace FocusOn.Framework.Endpoint.HttpApi.Identity;
+namespace FocusOn.Framework.Business.Services.Identity;
 
 /// <summary>
 /// 默认的密码服务。

@@ -1,7 +1,21 @@
 ﻿using AutoMapper;
 
 namespace FocusOn.Framework.Business.Services;
+/// <summary>
+/// 定义支持 CRUD 映射的 <see cref="Profile"/> 派生基类。
+/// </summary>
+/// <typeparam name="TEntity">实体类型。</typeparam>
+public abstract class CrudMapProfile<TEntity> : CrudMapProfile<TEntity, TEntity>
+    where TEntity : class
+{
+    /// <summary>
+    /// 初始化 <see cref="CrudMapProfile{TEntity, TModel}"/> 类的新实例。
+    /// </summary>
+    protected CrudMapProfile() : base()
+    {
 
+    }
+}
 /// <summary>
 /// 定义支持 CRUD 映射的 <see cref="Profile"/> 派生基类。
 /// </summary>

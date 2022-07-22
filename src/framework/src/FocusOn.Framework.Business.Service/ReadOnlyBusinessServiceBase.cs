@@ -104,15 +104,15 @@ public abstract class ReadOnlyBusinessServiceBase<TContext, TEntity, TKey, TDeta
     /// <inheritdoc/>
     /// </summary>
     /// <param name="id">要获取的 Id。</param>
-    public virtual async ValueTask<Return<TDetailOutput?>> GetAsync(TKey id)
+    public virtual async ValueTask<Return<TDetailOutput>> GetAsync(TKey id)
     {
         var entity = await FindAsync(id);
         if (entity is null)
         {
-            return Return<TDetailOutput?>.Failed(GetEntityNotFoundMessage(id));
+            return Return<TDetailOutput>.Failed(GetEntityNotFoundMessage(id));
         }
         var output = MapToDetail(entity);
-        return Return<TDetailOutput?>.Success(output);
+        return Return<TDetailOutput>.Success(output);
     }
 
     /// <summary>
@@ -167,7 +167,15 @@ public abstract class ReadOnlyBusinessServiceBase<TContext, TEntity, TKey, TDeta
     /// </summary>
     /// <param name="entity">要映射的实体。</param>
     /// <returns>输出类型。</returns>
-    protected virtual TDetailOutput? MapToDetail(TEntity entity) => Mapper.Map<TEntity, TDetailOutput>(entity);
+    protected virtual TDetailOutput MapToDetail(TEntity entity)
+    {
+        if (typeof(TEntity) == typeof(TDetailOutput))
+        {
+            return entity.As<TDetailOutput>();
+        }
+
+        return Mapper.Map<TEntity, TDetailOutput>(entity);
+    }
 
     /// <summary>
     /// 应用列表排序算法。

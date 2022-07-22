@@ -8,7 +8,7 @@ namespace FocusOn.Framework.Business.Contract;
 /// </summary>
 /// <typeparam name="TKey">主键类型。</typeparam>
 /// <typeparam name="TModel">详情、列表的输出类型模型和列表查询的输入模型类型。</typeparam>
-public interface IReadOnlyBusinessService<TKey, TModel> : IReadOnlyBusinessService<TKey, TModel, TModel>
+public interface IReadOnlyBusinessService<in TKey, TModel> : IReadOnlyBusinessService<TKey, TModel, TModel>
     where TKey : IEquatable<TKey>
     where TModel : class
 {
@@ -21,7 +21,7 @@ public interface IReadOnlyBusinessService<TKey, TModel> : IReadOnlyBusinessServi
 /// <typeparam name="TKey">主键类型。</typeparam>
 /// <typeparam name="TDetailOrListOutput">列表或详情的输出模型类型。</typeparam>
 /// <typeparam name="TListSearchInput">列表查询的输入类型。</typeparam>
-public interface IReadOnlyBusinessService<TKey, TDetailOrListOutput, TListSearchInput> : IReadOnlyBusinessService<TKey, TDetailOrListOutput, TDetailOrListOutput, TListSearchInput>
+public interface IReadOnlyBusinessService<in TKey, TDetailOrListOutput, in TListSearchInput> : IReadOnlyBusinessService<TKey, TDetailOrListOutput, TDetailOrListOutput, TListSearchInput>
     where TKey : IEquatable<TKey>
     where TDetailOrListOutput : notnull
     where TListSearchInput : class
@@ -35,7 +35,7 @@ public interface IReadOnlyBusinessService<TKey, TDetailOrListOutput, TListSearch
 /// <typeparam name="TDetailOutput">详情的输出类型。</typeparam>
 /// <typeparam name="TListOutput">列表的输出类型。</typeparam>
 /// <typeparam name="TListSearchInput">列表查询的输入类型。</typeparam>
-public interface IReadOnlyBusinessService<TKey, TDetailOutput, TListOutput, TListSearchInput> : IBusinessSerivce
+public interface IReadOnlyBusinessService<in TKey, TDetailOutput, TListOutput, in TListSearchInput> : IBusinessSerivce
     where TKey : IEquatable<TKey>
     where TListSearchInput : class
     where TListOutput : notnull

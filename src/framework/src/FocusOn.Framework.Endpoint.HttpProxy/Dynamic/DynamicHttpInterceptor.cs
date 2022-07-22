@@ -14,7 +14,8 @@ using Microsoft.Extensions.DependencyInjection;
 using FocusOn.Framework.Business.Contract.Http;
 
 namespace FocusOn.Framework.Endpoint.HttpProxy.Dynamic;
-internal class DynamicHttpInterceptor<TService> : IInterceptor where TService : class
+internal class DynamicHttpInterceptor<TService> : IAsyncInterceptor
+    where TService : class
 {
     public DynamicHttpInterceptor(IServiceProvider serviceProvider)
     {
@@ -34,16 +35,6 @@ internal class DynamicHttpInterceptor<TService> : IInterceptor where TService : 
 
     DynamicHttpClientProxy<TService> DynamicHttpClientProxy => (DynamicHttpClientProxy<TService>)ServiceProvider.GetRequiredService(typeof(DynamicHttpClientProxy<>).MakeGenericType(typeof(TService)));
 
-    public void Intercept(IInvocation invocation)
-    {
-        Logger?.LogTrace($"调用方法：{invocation.Method.Name}");
-
-        var requestMessage = CreateRequestMessage(invocation.Method);
-
-        var returnValue = DynamicHttpClientProxy.SendAsync(requestMessage).Result;
-
-        invocation.ReturnValue = returnValue;
-    }
 
     /// <summary>
     /// 通过调用的方法，组装要发送的请求消息。
@@ -143,5 +134,23 @@ internal class DynamicHttpInterceptor<TService> : IInterceptor where TService : 
             .GetProperty(nameof(Task<Return>.Result), BindingFlags.Instance | BindingFlags.Public);
 
         return (Return)resultProperty.GetValue(task);
+    }
+
+    public void InterceptSynchronous(IInvocation invocation)
+    {
+        Logger?.LogTrace($"调用方法：{invocation.Method.Name}");
+        InterceptAsynchronous(invocation);
+    }
+
+    public void InterceptAsynchronous(IInvocation invocation)
+    {
+        var requestMessage = CreateRequestMessage(invocation.Method);
+        invocation.ReturnValue = DynamicHttpClientProxy.SendAsync(requestMessage).Result;
+    }
+
+    public void InterceptAsynchronous<TResult>(IInvocation invocation)
+    {
+        var requestMessage = CreateRequestMessage(invocation.Method);
+        invocation.ReturnValue = DynamicHttpClientProxy.SendAsync<TResult>(requestMessage).Result;
     }
 }

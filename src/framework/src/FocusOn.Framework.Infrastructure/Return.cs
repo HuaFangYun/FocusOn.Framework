@@ -94,7 +94,7 @@ public record class Return<TResult> : Return
     /// <summary>
     /// 表示操作结果是成功的，并设置返回的数据。
     /// </summary>
-    public static Return<TResult?> Success(TResult? data) => new(data, null);
+    public static Return<TResult> Success(TResult data) => new(data, null);
     /// <summary>
     /// 表示操作结果是失败的。
     /// </summary>

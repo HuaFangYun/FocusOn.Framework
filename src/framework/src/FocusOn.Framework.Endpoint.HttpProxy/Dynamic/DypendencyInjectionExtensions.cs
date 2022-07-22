@@ -41,7 +41,7 @@ public static class DypendencyInjectionExtensions
 
         builder.Services.AddScoped(provider =>
         {
-            return Generator.CreateInterfaceProxyWithoutTarget<TService>((IInterceptor)provider.GetRequiredService(interceptorType));
+            return Generator.CreateInterfaceProxyWithoutTarget<TService>(((IAsyncInterceptor)provider.GetRequiredService(interceptorType)).ToInterceptor());
         });
         return builder;
     }

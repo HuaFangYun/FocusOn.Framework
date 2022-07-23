@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 
-namespace FocusOn.Framework.Endpoint.HttpApi;
+namespace FocusOn.Framework.AspNetCore.Http;
 
 /// <summary>
 /// 定义支持 CRUD 映射的 <see cref="Profile"/> 派生基类。

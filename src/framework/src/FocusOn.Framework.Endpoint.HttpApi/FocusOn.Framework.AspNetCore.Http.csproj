@@ -1,6 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<Import Project="../../../../common.props" />
+
+	<ItemGroup>
+	  <Compile Remove="Identity\**" />
+	  <EmbeddedResource Remove="Identity\**" />
+	  <None Remove="Identity\**" />
+	</ItemGroup>
 	<ItemGroup>
 		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
 		<PackageReference Include="AutoMapper.Collection" Version="8.0.0" />

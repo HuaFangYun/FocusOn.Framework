@@ -1,5 +1,4 @@
 ﻿using System;
-using FocusOn;
 using System.Linq;
 using System.Text;
 using System.Reflection;
@@ -9,6 +8,7 @@ using System.Collections.Generic;
 using Microsoft.Extensions.Options;
 using FocusOn.Framework.Business.Contract;
 using FocusOn.Framework.Endpoint.HttpProxy.Dynamic;
+using FocusOn.Framework;
 
 namespace Microsoft.Extensions.DependencyInjection;
 public static class DypendencyInjectionExtensions

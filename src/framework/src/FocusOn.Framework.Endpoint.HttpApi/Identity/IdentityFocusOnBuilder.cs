@@ -1,6 +1,7 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿
+using Microsoft.Extensions.DependencyInjection;
 
-namespace FocusOn.Framework.Endpoint.HttpApi.Identity;
+namespace FocusOn.Framework.AspNetCore.Http.Identity;
 
 /// <summary>
 /// 表示 Identity 模块的构建。

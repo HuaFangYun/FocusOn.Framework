@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 
-namespace FocusOn;
+namespace FocusOn.Framework;
 
 /// <summary>
 /// 表示输出返回结果。

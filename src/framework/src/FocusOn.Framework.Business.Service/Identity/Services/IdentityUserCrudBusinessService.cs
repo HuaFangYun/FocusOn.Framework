@@ -1,11 +1,11 @@
-﻿using FocusOn;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using FocusOn.Framework.Business.Store.Identity;
+﻿using FocusOn.Framework.Business.Contract.Http;
 using FocusOn.Framework.Business.Contract.Identity;
 using FocusOn.Framework.Business.Contract.Identity.DTO;
 using FocusOn.Framework.Business.Services.Localizations;
+using FocusOn.Framework.Business.Store.Identity;
+
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace FocusOn.Framework.Business.Services.Identity.Services;
 
@@ -52,7 +52,32 @@ public class IdentityUserCrudBusinessService<TContext, TUser, TKey, TDetailOutpu
     {
     }
 }
-
+/// <summary>
+///  提供对用户进行 CRUD 操作的 HTTP API 控制器。
+/// </summary>
+/// <typeparam name="TContext">数据库上下文类型。</typeparam>
+/// <typeparam name="TUser">用户类型。</typeparam>
+/// <typeparam name="TKey">主键类型。</typeparam>
+/// <typeparam name="TDetailOutput">详情输出类型。</typeparam>
+/// <typeparam name="TListOutput">列表输出类型。</typeparam>
+/// <typeparam name="TListSearchInput">列表搜索输入类型。</typeparam>
+/// <typeparam name="TCreateOrUpdateInput">创建或更新输入类型。</typeparam>
+public class IdentityUserCrudBusinessService<TContext, TUser, TKey, TDetailOutput, TListOutput, TListSearchInput, TCreateOrUpdateInput> : IdentityUserCrudBusinessService<TContext, TUser, TKey, TDetailOutput, TListOutput, TListSearchInput, TCreateOrUpdateInput, TCreateOrUpdateInput>, IIdentityUserCrudBusinessService<TKey, TDetailOutput, TListOutput, TListSearchInput, TCreateOrUpdateInput>
+        where TContext : DbContext
+    where TUser : IdentityUser<TKey>, new()
+    where TKey : IEquatable<TKey>
+    where TListSearchInput : class
+    where TListOutput : notnull
+    where TDetailOutput : notnull
+    where TCreateOrUpdateInput : notnull
+{
+    /// <summary>
+    /// 初始化 <see cref="IdentityRoleCrudBusinessService{TContext, TRole, TKey, TDetailOutput, TListOutput, TListSearchInput, TCreateOrUpdateInput}"/> 类的新实例。
+    /// </summary>
+    public IdentityUserCrudBusinessService(IServiceProvider serviceProvider) : base(serviceProvider)
+    {
+    }
+}
 /// <summary>
 ///  提供对用户进行 CRUD 操作的 HTTP API 控制器。
 /// </summary>
@@ -106,8 +131,8 @@ public class IdentityUserCrudBusinessService<TContext, TUser, TKey, TDetailOutpu
     /// 重写用户创建。
     /// </summary>
     /// <param name="model">用户创建模型。</param>
-    [HttpPost]
-    public override async ValueTask<Return<TDetailOutput>> CreateAsync([FromBody] TCreateInput model)
+    [Post]
+    public override async ValueTask<Return<TDetailOutput>> CreateAsync([Body] TCreateInput model)
     {
         var valid = Validator.TryValidate(model, out var errors);
         if (!valid)

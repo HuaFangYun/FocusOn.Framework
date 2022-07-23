@@ -1,5 +1,4 @@
-﻿
-using FocusOn;
+﻿using FocusOn.Framework;
 using FocusOn.Framework.Business.Contract;
 using FocusOn.Framework.Endpoint.HttpProxy;
 

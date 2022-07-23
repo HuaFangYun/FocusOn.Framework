@@ -1,5 +1,4 @@
-﻿
-using FocusOn;
+﻿using FocusOn.Framework;
 
 namespace Microsoft.Extensions.DependencyInjection;
 

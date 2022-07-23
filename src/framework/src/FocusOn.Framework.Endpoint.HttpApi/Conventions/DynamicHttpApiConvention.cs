@@ -1,14 +1,15 @@
-﻿using System.Text;
-using System.Reflection;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Http;
+﻿using System.Reflection;
+using System.Text;
+
 using FocusOn.Framework.Business.Contract;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 using FocusOn.Framework.Business.Contract.Http;
+
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ActionConstraints;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
-namespace FocusOn.Framework.Endpoint.HttpApi.Conventions;
+namespace FocusOn.Framework.AspNetCore.Http.Conventions;
 
 /// <summary>
 /// 动态 HTTP API 的约定。

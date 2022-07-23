@@ -4,7 +4,7 @@ using AutoMapper;
 
 using Microsoft.Extensions.DependencyInjection;
 
-namespace FocusOn;
+namespace FocusOn.Framework;
 
 /// <summary>
 /// 表示用于构建 FocusOn 相关模块。
@@ -25,7 +25,7 @@ public class FocusOnBuilder
     public IServiceCollection Services { get; }
 
     /// <summary>
-    /// 添加指定程序集中实现 <see cref="AutoMapper.Profile"/> 类型的映射关系并注册到服务中。
+    /// 添加指定程序集中实现 <see cref="Profile"/> 类型的映射关系并注册到服务中。
     /// </summary>
     /// <param name="assemblies">要添加的程序集。</param>
     public FocusOnBuilder AddAutoMapper(params Assembly[] assemblies)
@@ -41,7 +41,7 @@ public class FocusOnBuilder
     /// <param name="assemblies">要添加的程序集。</param>
     public FocusOnBuilder AddAutoMapper(Action<IMapperConfigurationExpression> configure, params Assembly[] assemblies)
     {
-        Services.AddAutoMapper(configure,assemblies);
+        Services.AddAutoMapper(configure, assemblies);
         return this;
     }
 
@@ -50,7 +50,7 @@ public class FocusOnBuilder
     /// </summary>
     /// <param name="configure">配置 AutoMapper 的委托。</param>
     /// <param name="assemblies">要添加的程序集。</param>
-    public FocusOnBuilder AddAutoMapper(Action<IServiceProvider,IMapperConfigurationExpression> configure,params Assembly[] assemblies)
+    public FocusOnBuilder AddAutoMapper(Action<IServiceProvider, IMapperConfigurationExpression> configure, params Assembly[] assemblies)
     {
         Services.AddAutoMapper(configure, assemblies);
         return this;

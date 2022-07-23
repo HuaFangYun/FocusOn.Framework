@@ -1,4 +1,4 @@
-﻿using FocusOn;
+﻿using FocusOn.Framework;
 using FocusOn.Framework.Business.Services.Identity;
 
 namespace Microsoft.Extensions.DependencyInjection;

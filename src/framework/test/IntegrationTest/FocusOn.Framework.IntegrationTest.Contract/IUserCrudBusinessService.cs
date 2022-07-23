@@ -1,0 +1,11 @@
+﻿using FocusOn.Framework.Business.Contract;
+using FocusOn.Framework.Business.Contract.Http;
+using FocusOn.Framework.Business.Contract.Identity;
+using FocusOn.Framework.Business.Contract.Identity.DTO;
+
+namespace FocusOn.Framework.IntegrationTest.Contract;
+[Route("api/user")]
+public interface IUserCrudBusinessService : IIdentityUserCrudBusinessService<Guid, IdentityUserDetailOutput, IdentityUserListOutput, IdentityUserListSearchInput, IdentityUserCreateInput>, IRemotingService
+{
+
+}

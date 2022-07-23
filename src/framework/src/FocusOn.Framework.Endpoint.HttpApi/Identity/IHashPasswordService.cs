@@ -1,4 +1,4 @@
-﻿namespace FocusOn.Framework.Endpoint.HttpApi.Identity;
+﻿namespace FocusOn.Framework.AspNetCore.Http.Identity;
 
 /// <summary>
 /// 提供密码哈希的服务。

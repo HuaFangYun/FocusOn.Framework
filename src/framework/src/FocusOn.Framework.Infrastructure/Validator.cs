@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace FocusOn;
+namespace FocusOn.Framework;
 
 /// <summary>
 /// 模型对象验证器。

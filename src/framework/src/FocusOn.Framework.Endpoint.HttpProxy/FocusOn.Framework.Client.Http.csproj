@@ -10,4 +10,7 @@
 	<ItemGroup>
 	  <ProjectReference Include="..\FocusOn.Framework.Business.Contract\FocusOn.Framework.Business.Contract.csproj" />
 	</ItemGroup>
+  <PropertyGroup>
+    <RootNamespace>FocusOn.Framework.Client</RootNamespace>
+  </PropertyGroup>
 </Project>

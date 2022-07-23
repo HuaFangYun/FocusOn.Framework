@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-namespace FocusOn.Framework.Endpoint.HttpApi.Controllers;
+namespace FocusOn.Framework.AspNetCore.Http.Controllers;
 
 /// <summary>
 /// 表示具备 HTTP API 功能的控制器基类。

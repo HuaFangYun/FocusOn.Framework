@@ -1,8 +1,12 @@
-﻿using FocusOn;
+﻿using System.Reflection;
+
+using FocusOn.Framework;
+using FocusOn.Framework.AspNetCore.Http.Conventions;
+
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ApplicationParts;
+
 using Swashbuckle.AspNetCore.SwaggerGen;
-using FocusOn.Framework.Endpoint.HttpApi.Identity;
-using FocusOn.Framework.Endpoint.HttpApi.Conventions;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
@@ -25,16 +29,33 @@ public static class FocusOnDependencyInjectionExtensions
 
         return builder;
     }
-    public static FocusOnBuilder AddAutoWebApi(this FocusOnBuilder builder)
+
+    /// <summary>
+    /// 添加动态 WEB API 的功能。只有实例实现了 <see cref="FocusOn.Framework.Business.Contract.IRemotingService"/> 接口才会被视为动态 API。
+    /// </summary>
+    /// <param name="builder"></param>
+    /// <param name="assemblies">要作为动态 WEB API 添加的程序集范围。</param>
+    /// <returns></returns>
+    public static FocusOnBuilder AddDynamicWebApi(this FocusOnBuilder builder, params Assembly[] assemblies)
     {
-        builder.Services.AddMvcCore(options =>
+        Checker.NotNull(assemblies, nameof(assemblies));
+
+        builder.Services.AddControllers(options =>
         {
             options.Conventions.Add(new DynamicHttpApiConvention());
             options.Filters.Add(new ProducesAttribute("application/json"));
         })
-            .ConfigureApplicationPartManager(applicationPart => applicationPart.FeatureProviders.Add(new DynamicHttpApiControllerFeatureProvider())
-            )
+
+        .ConfigureApplicationPartManager(applicationPart =>
+        {
+            foreach (var assembly in assemblies)
+            {
+                applicationPart.ApplicationParts.Add(new AssemblyPart(assembly));
+            }
+            applicationPart.FeatureProviders.Add(new DynamicHttpApiControllerFeatureProvider());
+        })
             ;
+
         return builder;
     }
 

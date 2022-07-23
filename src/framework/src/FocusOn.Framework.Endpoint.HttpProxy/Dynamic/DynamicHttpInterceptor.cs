@@ -1,17 +1,15 @@
-﻿using System;
-using System.Linq;
+﻿using System.Reflection;
 using System.Text;
-using Newtonsoft.Json;
-using System.Reflection;
-using Castle.DynamicProxy;
-using System.Threading.Tasks;
-using System.Collections.Generic;
-using Microsoft.Extensions.Logging;
 using System.Text.RegularExpressions;
-using System.Runtime.CompilerServices;
-using FocusOn.Framework.Business.Contract;
-using Microsoft.Extensions.DependencyInjection;
+
+using Castle.DynamicProxy;
+
 using FocusOn.Framework.Business.Contract.Http;
+
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+
+using Newtonsoft.Json;
 
 namespace FocusOn.Framework.Endpoint.HttpProxy.Dynamic;
 internal class DynamicHttpInterceptor<TService> : IAsyncInterceptor
@@ -126,15 +124,17 @@ internal class DynamicHttpInterceptor<TService> : IAsyncInterceptor
     }
 
 
-    protected virtual async Task<Return> GetResultAsync(Task task, Type resultType)
-    {
-        await task;
-        var resultProperty = typeof(Task<>)
-            .MakeGenericType(resultType)
-            .GetProperty(nameof(Task<Return>.Result), BindingFlags.Instance | BindingFlags.Public);
+    //protected virtual async Task<object> GetResultAsync(Task task, Type resultType)
+    //{
+    //    await task;
+    //    var resultProperty = typeof(Task<>)
+    //        .MakeGenericType(resultType)
+    //        .GetProperty(nameof(Task<Return>.Result), BindingFlags.Instance | BindingFlags.Public);
 
-        return (Return)resultProperty.GetValue(task);
-    }
+    //    return resultProperty.GetValue(task);
+    //}
+
+
 
     public void InterceptSynchronous(IInvocation invocation)
     {
@@ -145,12 +145,16 @@ internal class DynamicHttpInterceptor<TService> : IAsyncInterceptor
     public void InterceptAsynchronous(IInvocation invocation)
     {
         var requestMessage = CreateRequestMessage(invocation.Method);
-        invocation.ReturnValue = DynamicHttpClientProxy.SendAsync(requestMessage).Result;
+        var result = DynamicHttpClientProxy.SendAsync(requestMessage);
+        invocation.ReturnValue = result;
     }
 
     public void InterceptAsynchronous<TResult>(IInvocation invocation)
     {
         var requestMessage = CreateRequestMessage(invocation.Method);
-        invocation.ReturnValue = DynamicHttpClientProxy.SendAsync<TResult>(requestMessage).Result;
+        var result = DynamicHttpClientProxy.SendAsync<TResult>(requestMessage);
+
+        invocation.ReturnValue = result;
+
     }
 }

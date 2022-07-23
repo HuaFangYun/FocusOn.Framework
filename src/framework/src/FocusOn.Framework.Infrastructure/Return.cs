@@ -58,7 +58,7 @@ public record class Return
     /// </summary>
     /// <param name="logger"><see cref="ILogger"/> 实例。</param>
     /// <param name="errors">操作失败的错误信息数组。</param>
-    public static new Return Failed(ILogger? logger, IEnumerable<string> errors)
+    public static Return Failed(ILogger? logger, IEnumerable<string> errors)
         => Failed(logger, errors.ToArray());
     /// <summary>
     /// 表示操作结果是失败的，并记录异常日志。

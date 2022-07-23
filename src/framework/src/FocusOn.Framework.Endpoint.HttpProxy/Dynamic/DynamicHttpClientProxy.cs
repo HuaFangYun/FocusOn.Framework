@@ -1,7 +1,8 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Microsoft.Extensions.DependencyInjection;
+
+using Newtonsoft.Json;
 
 namespace FocusOn.Framework.Endpoint.HttpProxy.Dynamic;
 
@@ -34,14 +35,14 @@ internal class DynamicHttpClientProxy<TService> : IHttpApiClientProxy
         return client;
     }
 
-    public virtual async Task<Return> SendAsync(HttpRequestMessage request)
+    public virtual async Task SendAsync(HttpRequestMessage request)
     {
         using var client = CreateClient();
         var response = await client.SendAsync(request);
-        return await HandleResultAsync(response);
+        await HandleResultAsync(response);
     }
 
-    public virtual async Task<Return<TResult>> SendAsync<TResult>(HttpRequestMessage request)
+    public virtual async Task<TResult> SendAsync<TResult>(HttpRequestMessage request) where TResult : notnull
     {
         using var client = CreateClient();
         var response = await client.SendAsync(request);
@@ -53,7 +54,7 @@ internal class DynamicHttpClientProxy<TService> : IHttpApiClientProxy
     /// </summary>
     /// <param name="response">HTTP 请求的响应消息。</param>
     /// <exception cref="ArgumentNullException"><paramref name="response"/> 是 null。</exception>
-    protected async Task<Return> HandleResultAsync(HttpResponseMessage response)
+    protected async Task HandleResultAsync(HttpResponseMessage response)
     {
         if (response is null)
         {
@@ -66,22 +67,21 @@ internal class DynamicHttpClientProxy<TService> : IHttpApiClientProxy
             var content = await response.Content.ReadAsStringAsync();
             if (content.IsNullOrEmpty())
             {
-                return Return.Failed(Logger, "Content from HttpContent is null or empty");
+                Logger.LogError("Content from HttpContent is null or empty");
+                return;
             }
             var result = JsonConvert.DeserializeObject<Return>(content);
             if (result is null)
             {
-                return Return.Failed(Logger, $"Deserialize {nameof(Return)} from content failed");
+                Logger.LogError($"Deserialize from content failed with JSON string: {content}");
+                return;
             }
-            if (!result.Succeed)
-            {
-                Logger.LogDebug(JsonConvert.SerializeObject(result));
-            }
-            return result;
+            return;
         }
         catch (Exception ex)
         {
-            return Return.Failed(Logger, ex);
+            Logger.LogCritical(ex.Message, ex);
+            return;
         }
     }
 
@@ -91,7 +91,7 @@ internal class DynamicHttpClientProxy<TService> : IHttpApiClientProxy
     /// </summary>
     /// <param name="response">HTTP 请求的响应消息。</param>
     /// <exception cref="ArgumentNullException"><paramref name="response"/> 是 null。</exception>
-    protected async Task<Return<TResult>> HandleResultAsync<TResult>(HttpResponseMessage response)
+    protected async Task<TResult> HandleResultAsync<TResult>(HttpResponseMessage response) where TResult : notnull
     {
         if (response is null)
         {
@@ -104,22 +104,21 @@ internal class DynamicHttpClientProxy<TService> : IHttpApiClientProxy
             var content = await response.Content.ReadAsStringAsync();
             if (content.IsNullOrEmpty())
             {
-                return Return<TResult>.Failed(Logger, "Content from HttpContent is null or empty");
+                Logger.LogError("Content from HttpContent is null or empty");
+                return default;
             }
-            var result = JsonConvert.DeserializeObject<Return<TResult>>(content);
+            var result = JsonConvert.DeserializeObject<TResult>(content);
             if (result is null)
             {
-                return Return<TResult>.Failed(Logger, $"Deserialize {nameof(Return)} from content failed");
-            }
-            if (!result.Succeed)
-            {
-                Logger.LogDebug(JsonConvert.SerializeObject(result));
+                Logger.LogError($"Deserialize from content failed with JSON string: {content}");
+                return default;
             }
             return result;
         }
         catch (Exception ex)
         {
-            return Return<TResult>.Failed(Logger, ex);
+            Logger.LogCritical(ex.Message, ex);
+            return default;
         }
     }
 }

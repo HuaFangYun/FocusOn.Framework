@@ -164,7 +164,8 @@ public class IdentityUserCrudBusinessService<TContext, TUser, TKey, TDetailOutpu
             Set.Add(user);
 
             await SaveChangesAsync();
-            return Return<TDetailOutput>.Success(MapToDetail(user));
+            var detail = MapToDetail(user);
+            return Return<TDetailOutput>.Success(detail);
         }
 
         return Return<TDetailOutput>.Failed($"{nameof(model)} 不是派生自 {nameof(IdentityUserCreateInput)} 类，请重写并自己实现业务逻辑");

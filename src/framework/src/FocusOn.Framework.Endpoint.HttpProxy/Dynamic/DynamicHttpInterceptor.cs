@@ -144,10 +144,10 @@ internal class DynamicHttpInterceptor<TService> : IAsyncInterceptor
                     }
                     break;
                 case HttpParameterType.FromRoute:
-                    var match = Regex.Match(pathBuilder.ToString(), @"^{\w+}$");
+                    var match = Regex.Match(pathBuilder.ToString(), @"{\w+}");
                     if (match.Success)
                     {
-                        pathBuilder.Append(match.Result(value?.ToString()));
+                        pathBuilder.Replace(match.Value, match.Result(value?.ToString()));
                     }
                     break;
                 default:

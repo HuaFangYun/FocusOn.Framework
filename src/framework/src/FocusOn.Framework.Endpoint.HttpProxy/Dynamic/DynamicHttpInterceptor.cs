@@ -166,7 +166,7 @@ internal class DynamicHttpInterceptor<TService> : IAsyncInterceptor
     public void InterceptSynchronous(IInvocation invocation)
     {
         Logger?.LogTrace($"调用方法：{invocation.Method.Name}");
-        //InterceptAsynchronous(invocation);
+        throw new NotSupportedException("要求返回值必须是 Task<Return> 或 Task<Return<TResult>> 类型");
     }
 
     public void InterceptAsynchronous(IInvocation invocation)

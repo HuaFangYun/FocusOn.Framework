@@ -10,7 +10,7 @@ public static class ApplicationBuilderExtensions
 {
     public static IApplicationBuilder UseFocusOn(this IApplicationBuilder app)
     {
-        app.UseSwagger().UseSwaggerUI();
+        app.UseSwagger().UseSwaggerUI().UseCors();
 
         return app;
     }

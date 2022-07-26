@@ -104,7 +104,7 @@ public abstract class ReadOnlyBusinessServiceBase<TContext, TEntity, TKey, TDeta
     /// <inheritdoc/>
     /// </summary>
     /// <param name="id">要获取的 Id。</param>
-    public virtual async ValueTask<Return<TDetailOutput>> GetAsync(TKey id)
+    public virtual async Task<Return<TDetailOutput>> GetAsync(TKey id)
     {
         var entity = await FindAsync(id);
         if (entity is null)

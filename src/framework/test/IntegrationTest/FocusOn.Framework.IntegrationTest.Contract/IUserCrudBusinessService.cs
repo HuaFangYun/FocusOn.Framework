@@ -5,7 +5,8 @@ using FocusOn.Framework.Business.Contract.Identity.DTO;
 
 namespace FocusOn.Framework.IntegrationTest.Contract;
 [Route("api/user")]
-public interface IUserCrudBusinessService : IIdentityUserCrudBusinessService<Guid, IdentityUserDetailOutput, IdentityUserListOutput, IdentityUserListSearchInput, IdentityUserCreateInput>, IRemotingService
+public interface IUserCrudBusinessService : IIdentityUserCrudBusinessService<Guid, IdentityUserDetailOutput<Guid>, IdentityUserListOutput, IdentityUserListSearchInput, IdentityUserCreateInput>, IRemotingService
 {
-
+    [Post("sign-in")]
+    Task<Return> SignInAsync([Header] string token);
 }

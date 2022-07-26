@@ -89,7 +89,7 @@ public abstract class CrudBusinessService<TContext, TEntity, TKey, TDetailOutput
     /// </summary>
     /// <param name="model">要创建的输入。</param>
     /// <exception cref="ArgumentNullException"><paramref name="model"/> 是 null。</exception>
-    public virtual async ValueTask<Return<TDetailOutput>> CreateAsync(TCreateInput model)
+    public virtual async Task<Return<TDetailOutput>> CreateAsync(TCreateInput model)
     {
         if (model is null)
         {
@@ -113,7 +113,7 @@ public abstract class CrudBusinessService<TContext, TEntity, TKey, TDetailOutput
     /// 删除指定 id 的数据。
     /// </summary>
     /// <param name="id">要删除的 Id。</param>
-    public virtual async ValueTask<Return<TDetailOutput>> DeleteAsync(TKey id)
+    public virtual async Task<Return<TDetailOutput>> DeleteAsync(TKey id)
     {
         var entity = await FindAsync(id);
         if (entity is null)
@@ -133,7 +133,7 @@ public abstract class CrudBusinessService<TContext, TEntity, TKey, TDetailOutput
     /// <param name="id">要更新的 Id。</param>
     /// <param name="model">要更新的字段。</param>
     /// <exception cref="ArgumentNullException"><paramref name="model"/> 是 null。</exception>
-    public virtual async ValueTask<Return<TDetailOutput>> UpdateAsync(TKey id, TUpdateInput model)
+    public virtual async Task<Return<TDetailOutput>> UpdateAsync(TKey id, TUpdateInput model)
     {
         if (model is null)
         {

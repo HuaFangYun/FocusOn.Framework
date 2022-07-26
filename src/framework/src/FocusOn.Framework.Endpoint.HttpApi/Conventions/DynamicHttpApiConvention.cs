@@ -1,13 +1,11 @@
-﻿using System.Reflection;
-using System.Text;
-
-using FocusOn.Framework.Business.Contract;
-using FocusOn.Framework.Business.Contract.Http;
-
+﻿using System.Text;
+using System.Reflection;
 using Microsoft.AspNetCore.Mvc;
+using FocusOn.Framework.Business.Contract;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using FocusOn.Framework.Business.Contract.Http;
 using Microsoft.AspNetCore.Mvc.ActionConstraints;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace FocusOn.Framework.AspNetCore.Http.Conventions;
 
@@ -69,6 +67,11 @@ internal class DynamicHttpApiConvention : IApplicationModelConvention
 
         foreach (var action in controller.Actions)
         {
+            if (action is null)
+            {
+                continue;
+            }
+
             var actionMethodAttribute = FindHttpMethodFromAction(action);
             if (actionMethodAttribute is null)
             {
@@ -243,7 +246,7 @@ internal class DynamicHttpApiConvention : IApplicationModelConvention
 
         if (actionMethod is null)
         {
-            throw new InvalidOperationException($"找不到 {actionMethod.Name} 方法");
+            throw new InvalidOperationException($"找不到 {action.ActionName} 方法");
         }
 
         var attr = actionMethod.GetCustomAttribute<HttpMethodAttribute>();
@@ -252,7 +255,7 @@ internal class DynamicHttpApiConvention : IApplicationModelConvention
 
     private MethodInfo? FindInterfaceMethod(ActionModel action)
     {
-        var allmethods = _controllerType.GetInterfaces().SelectMany(m => m.GetMethods());
+        var allmethods = _controllerType.GetMethods().Concat(_controllerType.GetInterfaces().SelectMany(m => m.GetMethods())).Distinct();
 
         var methodName = action.ActionMethod.Name;
 

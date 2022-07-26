@@ -16,5 +16,5 @@ public interface ICreateBusinessService<TDetailOutput, in TCreateInput>
     /// <param name="model">要创建的模型。</param>
     /// <returns>一个创建方法，返回 <see cref="Return"/> 结果。</returns>
     [Post]
-    ValueTask<Return<TDetailOutput>> CreateAsync(TCreateInput model);
+    Task<Return<TDetailOutput>> CreateAsync([Body] TCreateInput model);
 }

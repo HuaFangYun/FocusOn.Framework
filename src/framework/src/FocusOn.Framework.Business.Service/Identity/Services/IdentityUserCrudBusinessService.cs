@@ -1,11 +1,10 @@
-﻿using FocusOn.Framework.Business.Contract.Http;
+﻿using Microsoft.EntityFrameworkCore;
+using FocusOn.Framework.Business.Contract.Http;
+using Microsoft.Extensions.DependencyInjection;
+using FocusOn.Framework.Business.Store.Identity;
 using FocusOn.Framework.Business.Contract.Identity;
 using FocusOn.Framework.Business.Contract.Identity.DTO;
 using FocusOn.Framework.Business.Services.Localizations;
-using FocusOn.Framework.Business.Store.Identity;
-
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace FocusOn.Framework.Business.Services.Identity.Services;
 
@@ -131,8 +130,7 @@ public class IdentityUserCrudBusinessService<TContext, TUser, TKey, TDetailOutpu
     /// 重写用户创建。
     /// </summary>
     /// <param name="model">用户创建模型。</param>
-    [Post]
-    public override async ValueTask<Return<TDetailOutput>> CreateAsync([Body] TCreateInput model)
+    public override async Task<Return<TDetailOutput>> CreateAsync(TCreateInput model)
     {
         var valid = Validator.TryValidate(model, out var errors);
         if (!valid)

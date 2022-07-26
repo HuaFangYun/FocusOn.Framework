@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using System.Reflection.Metadata;
 
 namespace FocusOn;
 
@@ -33,4 +34,13 @@ public static class ReflectionExtensions
     /// <param name="attribute">返回获取到的 <typeparamref name="TAttribute"/> 类型。</param>
     /// <returns>若能获取到指定的 <typeparamref name="TAttribute"/> 类型，则返回 <c>true</c>；否则返回 <c>false</c>。</returns>
     public static bool TryGetCustomAttribute<TAttribute>(this ParameterInfo parameter, out TAttribute? attribute) where TAttribute : Attribute => (attribute = parameter.GetCustomAttribute<TAttribute>()) != null;
+
+    /// <summary>
+    /// 尝试从当前的 <see cref="PropertyInfo"/> 类型返回 <typeparamref name="TAttribute"/> 类型。
+    /// </summary>
+    /// <typeparam name="TAttribute">属性类型。</typeparam>
+    /// <param name="property"><see cref="PropertyInfo"/> 的实例。</param>
+    /// <param name="attribute">返回获取到的 <typeparamref name="TAttribute"/> 类型。</param>
+    /// <returns>若能获取到指定的 <typeparamref name="TAttribute"/> 类型，则返回 <c>true</c>；否则返回 <c>false</c>。</returns>
+    public static bool TryGetCustomAttribute<TAttribute>(this PropertyInfo property, out TAttribute? attribute) where TAttribute : Attribute => (attribute = property.GetCustomAttribute<TAttribute>()) != null;
 }

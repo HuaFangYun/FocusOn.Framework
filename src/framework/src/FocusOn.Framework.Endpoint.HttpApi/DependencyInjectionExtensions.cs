@@ -1,12 +1,9 @@
 ﻿using System.Reflection;
-
 using FocusOn.Framework;
-using FocusOn.Framework.AspNetCore.Http.Conventions;
-
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ApplicationParts;
-
 using Swashbuckle.AspNetCore.SwaggerGen;
+using Microsoft.AspNetCore.Mvc.ApplicationParts;
+using FocusOn.Framework.AspNetCore.Http.Conventions;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
@@ -15,8 +12,6 @@ namespace Microsoft.Extensions.DependencyInjection;
 /// </summary>
 public static class FocusOnDependencyInjectionExtensions
 {
-
-
     /// <summary>
     /// 添加 Swagger 功能服务。
     /// </summary>
@@ -59,4 +54,15 @@ public static class FocusOnDependencyInjectionExtensions
         return builder;
     }
 
+    public static FocusOnBuilder AddCors(this FocusOnBuilder builder, bool allowAny = true)
+    {
+        builder.Services.AddCors(options =>
+        {
+            if (allowAny)
+            {
+                options.AddPolicy("All", cors => cors.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
+            }
+        });
+        return builder;
+    }
 }

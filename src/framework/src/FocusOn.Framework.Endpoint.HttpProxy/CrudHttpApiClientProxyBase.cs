@@ -55,10 +55,10 @@ public abstract class CrudHttpApiClientProxyBase<TKey, TDetailOutput, TListOutpu
 public abstract class CrudHttpApiClientProxyBase<TKey, TDetailOutput, TListOutput, TListSearchInput, TCreateInput, TUpdateInput> : ReadOnlyHttpApiClientProxy<TKey, TDetailOutput, TListOutput, TListSearchInput>, ICrudBusinessService<TKey, TDetailOutput, TListOutput, TListSearchInput, TCreateInput, TUpdateInput>
 where TKey : IEquatable<TKey>
 where TListSearchInput : class
-where TListOutput : class
-where TDetailOutput : class
-where TCreateInput : class
-where TUpdateInput : class
+where TListOutput : notnull
+where TDetailOutput : notnull
+where TCreateInput : notnull
+where TUpdateInput : notnull
 {
     /// <summary>
     /// 初始化 <see cref="CrudHttpApiClientProxyBase{TKey, TDetailOutput, TListOutput, TListSearchInput, TCreateInput, TUpdateInput}"/> 类的新实例。
@@ -73,7 +73,7 @@ where TUpdateInput : class
     /// </summary>
     /// <param name="model">要推送的创建数据模型。</param>
     /// <exception cref="ArgumentNullException"><paramref name="model"/> 是 null。</exception>
-    public virtual ValueTask<Return<TDetailOutput>> CreateAsync(TCreateInput model)
+    public virtual Task<Return<TDetailOutput>> CreateAsync(TCreateInput model)
     {
         if (model is null)
         {
@@ -82,18 +82,18 @@ where TUpdateInput : class
 
         if (!Validator.TryValidate(model, out var errors))
         {
-            return Return<TDetailOutput>.Failed(errors).ToValueTask();
+            return Task.FromResult(Return<TDetailOutput>.Failed(errors));
         }
 
-        return PostAsync<TCreateInput, TDetailOutput>(GetRequestUri(), model).ToValueTask();
+        return PostAsync<TCreateInput, TDetailOutput>(GetRequestUri(), model);
     }
 
     /// <summary>
     /// 以异步的方式使用 HttpDelete 方式请求 HTTP API 删除指定 id 的数据。
     /// </summary>
     /// <param name="id">要删除的 id。</param>
-    public virtual ValueTask<Return<TDetailOutput>> DeleteAsync(TKey id)
-        => DeleteAsync<TDetailOutput>(GetRequestUri(id.ToString())).ToValueTask();
+    public virtual Task<Return<TDetailOutput>> DeleteAsync(TKey id)
+        => DeleteAsync<TDetailOutput>(GetRequestUri(id.ToString()));
 
     /// <summary>
     /// 以异步的方式使用 HttpPut 方式请求 HTTP API 更新指定 id 的数据。
@@ -101,7 +101,7 @@ where TUpdateInput : class
     /// <param name="id">要更新的 id。</param>
     /// <param name="model">要更新的数据。</param>
     /// <exception cref="ArgumentNullException"><paramref name="model"/> 是 null。</exception>
-    public virtual ValueTask<Return<TDetailOutput>> UpdateAsync(TKey id, TUpdateInput model)
+    public virtual Task<Return<TDetailOutput>> UpdateAsync(TKey id, TUpdateInput model)
     {
         if (model is null)
         {
@@ -110,10 +110,10 @@ where TUpdateInput : class
 
         if (!Validator.TryValidate(model, out var errors))
         {
-            return Return<TDetailOutput>.Failed(errors).ToValueTask();
+            return Task.FromResult(Return<TDetailOutput>.Failed(errors));
         }
 
-        return PutAsync<TUpdateInput, TDetailOutput>(GetRequestUri(), model).ToValueTask();
+        return PutAsync<TUpdateInput, TDetailOutput>(GetRequestUri(), model);
     }
 
 }

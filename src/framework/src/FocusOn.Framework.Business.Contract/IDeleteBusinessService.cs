@@ -17,5 +17,5 @@ public interface IDeleteBusinessService<TDetailOutput, in TKey>
     /// <param name="id">要删除的 id。</param>
     /// <returns>一个删除方法，返回 <see cref="Return"/> 结果。</returns>
     [Delete("{id}")]
-    ValueTask<Return<TDetailOutput>> DeleteAsync(TKey id);
+    Task<Return<TDetailOutput>> DeleteAsync(TKey id);
 }

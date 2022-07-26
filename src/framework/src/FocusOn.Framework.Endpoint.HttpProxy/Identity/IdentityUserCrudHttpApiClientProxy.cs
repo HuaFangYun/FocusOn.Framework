@@ -30,10 +30,10 @@ public class IdentityUserCrudHttpApiClientProxy<TKey, TModel> : IdentityUserCrud
 public class IdentityUserCrudHttpApiClientProxy<TKey, TDetailOutput, TListOutput, TListSearchInput, TCreateInput, TUpdateInput> : CrudHttpApiClientProxyBase<TKey, TDetailOutput, TListOutput, TListSearchInput, TCreateInput, TUpdateInput>, IIdentityUserCrudBusinessService<TKey, TDetailOutput, TListOutput, TListSearchInput, TCreateInput, TUpdateInput>
     where TKey : IEquatable<TKey>
     where TListSearchInput : class
-    where TListOutput : class
-    where TDetailOutput : class
-    where TCreateInput : class
-    where TUpdateInput : class
+    where TListOutput : notnull
+    where TDetailOutput : notnull
+    where TCreateInput : notnull
+    where TUpdateInput : notnull
 {
     /// <summary>
     /// 初始化 <see cref="IdentityUserCrudHttpApiClientProxy{TKey, TDetailOutput, TListOutput, TListSearchInput, TCreateInput, TUpdateInput}"/> 类的新实例。

@@ -1,7 +1,6 @@
-using FocusOn.Framework.IntegrationTest.Contract;
-using FocusOn.Framework.IntegrationTest.Service;
-
 using Microsoft.EntityFrameworkCore;
+using FocusOn.Framework.IntegrationTest.Service;
+using FocusOn.Framework.IntegrationTest.Contract;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,13 +14,20 @@ builder.Services.AddFocusOn(configure =>
 
     configure.AddDynamicWebApi(typeof(UserCrudBusinessService).Assembly);
     configure.Services.AddDbContext<IdentityDbContext>(options => options.UseInMemoryDatabase("db"));
+
+    configure.AddCors();
 });
 
 var app = builder.Build();
 
 app.UseStaticFiles();
+
+
+app.UseCors();
+
 app.UseRouting();
 app.UseSwagger().UseSwaggerUI();
+
 app.UseEndpoints(endpoints =>
 {
     endpoints.MapControllers();

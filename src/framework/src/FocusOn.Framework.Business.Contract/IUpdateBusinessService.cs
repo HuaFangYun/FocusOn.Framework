@@ -19,5 +19,5 @@ public interface IUpdateBusinessService<TDetailOutput, in TKey, in TUpdateInput>
     /// <param name="model">要更新的输入模型。</param>
     /// <returns>一个更新方法，返回 <see cref="Return"/> 结果。</returns>
     [Put("{id}")]
-    ValueTask<Return<TDetailOutput>> UpdateAsync(TKey id, [Body] TUpdateInput model);
+    Task<Return<TDetailOutput>> UpdateAsync(TKey id, [Body] TUpdateInput model);
 }

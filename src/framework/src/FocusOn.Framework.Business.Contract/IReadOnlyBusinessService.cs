@@ -47,7 +47,7 @@ public interface IReadOnlyBusinessService<in TKey, TDetailOutput, TListOutput, i
     /// <param name="id">要获取的 id 。</param>
     /// <returns>一个获取结果的方法，返回 <see cref="Return{TDetailOutput}"/> 结果。</returns>
     [Get("{id}")]
-    ValueTask<Return<TDetailOutput>> GetAsync(TKey id);
+    Task<Return<TDetailOutput>> GetAsync(TKey id);
     /// <summary>
     /// 以异步的方式获取指定分页的结果列表。
     /// </summary>

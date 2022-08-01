@@ -1,4 +1,4 @@
-﻿namespace FocusOn;
+﻿namespace FocusOn.Framework;
 /// <summary>
 /// 对象的扩展。
 /// </summary>

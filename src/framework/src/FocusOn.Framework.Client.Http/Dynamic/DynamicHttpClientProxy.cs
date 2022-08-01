@@ -30,7 +30,6 @@ internal class DynamicHttpClientProxy<TService> : IHttpApiClientProxy
         var serviceType = typeof(TService);
         var configuration = Options.HttpProxies[serviceType];
         var client = HttpClientFactory.CreateClient(configuration.Name);
-        client.BaseAddress = new(configuration.BaseAddress);
         return client;
     }
 

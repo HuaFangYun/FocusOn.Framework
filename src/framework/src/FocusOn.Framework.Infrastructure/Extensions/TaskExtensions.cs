@@ -1,4 +1,4 @@
-﻿namespace FocusOn;
+﻿namespace FocusOn.Framework;
 
 /// <summary>
 /// Task 任务扩展。

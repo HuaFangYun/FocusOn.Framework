@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
-
-using FocusOn.Framework.Business.Contract;
-
-using Microsoft.Extensions.DependencyInjection;
+using System.Security.Claims;
+using FocusOn.Framework.Security;
 using Microsoft.Extensions.Logging;
+using FocusOn.Framework.Business.Contract;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace FocusOn.Framework.Business.Services;
 
@@ -38,8 +38,18 @@ public abstract class BusinessServiceBase : IBusinessSerivce
     /// 获取 <see cref="ILogger"/> 实例。
     /// </summary>
     protected virtual ILogger? Logger => LoggerFactory.CreateLogger(GetType().Name);
+
     /// <summary>
-    /// 取消异步操作的令牌，默认是1分钟。
+    /// 获取当前访问主体。
+    /// </summary>
+    protected ICurrentPrincipalAccessor? CurrentPrincipal => ServiceProvider.GetService<ICurrentPrincipalAccessor>();
+    /// <summary>
+    /// 获取当前用户主体。
+    /// </summary>
+    protected ClaimsPrincipal? CurrentUser => CurrentPrincipal?.CurrentPrincipal;
+
+    /// <summary>
+    /// 获取可取消异步操作的令牌，默认是1分钟。
     /// </summary>
     protected virtual CancellationToken CancellationToken
     {

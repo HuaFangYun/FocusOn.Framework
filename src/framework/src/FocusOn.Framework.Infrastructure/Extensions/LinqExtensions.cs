@@ -1,6 +1,6 @@
 ﻿using System.Linq.Expressions;
 
-namespace FocusOn;
+namespace FocusOn.Framework;
 
 /// <summary>
 /// LINQ 扩展。

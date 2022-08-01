@@ -1,7 +1,10 @@
 ﻿using System.Reflection;
 using FocusOn.Framework;
 using Microsoft.AspNetCore.Mvc;
+using FocusOn.Framework.Modules;
+using FocusOn.Framework.Security;
 using Swashbuckle.AspNetCore.SwaggerGen;
+using FocusOn.Framework.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.ApplicationParts;
 using FocusOn.Framework.AspNetCore.Http.Conventions;
 
@@ -63,6 +66,13 @@ public static class FocusOnDependencyInjectionExtensions
                 options.AddPolicy("All", cors => cors.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
             }
         });
+        return builder;
+    }
+
+    public static FocusOnBuilder AddCurrentPrincipalAccessor(this FocusOnBuilder builder)
+    {
+        builder.Services.AddHttpContextAccessor();
+        builder.Services.AddScoped<ICurrentPrincipalAccessor, HttpContentCurrentUserAccessor>();
         return builder;
     }
 }

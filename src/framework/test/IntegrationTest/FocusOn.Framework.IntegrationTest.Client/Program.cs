@@ -1,4 +1,5 @@
 ﻿using FocusOn;
+using FocusOn.Framework;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using FocusOn.Framework.IntegrationTest.Contract;
@@ -9,10 +10,12 @@ builder.ConfigureServices(services =>
 {
     services.AddFocusOn(configure =>
     {
-        configure.AddDynamicHttpProxy<IUserCrudBusinessService>(options =>
+        configure.AddDynamicHttpProxy(typeof(IUserCrudBusinessService).Assembly, options =>
         {
             options.BaseAddress = "http://localhost:4700";
-        });
+        })
+        ;
+
     });
 });
 

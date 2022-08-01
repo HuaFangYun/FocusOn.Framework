@@ -1,6 +1,6 @@
 ﻿using System.Text;
 
-namespace FocusOn;
+namespace FocusOn.Framework;
 
 /// <summary>
 /// 字符串扩展类。

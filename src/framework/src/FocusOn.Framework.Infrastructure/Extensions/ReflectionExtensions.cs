@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
 using System.Reflection.Metadata;
 
-namespace FocusOn;
+namespace FocusOn.Framework;
 
 /// <summary>
 /// 反射的扩展类。

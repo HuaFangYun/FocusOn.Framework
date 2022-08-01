@@ -1,20 +1,24 @@
-﻿using System;
-using System.Linq;
-using System.Text;
-using System.Reflection;
+﻿using System.Reflection;
+using FocusOn.Framework;
 using Castle.DynamicProxy;
-using System.Threading.Tasks;
-using System.Collections.Generic;
-using Microsoft.Extensions.Options;
 using FocusOn.Framework.Business.Contract;
 using FocusOn.Framework.Client.Http.Dynamic;
-using FocusOn.Framework;
 
 namespace Microsoft.Extensions.DependencyInjection;
+
+/// <summary>
+/// 依赖注入的扩展。
+/// </summary>
 public static class DypendencyInjectionExtensions
 {
     static readonly ProxyGenerator Generator = new();
 
+    /// <summary>
+    /// 添加指定程序集的动态 HTTP 代理。
+    /// </summary>
+    /// <param name="builder"></param>
+    /// <param name="assembly">要指定的程序集。</param>
+    /// <param name="configure">动态 HTTP 代理的配置。</param>
     public static FocusOnBuilder AddDynamicHttpProxy(this FocusOnBuilder builder, Assembly assembly, Action<DynamicHttpProxyConfiguration> configure)
     {
         var serviceTypes = assembly.GetTypes().Where(IsSubscribeToHttpProxy);
@@ -32,27 +36,39 @@ public static class DypendencyInjectionExtensions
             && !type.IsGenericType
             && typeof(IRemotingService).IsAssignableFrom(type);
     }
-
-    public static FocusOnBuilder AddDynamicHttpProxy<TService>(this FocusOnBuilder builder, Action<DynamicHttpProxyConfiguration> configure) where TService : class
+    /// <summary>
+    /// 添加指定契约服务的动态 HTTP 代理。
+    /// </summary>
+    /// <typeparam name="TContractService">契约服务类型。</typeparam>
+    /// <param name="builder"></param>
+    /// <param name="configure">动态 HTTP 代理的配置。</param>
+    /// <returns></returns>
+    public static FocusOnBuilder AddDynamicHttpProxy<TContractService>(this FocusOnBuilder builder, Action<DynamicHttpProxyConfiguration> configure) where TContractService : class
     {
-        var type = typeof(TService);
+        var type = typeof(TContractService);
 
         Type interceptorType = AddCommonConfiguration(builder, type, configure);
 
         builder.Services.AddScoped(provider =>
         {
-            return Generator.CreateInterfaceProxyWithoutTarget<TService>(((IAsyncInterceptor)provider.GetRequiredService(interceptorType)).ToInterceptor());
+            return Generator.CreateInterfaceProxyWithoutTarget<TContractService>(((IAsyncInterceptor)provider.GetRequiredService(interceptorType)).ToInterceptor());
         });
         return builder;
     }
-
-    public static FocusOnBuilder AddDynamicHttpProxy(this FocusOnBuilder builder, Type type, Action<DynamicHttpProxyConfiguration> configure)
+    /// <summary>
+    /// 添加指定类型的动态 HTTP 代理。
+    /// </summary>
+    /// <param name="builder"></param>
+    /// <param name="contractServiceType">契约服务类型。</param>
+    /// <param name="configure">动态 HTTP 代理的配置。</param>
+    /// <returns></returns>
+    public static FocusOnBuilder AddDynamicHttpProxy(this FocusOnBuilder builder, Type contractServiceType, Action<DynamicHttpProxyConfiguration> configure)
     {
-        Type interceptorType = AddCommonConfiguration(builder, type, configure);
+        Type interceptorType = AddCommonConfiguration(builder, contractServiceType, configure);
 
         builder.Services.AddScoped(provider =>
         {
-            return Generator.CreateInterfaceProxyWithoutTarget(type, (IInterceptor)provider.GetRequiredService(interceptorType));
+            return Generator.CreateInterfaceProxyWithoutTarget(contractServiceType, (IInterceptor)provider.GetRequiredService(interceptorType));
         });
         return builder;
     }
@@ -71,7 +87,17 @@ public static class DypendencyInjectionExtensions
             options.HttpProxies[type] = configuration;
         });
 
-        builder.Services.AddHttpClient();
+        var httpClientBuilder = builder.Services.AddHttpClient(configuration.Name, client => client.BaseAddress = new(configuration.BaseAddress));
+
+        if (configuration.PrimaryHandler is not null)
+        {
+            httpClientBuilder.ConfigurePrimaryHttpMessageHandler(configuration.PrimaryHandler);
+        }
+
+        foreach (var handler in configuration.DelegatingHandlers)
+        {
+            httpClientBuilder.AddHttpMessageHandler(handler);
+        }
 
         builder.Services.AddTransient(typeof(DynamicHttpClientProxy<>).MakeGenericType(type));
         var interceptorType = typeof(DynamicHttpInterceptor<>).MakeGenericType(type);

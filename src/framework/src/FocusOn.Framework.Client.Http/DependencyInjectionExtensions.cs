@@ -1,6 +1,6 @@
 ﻿using FocusOn.Framework;
 using FocusOn.Framework.Business.Contract;
-using FocusOn.Framework.Endpoint.HttpProxy;
+using FocusOn.Framework.Client.Http;
 
 namespace Microsoft.Extensions.DependencyInjection;
 

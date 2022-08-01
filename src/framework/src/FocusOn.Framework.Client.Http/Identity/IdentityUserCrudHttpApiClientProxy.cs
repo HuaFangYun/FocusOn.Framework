@@ -1,6 +1,6 @@
 ﻿using FocusOn.Framework.Business.Contract.Identity;
 
-namespace FocusOn.Framework.Endpoint.HttpProxy.Identity;
+namespace FocusOn.Framework.Client.Http.Identity;
 
 /// <summary>
 /// 表示用户 CRUD 的 HTTP API 客户端代理。

@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\src\FocusOn.Framework.Endpoint.HttpProxy\FocusOn.Framework.Client.Http.csproj" />
+    <ProjectReference Include="..\..\..\src\FocusOn.Framework.Client.Http\FocusOn.Framework.Client.Http.csproj" />
     <ProjectReference Include="..\FocusOn.Framework.IntegrationTest.Contract\FocusOn.Framework.IntegrationTest.Contract.csproj" />
   </ItemGroup>
 

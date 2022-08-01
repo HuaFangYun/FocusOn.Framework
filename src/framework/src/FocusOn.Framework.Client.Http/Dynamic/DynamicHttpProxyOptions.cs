@@ -1,4 +1,4 @@
-﻿namespace FocusOn.Framework.Endpoint.HttpProxy.Dynamic;
+﻿namespace FocusOn.Framework.Client.Http.Dynamic;
 
 public class DynamicHttpProxyOptions
 {

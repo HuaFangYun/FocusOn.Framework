@@ -1,7 +1,7 @@
 ﻿using FocusOn.Framework.Business.Contract.Identity;
 using FocusOn.Framework.Business.Contract.Identity.DTO;
 
-namespace FocusOn.Framework.Endpoint.HttpProxy.Identity;
+namespace FocusOn.Framework.Client.Http.Identity;
 
 /// <summary>
 /// 表示角色的 CRUD 的 HTTP API 远程服务代理。

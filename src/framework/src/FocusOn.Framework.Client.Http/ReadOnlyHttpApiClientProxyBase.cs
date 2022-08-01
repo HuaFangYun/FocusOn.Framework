@@ -1,7 +1,7 @@
 ﻿using FocusOn.Framework.Business.Contract;
 using FocusOn.Framework.Business.Contract.DTO;
 
-namespace FocusOn.Framework.Endpoint.HttpProxy;
+namespace FocusOn.Framework.Client.Http;
 
 /// <summary>
 /// 表示只读查询的 HTTP API 客户端代理。

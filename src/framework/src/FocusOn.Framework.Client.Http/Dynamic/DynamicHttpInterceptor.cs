@@ -8,7 +8,7 @@ using System.Text.Json.Serialization;
 using FocusOn.Framework.Business.Contract.Http;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace FocusOn.Framework.Endpoint.HttpProxy.Dynamic;
+namespace FocusOn.Framework.Client.Http.Dynamic;
 internal class DynamicHttpInterceptor<TService> : IAsyncInterceptor
     where TService : class
 {

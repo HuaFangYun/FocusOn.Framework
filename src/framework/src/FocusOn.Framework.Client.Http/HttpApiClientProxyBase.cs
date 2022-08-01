@@ -9,7 +9,7 @@ using Microsoft.Extensions.Options;
 
 using Newtonsoft.Json;
 
-namespace FocusOn.Framework.Endpoint.HttpProxy;
+namespace FocusOn.Framework.Client.Http;
 
 /// <summary>
 /// 表示 HTTP API 的客户端代理。这是一个抽象类。

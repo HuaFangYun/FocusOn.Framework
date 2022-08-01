@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using Microsoft.Extensions.Options;
 
-namespace FocusOn.Framework.Endpoint.HttpProxy.Dynamic;
+namespace FocusOn.Framework.Client.Http.Dynamic;
 public class DynamicHttpProxyConfiguration
 {
     public DynamicHttpProxyConfiguration()

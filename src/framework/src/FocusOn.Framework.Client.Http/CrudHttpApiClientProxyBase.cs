@@ -1,6 +1,6 @@
 ﻿using FocusOn.Framework.Business.Contract;
 
-namespace FocusOn.Framework.Endpoint.HttpProxy;
+namespace FocusOn.Framework.Client.Http;
 
 /// <summary>
 /// 提供 CRUD 对 HTTP API 客户端代理的功能，这是一个抽象类。

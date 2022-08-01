@@ -3,7 +3,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace FocusOn.Framework.Endpoint.HttpProxy.Dynamic;
+namespace FocusOn.Framework.Client.Http.Dynamic;
 
 /// <summary>
 /// 表示对指定的服务进行 HTTP 动态请求的代理服务。

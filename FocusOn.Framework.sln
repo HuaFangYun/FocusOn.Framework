@@ -7,9 +7,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FocusOn.Framework.Infrastru
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FocusOn.Framework.Business.Contract", "src\framework\src\FocusOn.Framework.Business.Contract\FocusOn.Framework.Business.Contract.csproj", "{6812BC21-B533-46B1-9104-F2FCA78BF195}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FocusOn.Framework.AspNetCore.Http", "src\framework\src\FocusOn.Framework.Endpoint.HttpApi\FocusOn.Framework.AspNetCore.Http.csproj", "{38F855D2-44FF-4995-BB63-F287A0D41E8D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FocusOn.Framework.AspNetCore.Http", "src\framework\src\FocusOn.Framework.AspNetCore.Http\FocusOn.Framework.AspNetCore.Http.csproj", "{38F855D2-44FF-4995-BB63-F287A0D41E8D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FocusOn.Framework.Client.Http", "src\framework\src\FocusOn.Framework.Endpoint.HttpProxy\FocusOn.Framework.Client.Http.csproj", "{6D82B293-7D3C-4035-889F-E7AA2E23CC6A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FocusOn.Framework.Client.Http", "src\framework\src\FocusOn.Framework.Client.Http\FocusOn.Framework.Client.Http.csproj", "{6D82B293-7D3C-4035-889F-E7AA2E23CC6A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{4C8D0E61-7EF5-4726-AB38-DBD0FF9F885D}"
 EndProject

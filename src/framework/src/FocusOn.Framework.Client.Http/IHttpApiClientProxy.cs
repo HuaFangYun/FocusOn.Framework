@@ -1,4 +1,4 @@
-﻿namespace FocusOn.Framework.Endpoint.HttpProxy;
+﻿namespace FocusOn.Framework.Client.Http;
 
 /// <summary>
 /// 提供对 HTTP API 的代理客户端。

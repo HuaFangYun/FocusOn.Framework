@@ -1,12 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using FocusOn.Framework.Business.Contract.Http;
 using Microsoft.Extensions.DependencyInjection;
-using FocusOn.Framework.Business.Store.Identity;
+using FocusOn.Framework.Business.DbStore.Identity;
 using FocusOn.Framework.Business.Contract.Identity;
 using FocusOn.Framework.Business.Contract.Identity.DTO;
-using FocusOn.Framework.Business.Services.Localizations;
+using FocusOn.Framework.Business.Service.Localizations;
 
-namespace FocusOn.Framework.Business.Services.Identity.Services;
+namespace FocusOn.Framework.Business.Service.Identity.Services;
 
 /// <summary>
 ///  提供对用户进行 CRUD 操作的 HTTP API 控制器。

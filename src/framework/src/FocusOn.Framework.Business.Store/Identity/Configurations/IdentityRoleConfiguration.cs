@@ -1,9 +1,8 @@
-﻿using FocusOn.Framework.Business.Store.Configurations;
-
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using FocusOn.Framework.Business.DbStore.Configurations;
 
-namespace FocusOn.Framework.Business.Store.Identity.Configurations;
+namespace FocusOn.Framework.Business.DbStore.Identity.Configurations;
 
 /// <summary>
 /// 表示对 <see cref="IdentityRole{TKey}"/> 实体的配置。

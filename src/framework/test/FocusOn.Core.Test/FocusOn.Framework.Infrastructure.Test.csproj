@@ -21,8 +21,4 @@
     </PackageReference>
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\src\FocusOn.Framework.Infrastructure\FocusOn.Framework.Infrastructure.csproj" />
-  </ItemGroup>
-
 </Project>

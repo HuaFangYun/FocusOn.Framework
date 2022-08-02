@@ -3,13 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.2.32526.322
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FocusOn.Framework.Infrastructure", "src\framework\src\FocusOn.Framework.Infrastructure\FocusOn.Framework.Infrastructure.csproj", "{945A6462-188E-4594-A990-4DE66CB20D70}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FocusOn.Framework.Business.Contract", "src\framework\src\FocusOn.Framework.Business.Contract\FocusOn.Framework.Business.Contract.csproj", "{6812BC21-B533-46B1-9104-F2FCA78BF195}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FocusOn.Framework.AspNetCore.Http", "src\framework\src\FocusOn.Framework.Endpoint.HttpApi\FocusOn.Framework.AspNetCore.Http.csproj", "{38F855D2-44FF-4995-BB63-F287A0D41E8D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FocusOn.Framework.AspNetCore.Http", "src\framework\src\FocusOn.Framework.AspNetCore.Http\FocusOn.Framework.AspNetCore.Http.csproj", "{38F855D2-44FF-4995-BB63-F287A0D41E8D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FocusOn.Framework.Client.Http", "src\framework\src\FocusOn.Framework.Endpoint.HttpProxy\FocusOn.Framework.Client.Http.csproj", "{6D82B293-7D3C-4035-889F-E7AA2E23CC6A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FocusOn.Framework.Client.Http", "src\framework\src\FocusOn.Framework.Client.Http\FocusOn.Framework.Client.Http.csproj", "{6D82B293-7D3C-4035-889F-E7AA2E23CC6A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{4C8D0E61-7EF5-4726-AB38-DBD0FF9F885D}"
 EndProject
@@ -17,7 +15,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{FFBA0600-7
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FocusOn.Framework.Infrastructure.Test", "src\framework\test\FocusOn.Core.Test\FocusOn.Framework.Infrastructure.Test.csproj", "{A7731B6C-24E2-42B1-A382-0A61DB204DBD}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FocusOn.Framework.Business.Store", "src\framework\src\FocusOn.Framework.Business.Store\FocusOn.Framework.Business.Store.csproj", "{B56CD0C2-8B69-4B82-AE49-F35C262F66C1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FocusOn.Framework.Business.DbStore", "src\framework\src\FocusOn.Framework.Business.Store\FocusOn.Framework.Business.DbStore.csproj", "{B56CD0C2-8B69-4B82-AE49-F35C262F66C1}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "sln", "sln", "{FAFFF62D-2CA6-4174-820A-862B8D48A5E9}"
 	ProjectSection(SolutionItems) = preProject
@@ -25,7 +23,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "sln", "sln", "{FAFFF62D-2CA
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FocusOn.Framework.Business.Services", "src\framework\src\FocusOn.Framework.Business.Service\FocusOn.Framework.Business.Services.csproj", "{204D31AE-4B20-4CF9-88AC-D000FC9EBC7F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FocusOn.Framework.Business.Service", "src\framework\src\FocusOn.Framework.Business.Service\FocusOn.Framework.Business.Service.csproj", "{204D31AE-4B20-4CF9-88AC-D000FC9EBC7F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "IntegrationTest", "IntegrationTest", "{95983865-2D1E-4DC5-9C1A-C6A9345123C1}"
 EndProject
@@ -37,7 +35,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FocusOn.Framework.Integrati
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FocusOn.Framework.IntegrationTest.HttpApi", "src\framework\test\IntegrationTest\FocusOn.Framework.IntegrationTest.HttpApi\FocusOn.Framework.IntegrationTest.HttpApi.csproj", "{B6B61838-8AE4-45C3-9E2E-E6715E381CA8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FocusOn.Framework.IntegrationTest.Client", "src\framework\test\IntegrationTest\FocusOn.Framework.IntegrationTest.Client\FocusOn.Framework.IntegrationTest.Client.csproj", "{B5636B30-C99A-4E12-82A1-2125C4DADA00}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FocusOn.Framework.IntegrationTest.Client", "src\framework\test\IntegrationTest\FocusOn.Framework.IntegrationTest.Client\FocusOn.Framework.IntegrationTest.Client.csproj", "{B5636B30-C99A-4E12-82A1-2125C4DADA00}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FocusOn.Framework.Core", "src\framework\src\FocusOn.Framework.Core\FocusOn.Framework.Core.csproj", "{2623DDB3-E719-4751-A825-B733063F65AD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,10 +45,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{945A6462-188E-4594-A990-4DE66CB20D70}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{945A6462-188E-4594-A990-4DE66CB20D70}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{945A6462-188E-4594-A990-4DE66CB20D70}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{945A6462-188E-4594-A990-4DE66CB20D70}.Release|Any CPU.Build.0 = Release|Any CPU
 		{6812BC21-B533-46B1-9104-F2FCA78BF195}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6812BC21-B533-46B1-9104-F2FCA78BF195}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6812BC21-B533-46B1-9104-F2FCA78BF195}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -89,12 +85,15 @@ Global
 		{B5636B30-C99A-4E12-82A1-2125C4DADA00}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B5636B30-C99A-4E12-82A1-2125C4DADA00}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B5636B30-C99A-4E12-82A1-2125C4DADA00}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2623DDB3-E719-4751-A825-B733063F65AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2623DDB3-E719-4751-A825-B733063F65AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2623DDB3-E719-4751-A825-B733063F65AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2623DDB3-E719-4751-A825-B733063F65AD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{945A6462-188E-4594-A990-4DE66CB20D70} = {4C8D0E61-7EF5-4726-AB38-DBD0FF9F885D}
 		{6812BC21-B533-46B1-9104-F2FCA78BF195} = {4C8D0E61-7EF5-4726-AB38-DBD0FF9F885D}
 		{38F855D2-44FF-4995-BB63-F287A0D41E8D} = {4C8D0E61-7EF5-4726-AB38-DBD0FF9F885D}
 		{6D82B293-7D3C-4035-889F-E7AA2E23CC6A} = {4C8D0E61-7EF5-4726-AB38-DBD0FF9F885D}
@@ -107,6 +106,7 @@ Global
 		{5D4A9CD6-5A3A-46CB-A9B6-95B588B8C40D} = {95983865-2D1E-4DC5-9C1A-C6A9345123C1}
 		{B6B61838-8AE4-45C3-9E2E-E6715E381CA8} = {95983865-2D1E-4DC5-9C1A-C6A9345123C1}
 		{B5636B30-C99A-4E12-82A1-2125C4DADA00} = {95983865-2D1E-4DC5-9C1A-C6A9345123C1}
+		{2623DDB3-E719-4751-A825-B733063F65AD} = {4C8D0E61-7EF5-4726-AB38-DBD0FF9F885D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {60D7014C-4C59-4127-9CB5-A4402740E525}

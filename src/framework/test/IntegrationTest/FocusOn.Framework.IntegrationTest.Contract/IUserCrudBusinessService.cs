@@ -9,4 +9,7 @@ public interface IUserCrudBusinessService : IIdentityUserCrudBusinessService<Gui
 {
     [Post("sign-in")]
     Task<Return> SignInAsync([Header] string token);
+
+    [Get("authorize")]
+    Task<Return<string>> AuthorizeAsync();
 }

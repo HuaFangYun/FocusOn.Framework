@@ -1,4 +1,4 @@
-﻿using FocusOn.Framework.Business.Services;
+﻿using FocusOn.Framework.Business.Service;
 using FocusOn.Framework.Business.Contract.Identity.DTO;
 
 namespace FocusOn.Framework.IntegrationTest.Service;

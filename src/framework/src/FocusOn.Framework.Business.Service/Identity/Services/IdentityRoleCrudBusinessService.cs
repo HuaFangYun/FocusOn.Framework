@@ -1,10 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using FocusOn.Framework.Business.Store.Identity;
+using FocusOn.Framework.Business.DbStore.Identity;
 using FocusOn.Framework.Business.Contract.Identity;
 using FocusOn.Framework.Business.Contract.Identity.DTO;
-using FocusOn.Framework.Business.Services.Localizations;
+using FocusOn.Framework.Business.Service.Localizations;
 
-namespace FocusOn.Framework.Business.Services.Identity.Services;
+namespace FocusOn.Framework.Business.Service.Identity.Services;
 
 /// <summary>
 /// 基于 <see cref="IdentityRole{TKey}"/> 的角色 CRUD 的 HTTP API 的控制器。

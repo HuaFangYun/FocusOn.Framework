@@ -1,4 +1,6 @@
-﻿namespace FocusOn.Framework.Business.Store.Identity;
+﻿using FocusOn.Framework.Business.DbStore;
+
+namespace FocusOn.Framework.Business.DbStore.Identity;
 
 
 /// <summary>

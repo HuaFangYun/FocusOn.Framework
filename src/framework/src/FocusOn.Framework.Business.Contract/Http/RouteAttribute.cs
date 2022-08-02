@@ -3,10 +3,10 @@
 namespace FocusOn.Framework.Business.Contract.Http;
 
 /// <summary>
-/// 定义统一的根路由。
+/// 定义让接口具备 HTTP 方式访问的路由形式。该特性要求接口继承 <see cref="IRemotingService"/> 后生效。
 /// </summary>
 [AttributeUsage(AttributeTargets.Interface)]
-public class RouteAttribute : Attribute
+public class RouteAttribute : Attribute, IRouteProvider
 {
     /// <summary>
     /// 初始化 <see cref="RouteAttribute"/> 类的新实例。
@@ -15,11 +15,16 @@ public class RouteAttribute : Attribute
     public RouteAttribute([NotNull] string template)
         => Template = template ?? throw new ArgumentNullException(nameof(template));
     /// <summary>
-    /// 获取路由模板。
+    /// <inheritdoc/>
     /// </summary>
     public string Template { get; }
     /// <summary>
-    /// 排序。会根据从小到大的排序顺序，获取第一个作为路由。
+    /// <inheritdoc/>
     /// </summary>
     public int Order { get; set; } = 1000;
+
+    /// <summary>
+    /// <inheritdoc/>
+    /// </summary>
+    public string? Name { get; set; }
 }

@@ -1,6 +1,6 @@
 ﻿using System.Security.Cryptography;
 
-namespace FocusOn.Framework.Business.Services.Identity;
+namespace FocusOn.Framework.Business.Service.Identity;
 
 /// <summary>
 /// 默认的密码服务。

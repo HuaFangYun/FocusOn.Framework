@@ -1,5 +1,7 @@
 ﻿using FocusOn;
+using FocusOn.Framework;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.DependencyInjection;
 using FocusOn.Framework.IntegrationTest.Contract;
 
@@ -9,10 +11,16 @@ builder.ConfigureServices(services =>
 {
     services.AddFocusOn(configure =>
     {
-        configure.AddDynamicHttpProxy<IUserCrudBusinessService>(options =>
+        configure.AddDynamicHttpProxy(typeof(IUserCrudBusinessService).Assembly, options =>
         {
             options.BaseAddress = "http://localhost:4700";
-        });
+            options.DelegatingHandlers.Add(new(s =>
+            {
+                return new TestDelegatingHandler(s.GetRequiredService<ILogger<TestDelegatingHandler>>());
+            }));
+        })
+        ;
+
     });
 });
 
@@ -81,3 +89,23 @@ foreach (var item in result.Data.Items)
 }
 
 var signInResult = await userService.SignInAsync("1111111111111111111111111111111111111111111111111111111111");
+
+
+class TestDelegatingHandler : DelegatingHandler
+{
+    private readonly ILogger<TestDelegatingHandler> _logger;
+
+    public TestDelegatingHandler(ILogger<TestDelegatingHandler> logger)
+    {
+        this._logger = logger;
+    }
+
+    protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+    {
+        request.Headers.Add("Token", "abc");
+
+        _logger.LogInformation("每一次请求都会走的方法");
+
+        return base.SendAsync(request, cancellationToken);
+    }
+}

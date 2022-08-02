@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\src\FocusOn.Framework.Endpoint.HttpApi\FocusOn.Framework.AspNetCore.Http.csproj" />
+    <ProjectReference Include="..\..\..\src\FocusOn.Framework.AspNetCore.Http\FocusOn.Framework.AspNetCore.Http.csproj" />
     <ProjectReference Include="..\FocusOn.Framework.IntegrationTest.Service\FocusOn.Framework.IntegrationTest.Service.csproj" />
   </ItemGroup>
   <ItemGroup>

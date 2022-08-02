@@ -1,0 +1,35 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<Import Project="../../../../common.props" />
+
+	<ItemGroup>
+		<Compile Remove="Identity\**" />
+		<EmbeddedResource Remove="Identity\**" />
+		<None Remove="Identity\**" />
+	</ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="NSwag.AspNetCore" Version="13.16.1" />
+		<PackageReference Include="AutoMapper.Collection" Version="8.0.0" />
+		<PackageReference Include="AutoMapper.Extensions.ExpressionMapping" Version="5.0.2" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\FocusOn.Framework.Business.Contract\FocusOn.Framework.Business.Contract.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Compile Update="Localizations\Locale.Designer.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>Locale.resx</DependentUpon>
+		</Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+		<EmbeddedResource Update="Localizations\Locale.resx">
+			<Generator>PublicResXFileCodeGenerator</Generator>
+			<LastGenOutput>Locale.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+	</ItemGroup>
+
+</Project>

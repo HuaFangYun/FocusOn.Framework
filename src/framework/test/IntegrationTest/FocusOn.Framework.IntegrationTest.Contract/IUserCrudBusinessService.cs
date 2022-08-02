@@ -11,5 +11,5 @@ public interface IUserCrudBusinessService : IIdentityUserCrudBusinessService<Gui
     Task<Return> SignInAsync([Header] string token);
 
     [Get("authorize")]
-    Task<Return> AuthorizeAsync();
+    Task<Return<string>> AuthorizeAsync();
 }

@@ -12,9 +12,11 @@ public class UserCrudBusinessService : IdentityUserCrudBusinessService<IdentityD
     {
     }
 
-    public Task<Return> AuthorizeAsync()
+    public Task<Return<string>> AuthorizeAsync()
     {
-        return Task.FromResult(Return.Success());
+        var name = CurrentUser?.Identity?.Name;
+
+        return Task.FromResult(Return<string>.Success(name));
     }
 
     public Task<Return> SignInAsync([Header] string token)

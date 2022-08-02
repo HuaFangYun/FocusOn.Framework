@@ -1,6 +1,7 @@
-﻿using FocusOn.Framework.Modules.Identity;
+﻿using FocusOn.Framework.Business.DbStore;
+using FocusOn.Framework.Modules.Identity;
 
-namespace FocusOn.Framework.Business.Store.Identity;
+namespace FocusOn.Framework.Business.DbStore.Identity;
 
 /// <summary>
 /// 表示用户的基本信息。

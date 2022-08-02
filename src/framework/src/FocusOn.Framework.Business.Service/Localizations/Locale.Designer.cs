@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace FocusOn.Business.Services.Localizations {
+namespace FocusOn.Framework.Business.Service.Localizations {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace FocusOn.Business.Services.Localizations {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("FocusOn.Business.Services.Localizations.Locale", typeof(Locale).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("FocusOn.Framework.Business.Service.Localizations.Locale", typeof(Locale).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -66,6 +66,33 @@ namespace FocusOn.Business.Services.Localizations {
         internal static string Message_EntityNotFound {
             get {
                 return ResourceManager.GetString("Message_EntityNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 方法 ‘{0}’ 没有被实现.
+        /// </summary>
+        internal static string Message_NotImeplementation {
+            get {
+                return ResourceManager.GetString("Message_NotImeplementation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 角色 &apos;{0}&apos; 已存在.
+        /// </summary>
+        internal static string Message_Role_NameDuplicate {
+            get {
+                return ResourceManager.GetString("Message_Role_NameDuplicate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 角色 &apos;{0}&apos; 没有找到.
+        /// </summary>
+        internal static string Message_Role_NameNotFound {
+            get {
+                return ResourceManager.GetString("Message_Role_NameNotFound", resourceCulture);
             }
         }
         
@@ -124,11 +151,38 @@ namespace FocusOn.Business.Services.Localizations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 登录失败，用户名或密码错误.
+        /// </summary>
+        internal static string Message_User_SignInFailed {
+            get {
+                return ResourceManager.GetString("Message_User_SignInFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 用户名 &apos;{0}&apos; 重复.
         /// </summary>
         internal static string Message_User_UserNameDuplicate {
             get {
                 return ResourceManager.GetString("Message_User_UserNameDuplicate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 用户名 &apos;{0}&apos; 已存在.
+        /// </summary>
+        internal static string Message_User_UserNameDuplicate1 {
+            get {
+                return ResourceManager.GetString("Message_User_UserNameDuplicate1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 用户 &apos;{0}&apos; 没有找到.
+        /// </summary>
+        internal static string Message_User_UserNameNotFound {
+            get {
+                return ResourceManager.GetString("Message_User_UserNameNotFound", resourceCulture);
             }
         }
     }

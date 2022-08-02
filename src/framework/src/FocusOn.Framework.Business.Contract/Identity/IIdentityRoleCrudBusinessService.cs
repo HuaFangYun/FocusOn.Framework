@@ -23,10 +23,10 @@ public interface IIdentityRoleCrudBusinessService<TKey, TModel> : IIdentityUserC
 /// <typeparam name="TCreateOrUpdateInput">创建或更新输入类型。</typeparam>
 public interface IIdentityRoleCrudBusinessService<TKey, TDetailOutput, TListOutput, TListSearchInput, TCreateOrUpdateInput> : IIdentityRoleCrudBusinessService<TKey, TDetailOutput, TListOutput, TListSearchInput, TCreateOrUpdateInput, TCreateOrUpdateInput>, ICrudBusinessService<TKey, TDetailOutput, TListOutput, TListSearchInput, TCreateOrUpdateInput>
     where TKey : IEquatable<TKey>
-    where TDetailOutput : class
-    where TListOutput : class
+    where TDetailOutput : notnull
+    where TListOutput : notnull
     where TListSearchInput : class
-    where TCreateOrUpdateInput : class
+    where TCreateOrUpdateInput : notnull
 {
 
 }
@@ -43,10 +43,10 @@ public interface IIdentityRoleCrudBusinessService<TKey, TDetailOutput, TListOutp
 /// <typeparam name="TUpdateInput">更新输入类型。</typeparam>
 public interface IIdentityRoleCrudBusinessService<TKey, TDetailOutput, TListOutput, TListSearchInput, TCreateInput, TUpdateInput> : IIdentityRoleReadOnlyBusinessService<TKey, TDetailOutput, TListOutput, TListSearchInput>, ICrudBusinessService<TKey, TDetailOutput, TListOutput, TListSearchInput, TCreateInput, TUpdateInput>
     where TKey : IEquatable<TKey>
-    where TDetailOutput : class
-    where TListOutput : class
+    where TDetailOutput : notnull
+    where TListOutput : notnull
     where TListSearchInput : class
-    where TCreateInput : class
-    where TUpdateInput : class
+    where TCreateInput : notnull
+    where TUpdateInput : notnull
 {
 }

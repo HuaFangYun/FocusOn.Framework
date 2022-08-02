@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\src\FocusOn.Framework.Business.Service\FocusOn.Framework.Business.Service.csproj" />
+    <ProjectReference Include="..\FocusOn.Framework.IntegrationTest.Contract\FocusOn.Framework.IntegrationTest.Contract.csproj" />
+  </ItemGroup>
+
+</Project>

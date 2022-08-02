@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace FocusOn.Framework.Business.Store.Identity.Configurations;
+namespace FocusOn.Framework.Business.DbStore.Identity.Configurations;
 
 /// <summary>
 /// 表示 <see cref="IdentityUserRole{TKey}"/> 实体的数据库配置。

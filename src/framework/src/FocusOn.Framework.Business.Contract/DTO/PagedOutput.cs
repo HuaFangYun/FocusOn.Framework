@@ -6,7 +6,7 @@ namespace FocusOn.Framework.Business.Contract.DTO;
 /// 表示分页的输出。
 /// </summary>
 /// <typeparam name="TItem">数据类型。</typeparam>
-public record class PagedOutput<TItem> where TItem : class
+public record class PagedOutput<TItem> where TItem : notnull
 {
     /// <summary>
     /// 初始化 <see cref="PagedOutput{TItem}"/> 类的新实例。

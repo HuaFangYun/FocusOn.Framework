@@ -1,8 +1,7 @@
-﻿using FocusOn.Framework.Business.Store.Identity.Configurations;
+﻿using Microsoft.EntityFrameworkCore;
+using FocusOn.Framework.Business.DbStore.Identity.Configurations;
 
-using Microsoft.EntityFrameworkCore;
-
-namespace FocusOn.Framework.Business.Store.Identity;
+namespace FocusOn.Framework.Business.DbStore.Identity;
 
 /// <summary>
 /// Identity 的 <see cref="ModelBuilder"/> 扩展。

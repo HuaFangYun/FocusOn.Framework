@@ -3,12 +3,12 @@
 	<Import Project="../../../../common.props" />
 
 	<ItemGroup>
-	  <Compile Remove="Identity\**" />
-	  <EmbeddedResource Remove="Identity\**" />
-	  <None Remove="Identity\**" />
+		<Compile Remove="Identity\**" />
+		<EmbeddedResource Remove="Identity\**" />
+		<None Remove="Identity\**" />
 	</ItemGroup>
 	<ItemGroup>
-		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
+		<PackageReference Include="NSwag.AspNetCore" Version="13.16.1" />
 		<PackageReference Include="AutoMapper.Collection" Version="8.0.0" />
 		<PackageReference Include="AutoMapper.Extensions.ExpressionMapping" Version="5.0.2" />
 	</ItemGroup>

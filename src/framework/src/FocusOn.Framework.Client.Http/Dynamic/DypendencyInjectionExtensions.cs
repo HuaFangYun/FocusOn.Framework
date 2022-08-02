@@ -45,15 +45,7 @@ public static class DypendencyInjectionExtensions
     /// <returns></returns>
     public static FocusOnBuilder AddDynamicHttpProxy<TContractService>(this FocusOnBuilder builder, Action<DynamicHttpProxyConfiguration> configure) where TContractService : class
     {
-        var type = typeof(TContractService);
-
-        Type interceptorType = AddCommonConfiguration(builder, type, configure);
-
-        builder.Services.AddScoped(provider =>
-        {
-            return Generator.CreateInterfaceProxyWithoutTarget<TContractService>(((IAsyncInterceptor)provider.GetRequiredService(interceptorType)).ToInterceptor());
-        });
-        return builder;
+        return AddDynamicHttpProxy(builder, typeof(TContractService), configure);
     }
     /// <summary>
     /// 添加指定类型的动态 HTTP 代理。
@@ -66,9 +58,9 @@ public static class DypendencyInjectionExtensions
     {
         Type interceptorType = AddCommonConfiguration(builder, contractServiceType, configure);
 
-        builder.Services.AddScoped(provider =>
+        builder.Services.AddTransient(contractServiceType, provider =>
         {
-            return Generator.CreateInterfaceProxyWithoutTarget(contractServiceType, (IInterceptor)provider.GetRequiredService(interceptorType));
+            return Generator.CreateInterfaceProxyWithoutTarget(contractServiceType, ((IAsyncInterceptor)provider.GetRequiredService(interceptorType)).ToInterceptor());
         });
         return builder;
     }

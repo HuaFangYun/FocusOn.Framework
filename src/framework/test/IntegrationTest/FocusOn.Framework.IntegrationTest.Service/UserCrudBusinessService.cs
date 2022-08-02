@@ -12,6 +12,11 @@ public class UserCrudBusinessService : IdentityUserCrudBusinessService<IdentityD
     {
     }
 
+    public Task<Return> AuthorizeAsync()
+    {
+        return Task.FromResult(Return.Success());
+    }
+
     public Task<Return> SignInAsync([Header] string token)
     {
         Logger.LogInformation(token);

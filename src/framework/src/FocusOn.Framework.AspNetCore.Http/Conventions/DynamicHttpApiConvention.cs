@@ -65,6 +65,11 @@ internal class DynamicHttpApiConvention : IApplicationModelConvention
     {
         controller.ApiExplorer.IsVisible = true;
 
+        if (_controllerType.TryGetCustomAttribute<Business.Contract.Http.RouteAttribute>(out var routeAttribute) && !routeAttribute.Name.IsNullOrEmpty())
+        {
+            controller.ControllerName = routeAttribute.Name;
+        }
+
         foreach (var action in controller.Actions)
         {
             if (action is null)
@@ -182,7 +187,7 @@ internal class DynamicHttpApiConvention : IApplicationModelConvention
     {
         var selector = new SelectorModel
         {
-            AttributeRouteModel = new AttributeRouteModel(new Microsoft.AspNetCore.Mvc.RouteAttribute(GenerateRouteTemplate(action)))
+            AttributeRouteModel = new AttributeRouteModel(GenerateRoute(action))
         };
 
         selector.ActionConstraints.Add(new HttpMethodActionConstraint(new[] { GetHttpMethod(action) }));
@@ -195,7 +200,7 @@ internal class DynamicHttpApiConvention : IApplicationModelConvention
         {
             if (selector.AttributeRouteModel == null)
             {
-                selector.AttributeRouteModel = new AttributeRouteModel(new Microsoft.AspNetCore.Mvc.RouteAttribute(GenerateRouteTemplate(action)));
+                selector.AttributeRouteModel = new AttributeRouteModel(GenerateRoute(action));
             }
 
             if (!selector.ActionConstraints.Any())
@@ -205,12 +210,22 @@ internal class DynamicHttpApiConvention : IApplicationModelConvention
         }
     }
 
-    string GenerateRouteTemplate(ActionModel action)
+    Microsoft.AspNetCore.Mvc.RouteAttribute GenerateRoute(ActionModel action)
     {
-        var routeTemplateBuilder = new StringBuilder();
-        var controllerName = GetControllerTemplate(action);
+        if (_controllerType is null)
+        {
+            throw new InvalidOperationException($"不能识别成 Controller");
+        }
 
-        routeTemplateBuilder.Append($"/{controllerName}");
+        if (!_controllerType.TryGetCustomAttribute<Business.Contract.Http.RouteAttribute>(out var routeAttribute))
+        {
+
+        }
+
+        var routeTemplateBuilder = new StringBuilder();
+        var template = routeAttribute?.Template;
+
+        routeTemplateBuilder.Append($"/{template}");
 
         var httpMethodAttribute = FindHttpMethodFromAction(action);
         if (httpMethodAttribute is null)
@@ -237,7 +252,7 @@ internal class DynamicHttpApiConvention : IApplicationModelConvention
         //    }
         //}
 
-        return routeTemplateBuilder.ToString();
+        return new(routeTemplateBuilder.ToString()) { Name = routeAttribute.Name ?? httpMethodAttribute.Name, Order = routeAttribute.Order };
     }
 
     private HttpMethodAttribute? FindHttpMethodFromAction(ActionModel action)
@@ -249,8 +264,7 @@ internal class DynamicHttpApiConvention : IApplicationModelConvention
             throw new InvalidOperationException($"找不到 {action.ActionName} 方法");
         }
 
-        var attr = actionMethod.GetCustomAttribute<HttpMethodAttribute>();
-        return attr;
+        return actionMethod.GetCustomAttributes<HttpMethodAttribute>().OrderBy(m => m.Order).FirstOrDefault();
     }
 
     private MethodInfo? FindInterfaceMethod(ActionModel action)
@@ -283,22 +297,6 @@ internal class DynamicHttpApiConvention : IApplicationModelConvention
         //return HttpMethods.Post;
     }
 
-    /// <summary>
-    /// 获取 controller 的名称。
-    /// </summary>
-    /// <param name="action">Action</param>
-    /// <returns></returns>
-    protected virtual string GetControllerTemplate(ActionModel action)
-    {
-        if (_controllerType is null)
-        {
-            throw new InvalidOperationException($"不能识别成 Controller");
-        }
-
-        var routeAttribute = _controllerType.GetCustomAttribute<Business.Contract.Http.RouteAttribute>();
-
-        return routeAttribute.Template;
-    }
 
     private static Type? GetOnlyServiceType(TypeInfo controller)
     {

@@ -1,9 +1,8 @@
 ﻿using System.Reflection;
 using FocusOn.Framework;
 using Microsoft.AspNetCore.Mvc;
-using FocusOn.Framework.Modules;
 using FocusOn.Framework.Security;
-using Swashbuckle.AspNetCore.SwaggerGen;
+using NSwag.Generation.AspNetCore;
 using FocusOn.Framework.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.ApplicationParts;
 using FocusOn.Framework.AspNetCore.Http.Conventions;
@@ -20,10 +19,10 @@ public static class FocusOnDependencyInjectionExtensions
     /// </summary>
     /// <param name = "builder" ><see cref="FocusOnBuilder"/> 实例。</param>
     /// <param name = "configure"> Swagger 配置。</param>
-    public static FocusOnBuilder AddSwagger(this FocusOnBuilder builder, Action<SwaggerGenOptions>? configure = default)
+    public static FocusOnBuilder AddSwagger(this FocusOnBuilder builder, Action<AspNetCoreOpenApiDocumentGeneratorSettings>? configure = default)
     {
         builder.Services.AddEndpointsApiExplorer();
-        builder.Services.AddSwaggerGen(configure);
+        builder.Services.AddOpenApiDocument(configure);
 
         return builder;
     }

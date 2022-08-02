@@ -22,7 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\FocusOn.Framework.Infrastructure\FocusOn.Framework.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\src\FocusOn.Framework.Infrastructure\FocusOn.Framework.Core.csproj" />
   </ItemGroup>
 
 </Project>

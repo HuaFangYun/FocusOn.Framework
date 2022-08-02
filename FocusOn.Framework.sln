@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.2.32526.322
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FocusOn.Framework.Infrastructure", "src\framework\src\FocusOn.Framework.Infrastructure\FocusOn.Framework.Infrastructure.csproj", "{945A6462-188E-4594-A990-4DE66CB20D70}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FocusOn.Framework.Core", "src\framework\src\FocusOn.Framework.Infrastructure\FocusOn.Framework.Core.csproj", "{945A6462-188E-4594-A990-4DE66CB20D70}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FocusOn.Framework.Business.Contract", "src\framework\src\FocusOn.Framework.Business.Contract\FocusOn.Framework.Business.Contract.csproj", "{6812BC21-B533-46B1-9104-F2FCA78BF195}"
 EndProject
@@ -37,7 +37,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FocusOn.Framework.Integrati
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FocusOn.Framework.IntegrationTest.HttpApi", "src\framework\test\IntegrationTest\FocusOn.Framework.IntegrationTest.HttpApi\FocusOn.Framework.IntegrationTest.HttpApi.csproj", "{B6B61838-8AE4-45C3-9E2E-E6715E381CA8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FocusOn.Framework.IntegrationTest.Client", "src\framework\test\IntegrationTest\FocusOn.Framework.IntegrationTest.Client\FocusOn.Framework.IntegrationTest.Client.csproj", "{B5636B30-C99A-4E12-82A1-2125C4DADA00}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FocusOn.Framework.IntegrationTest.Client", "src\framework\test\IntegrationTest\FocusOn.Framework.IntegrationTest.Client\FocusOn.Framework.IntegrationTest.Client.csproj", "{B5636B30-C99A-4E12-82A1-2125C4DADA00}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

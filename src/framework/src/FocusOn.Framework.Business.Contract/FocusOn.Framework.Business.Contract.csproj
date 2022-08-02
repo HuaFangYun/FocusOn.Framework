@@ -6,7 +6,7 @@
 	  <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\FocusOn.Framework.Infrastructure\FocusOn.Framework.Infrastructure.csproj" />
+    <ProjectReference Include="..\FocusOn.Framework.Infrastructure\FocusOn.Framework.Core.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Compile Update="Localizations\Locale.Designer.cs">

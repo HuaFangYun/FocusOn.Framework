@@ -63,7 +63,6 @@ internal class DynamicHttpInterceptor<TService> : IAsyncInterceptor
             throw new InvalidOperationException($"方法必须设置 {nameof(HttpMethodAttribute)} 特性，才可以使用自动代理");
         }
         var template = httpMethodAttribute.Template;
-        Logger.LogInformation("Template:{0}", template);
 
         if (!template.IsNullOrEmpty())
         {
@@ -75,7 +74,6 @@ internal class DynamicHttpInterceptor<TService> : IAsyncInterceptor
         }
 
         request.Method = httpMethodAttribute.Method;
-        Logger.LogInformation($"Request method: {request.Method.Method}");
 
         //解析参数
         var parameters = method.GetParameters();
@@ -85,8 +83,6 @@ internal class DynamicHttpInterceptor<TService> : IAsyncInterceptor
             var param = parameters[i];
             var parameterType = GetParameterType(param, out var name);
 
-            Logger?.LogInformation($"Parameter Name:{name}");
-
             var value = invocation.GetArgumentValue(i);
 
             switch (parameterType)
@@ -95,7 +91,6 @@ internal class DynamicHttpInterceptor<TService> : IAsyncInterceptor
                     if (value is not null)
                     {
                         var json = JsonConvert.SerializeObject(value);
-                        Logger?.LogTrace($"Parameter Value(Body):{json}");
                         request.Content = new StringContent(json, Encoding.Default, "application/json");
                     }
                     break;
@@ -139,8 +134,6 @@ internal class DynamicHttpInterceptor<TService> : IAsyncInterceptor
                     if (value is not null)
                     {
                         request.Headers.Add(name, value.ToString());
-
-                        Logger.LogInformation("Header - {0}:{1}", name, value);
                     }
                     break;
                 case HttpParameterType.FromRoute:
@@ -156,7 +149,6 @@ internal class DynamicHttpInterceptor<TService> : IAsyncInterceptor
         }
 
         var uriString = $"{pathBuilder}{(queryBuilder.Length > 0 ? $"?{queryBuilder}" : String.Empty)}";
-        Logger?.LogInformation("Request Uri:{0}", uriString);
         request.RequestUri = new(uriString, UriKind.Relative);
 
         return request;

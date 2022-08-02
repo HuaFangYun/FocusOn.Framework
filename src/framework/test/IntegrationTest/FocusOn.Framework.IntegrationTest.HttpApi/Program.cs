@@ -23,15 +23,13 @@ var app = builder.Build();
 app.UseStaticFiles();
 
 
-app.UseCors();
+app.UseFocusOn();
 
 app.UseRouting();
-app.UseSwagger().UseSwaggerUI();
 
 app.UseEndpoints(endpoints =>
 {
     endpoints.MapControllers();
-    endpoints.MapSwagger();
 
     endpoints.MapGet("/", context =>
     {

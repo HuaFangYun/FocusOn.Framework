@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 
-namespace FocusOn.Framework.Business.Services;
+namespace FocusOn.Framework.Business.Service;
 /// <summary>
 /// 定义支持 CRUD 映射的 <see cref="Profile"/> 派生基类。
 /// </summary>

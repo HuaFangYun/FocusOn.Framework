@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace FocusOn.Framework.Business.Services.Localizations {
+namespace FocusOn.Framework.Business.Service.Localizations {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace FocusOn.Framework.Business.Services.Localizations {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("FocusOn.Framework.Business.Services.Localizations.Locale", typeof(Locale).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("FocusOn.Framework.Business.Service.Localizations.Locale", typeof(Locale).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

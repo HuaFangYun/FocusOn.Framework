@@ -5,7 +5,7 @@ using Microsoft.Extensions.Logging;
 using FocusOn.Framework.Business.Contract;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace FocusOn.Framework.Business.Services;
+namespace FocusOn.Framework.Business.Service;
 
 /// <summary>
 /// 表示业务服务的基类。

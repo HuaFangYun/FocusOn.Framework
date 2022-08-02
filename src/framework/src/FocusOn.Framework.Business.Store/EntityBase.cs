@@ -1,6 +1,6 @@
 ﻿using FocusOn.Framework.Modules;
 
-namespace FocusOn.Framework.Business.Store;
+namespace FocusOn.Framework.Business.DbStore;
 
 /// <summary>
 /// 提供一个具备 id 字段的实体基类。这是一个抽象类。

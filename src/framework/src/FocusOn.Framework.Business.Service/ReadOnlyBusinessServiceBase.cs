@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using FocusOn.Framework.Business.Contract;
 using FocusOn.Framework.Business.Contract.DTO;
 
-namespace FocusOn.Framework.Business.Services;
+namespace FocusOn.Framework.Business.Service;
 
 /// <summary>
 /// 表示提供只读查询的 HTTP API 控制器基类。

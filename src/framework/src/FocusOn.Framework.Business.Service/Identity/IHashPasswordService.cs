@@ -1,4 +1,4 @@
-﻿namespace FocusOn.Framework.Business.Services.Identity;
+﻿namespace FocusOn.Framework.Business.Service.Identity;
 
 /// <summary>
 /// 提供密码哈希的服务。

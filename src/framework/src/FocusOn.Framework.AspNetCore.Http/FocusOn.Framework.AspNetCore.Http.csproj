@@ -15,7 +15,6 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\FocusOn.Framework.Business.Contract\FocusOn.Framework.Business.Contract.csproj" />
-		<ProjectReference Include="..\FocusOn.Framework.Business.Store\FocusOn.Framework.Business.Store.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

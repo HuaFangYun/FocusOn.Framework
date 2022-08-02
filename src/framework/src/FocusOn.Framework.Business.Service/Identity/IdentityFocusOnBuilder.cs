@@ -1,7 +1,7 @@
 ﻿
 using Microsoft.Extensions.DependencyInjection;
 
-namespace FocusOn.Framework.Business.Services.Identity;
+namespace FocusOn.Framework.Business.Service.Identity;
 
 /// <summary>
 /// 表示 Identity 模块的构建。

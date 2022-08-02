@@ -1,5 +1,5 @@
 ﻿//using FocusOn.Framework.Business.Contract;
-//using FocusOn.Framework.Business.Store;
+//using FocusOn.Framework.Business.DbStore;
 //using FocusOn.Framework.Modules;
 
 //using Microsoft.AspNetCore.Mvc;

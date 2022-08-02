@@ -6,7 +6,7 @@ using FocusOn.Framework.IntegrationTest.Contract;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
+//builder.Services.AddAuthentication("Test");
 // Add services to the container.
 
 builder.Services.AddFocusOn(configure =>
@@ -21,24 +21,22 @@ builder.Services.AddFocusOn(configure =>
 });
 
 var app = builder.Build();
-
 app.UseStaticFiles();
-
-
 app.UseFocusOn();
-
-app.Use((context, request) =>
-{
-    var currentPrincipal = context.RequestServices.GetRequiredService<ICurrentPrincipalAccessor>();
-
-    var identity = new ClaimsIdentity(new List<Claim> { new(ClaimTypes.Name, "admin") }, "test", ClaimTypes.Name, ClaimTypes.Role);
-
-    //currentPrincipal.CurrentPrincipal.AddIdentity(identity);
-    context.User = new(identity);
-    return request();
-});
-
 app.UseRouting();
+app.UseAuthentication();
+app.UseAuthorization();
+//app.Use((context, request) =>
+//{
+//    var currentPrincipal = context.RequestServices.GetRequiredService<ICurrentPrincipalAccessor>();
+
+//    var identity = new ClaimsIdentity(new List<Claim> { new(ClaimTypes.Name, "admin") }, "test", ClaimTypes.Name, ClaimTypes.Role);
+
+//    //currentPrincipal.CurrentPrincipal.AddIdentity(identity);
+//    context.User = new(identity);
+//    return request();
+//});
+
 
 app.UseEndpoints(endpoints =>
 {

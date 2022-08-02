@@ -1,8 +1,10 @@
 ﻿using System.Text;
 using System.Reflection;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using FocusOn.Framework.Business.Contract;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.AspNetCore.Mvc.Authorization;
 using FocusOn.Framework.Business.Contract.Http;
 using Microsoft.AspNetCore.Mvc.ActionConstraints;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
@@ -40,7 +42,7 @@ internal class DynamicHttpApiConvention : IApplicationModelConvention
     //    ["Get"] = HttpMethods.Get,
     //    ["Find"] = HttpMethods.Get,
     //};
-    private Type? _controllerType;
+    private Type? _interfaceAsControllerType;
 
     public void Apply(ApplicationModel application)
     {
@@ -48,8 +50,8 @@ internal class DynamicHttpApiConvention : IApplicationModelConvention
         {
             if (typeof(IRemotingService).IsAssignableFrom(controller.ControllerType))
             {
-                _controllerType = GetOnlyServiceType(controller.ControllerType);
-                if (_controllerType is null)
+                _interfaceAsControllerType = GetOnlyServiceType(controller.ControllerType);
+                if (_interfaceAsControllerType is null)
                 {
                     return;
                 }
@@ -64,11 +66,15 @@ internal class DynamicHttpApiConvention : IApplicationModelConvention
     void ConfigureApiExplorer(ControllerModel controller)
     {
         controller.ApiExplorer.IsVisible = true;
-
-        if (_controllerType.TryGetCustomAttribute<Business.Contract.Http.RouteAttribute>(out var routeAttribute) && !routeAttribute.Name.IsNullOrEmpty())
+        if (_interfaceAsControllerType.TryGetCustomAttribute<Business.Contract.Http.RouteAttribute>(out var routeAttribute) && !routeAttribute.Name.IsNullOrEmpty())
         {
             controller.ControllerName = routeAttribute.Name;
         }
+
+        //if (controller.ControllerType.TryGetCustomAttribute<Business.Contract.Authorizations.AuthorizeAttribute>(out var authorizeAttribute))
+        //{
+        //    controller.Filters.Add(new AuthorizeFilter());
+        //}
 
         foreach (var action in controller.Actions)
         {
@@ -212,12 +218,12 @@ internal class DynamicHttpApiConvention : IApplicationModelConvention
 
     Microsoft.AspNetCore.Mvc.RouteAttribute GenerateRoute(ActionModel action)
     {
-        if (_controllerType is null)
+        if (_interfaceAsControllerType is null)
         {
             throw new InvalidOperationException($"不能识别成 Controller");
         }
 
-        if (!_controllerType.TryGetCustomAttribute<Business.Contract.Http.RouteAttribute>(out var routeAttribute))
+        if (!_interfaceAsControllerType.TryGetCustomAttribute<Business.Contract.Http.RouteAttribute>(out var routeAttribute))
         {
 
         }
@@ -269,7 +275,7 @@ internal class DynamicHttpApiConvention : IApplicationModelConvention
 
     private MethodInfo? FindInterfaceMethod(ActionModel action)
     {
-        var allmethods = _controllerType.GetMethods().Concat(_controllerType.GetInterfaces().SelectMany(m => m.GetMethods())).Distinct();
+        var allmethods = _interfaceAsControllerType.GetMethods().Concat(_interfaceAsControllerType.GetInterfaces().SelectMany(m => m.GetMethods())).Distinct();
 
         var methodName = action.ActionMethod.Name;
 

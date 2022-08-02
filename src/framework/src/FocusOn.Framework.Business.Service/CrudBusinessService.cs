@@ -1,10 +1,10 @@
 ﻿using FocusOn.Framework.Modules;
 using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
-using FocusOn.Framework.Business.Store;
 using FocusOn.Framework.Business.Contract;
+using FocusOn.Framework.Business.DbStore;
 
-namespace FocusOn.Framework.Business.Services;
+namespace FocusOn.Framework.Business.Service;
 
 /// <summary>
 /// 表示具备 CRUD 功能的 HTTP API 控制器基类。

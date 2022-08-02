@@ -1,5 +1,5 @@
 ﻿using FocusOn.Framework;
-using FocusOn.Framework.Business.Services.Identity;
+using FocusOn.Framework.Business.Service.Identity;
 
 namespace Microsoft.Extensions.DependencyInjection;
 

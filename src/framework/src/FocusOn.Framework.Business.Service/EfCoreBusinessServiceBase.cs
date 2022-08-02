@@ -1,10 +1,9 @@
-﻿using FocusOn.Framework.Business.Contract;
-
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
+﻿using Microsoft.EntityFrameworkCore;
+using FocusOn.Framework.Business.Contract;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
-namespace FocusOn.Framework.Business.Services;
+namespace FocusOn.Framework.Business.Service;
 
 /// <summary>
 /// 基于 EF Core 的 HTTP API 的基类。

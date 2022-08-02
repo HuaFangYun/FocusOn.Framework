@@ -1,10 +1,10 @@
 ﻿using FocusOn.Framework.Modules;
-using FocusOn.Framework.MuiltyTenancy;
-
 using Microsoft.EntityFrameworkCore;
+using FocusOn.Framework.MuiltyTenancy;
+using FocusOn.Framework.Business.DbStore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace FocusOn.Framework.Business.Store.Configurations;
+namespace FocusOn.Framework.Business.DbStore.Configurations;
 
 /// <summary>
 /// <see cref="EntityTypeBuilder{TEntity}"/> 的扩展。

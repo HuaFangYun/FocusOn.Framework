@@ -17,7 +17,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{FFBA0600-7
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FocusOn.Framework.Infrastructure.Test", "src\framework\test\FocusOn.Core.Test\FocusOn.Framework.Infrastructure.Test.csproj", "{A7731B6C-24E2-42B1-A382-0A61DB204DBD}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FocusOn.Framework.Business.Store", "src\framework\src\FocusOn.Framework.Business.Store\FocusOn.Framework.Business.Store.csproj", "{B56CD0C2-8B69-4B82-AE49-F35C262F66C1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FocusOn.Framework.Business.DbStore", "src\framework\src\FocusOn.Framework.Business.Store\FocusOn.Framework.Business.DbStore.csproj", "{B56CD0C2-8B69-4B82-AE49-F35C262F66C1}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "sln", "sln", "{FAFFF62D-2CA6-4174-820A-862B8D48A5E9}"
 	ProjectSection(SolutionItems) = preProject
@@ -25,7 +25,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "sln", "sln", "{FAFFF62D-2CA
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FocusOn.Framework.Business.Services", "src\framework\src\FocusOn.Framework.Business.Service\FocusOn.Framework.Business.Services.csproj", "{204D31AE-4B20-4CF9-88AC-D000FC9EBC7F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FocusOn.Framework.Business.Service", "src\framework\src\FocusOn.Framework.Business.Service\FocusOn.Framework.Business.Service.csproj", "{204D31AE-4B20-4CF9-88AC-D000FC9EBC7F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "IntegrationTest", "IntegrationTest", "{95983865-2D1E-4DC5-9C1A-C6A9345123C1}"
 EndProject

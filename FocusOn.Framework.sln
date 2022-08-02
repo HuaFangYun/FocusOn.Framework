@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.2.32526.322
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FocusOn.Framework.Core", "src\framework\src\FocusOn.Framework.Infrastructure\FocusOn.Framework.Core.csproj", "{945A6462-188E-4594-A990-4DE66CB20D70}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FocusOn.Framework.Business.Contract", "src\framework\src\FocusOn.Framework.Business.Contract\FocusOn.Framework.Business.Contract.csproj", "{6812BC21-B533-46B1-9104-F2FCA78BF195}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FocusOn.Framework.AspNetCore.Http", "src\framework\src\FocusOn.Framework.AspNetCore.Http\FocusOn.Framework.AspNetCore.Http.csproj", "{38F855D2-44FF-4995-BB63-F287A0D41E8D}"
@@ -39,16 +37,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FocusOn.Framework.Integrati
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FocusOn.Framework.IntegrationTest.Client", "src\framework\test\IntegrationTest\FocusOn.Framework.IntegrationTest.Client\FocusOn.Framework.IntegrationTest.Client.csproj", "{B5636B30-C99A-4E12-82A1-2125C4DADA00}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FocusOn.Framework.Core", "src\framework\src\FocusOn.Framework.Core\FocusOn.Framework.Core.csproj", "{2623DDB3-E719-4751-A825-B733063F65AD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{945A6462-188E-4594-A990-4DE66CB20D70}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{945A6462-188E-4594-A990-4DE66CB20D70}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{945A6462-188E-4594-A990-4DE66CB20D70}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{945A6462-188E-4594-A990-4DE66CB20D70}.Release|Any CPU.Build.0 = Release|Any CPU
 		{6812BC21-B533-46B1-9104-F2FCA78BF195}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6812BC21-B533-46B1-9104-F2FCA78BF195}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6812BC21-B533-46B1-9104-F2FCA78BF195}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -89,12 +85,15 @@ Global
 		{B5636B30-C99A-4E12-82A1-2125C4DADA00}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B5636B30-C99A-4E12-82A1-2125C4DADA00}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B5636B30-C99A-4E12-82A1-2125C4DADA00}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2623DDB3-E719-4751-A825-B733063F65AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2623DDB3-E719-4751-A825-B733063F65AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2623DDB3-E719-4751-A825-B733063F65AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2623DDB3-E719-4751-A825-B733063F65AD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{945A6462-188E-4594-A990-4DE66CB20D70} = {4C8D0E61-7EF5-4726-AB38-DBD0FF9F885D}
 		{6812BC21-B533-46B1-9104-F2FCA78BF195} = {4C8D0E61-7EF5-4726-AB38-DBD0FF9F885D}
 		{38F855D2-44FF-4995-BB63-F287A0D41E8D} = {4C8D0E61-7EF5-4726-AB38-DBD0FF9F885D}
 		{6D82B293-7D3C-4035-889F-E7AA2E23CC6A} = {4C8D0E61-7EF5-4726-AB38-DBD0FF9F885D}
@@ -107,6 +106,7 @@ Global
 		{5D4A9CD6-5A3A-46CB-A9B6-95B588B8C40D} = {95983865-2D1E-4DC5-9C1A-C6A9345123C1}
 		{B6B61838-8AE4-45C3-9E2E-E6715E381CA8} = {95983865-2D1E-4DC5-9C1A-C6A9345123C1}
 		{B5636B30-C99A-4E12-82A1-2125C4DADA00} = {95983865-2D1E-4DC5-9C1A-C6A9345123C1}
+		{2623DDB3-E719-4751-A825-B733063F65AD} = {4C8D0E61-7EF5-4726-AB38-DBD0FF9F885D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {60D7014C-4C59-4127-9CB5-A4402740E525}

@@ -79,7 +79,7 @@ internal class DynamicHttpClientProxy<TService> : IHttpApiClientProxy
         catch (Exception ex)
         {
             Logger.LogCritical(ex.Message, ex);
-            return Return.Failed();
+            return Return.Failed(Logger, ex);
         }
     }
 

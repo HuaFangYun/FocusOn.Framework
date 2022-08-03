@@ -11,8 +11,14 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddFocusOn(configure =>
 {
-    configure.AddBusinessService<IUserCrudBusinessService, UserCrudBusinessService>();
-    configure.AddAutoMapper(typeof(MapProfile).Assembly).AddSwagger();
+    configure.AddBusinessService<IUserCrudBusinessService, UserCrudBusinessService>()
+    .AddBusinessService<IRoleCrudBusinessService, RoleCrudBusinessService>()
+    .AddBusinessService<IAccountService, AccountService>()
+    ;
+    configure.AddAutoMapper(typeof(MapProfile).Assembly).AddSwagger(options =>
+    {
+        options.Title = "FocusOn.Test";
+    });
 
     configure.AddDynamicWebApi(typeof(UserCrudBusinessService).Assembly).AddCurrentPrincipalAccessor();
     configure.Services.AddDbContext<IdentityDbContext>(options => options.UseInMemoryDatabase("db"));

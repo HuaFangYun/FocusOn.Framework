@@ -86,9 +86,12 @@ internal class DynamicHttpApiConvention : IApplicationModelConvention
             var actionMethodAttribute = FindHttpMethodFromAction(action);
             if (actionMethodAttribute is null)
             {
+                action.ApiExplorer.IsVisible = false;
                 continue;
             }
             action.ApiExplorer.IsVisible = true;
+
+
         }
     }
 
@@ -108,6 +111,11 @@ internal class DynamicHttpApiConvention : IApplicationModelConvention
 
         void ConfigureSelector(ActionModel action)
         {
+            if (FindHttpMethodFromAction(action) is null)
+            {
+                return;
+            }
+
             RemoveEmptySelectors(action.Selectors);
 
             if (action.Selectors.Count <= 0)
@@ -131,13 +139,18 @@ internal class DynamicHttpApiConvention : IApplicationModelConvention
     {
         foreach (var action in controller.Actions)
         {
+            var method = FindInterfaceMethod(action);
+            if (method is null)
+            {
+                continue;
+            }
+
             foreach (var parameter in action.Parameters)
             {
                 if (parameter.BindingInfo != null)
                 {
                     continue;
                 }
-                var method = FindInterfaceMethod(action);
 
                 var methodParameter = method.GetParameters().SingleOrDefault(m => m.Name == parameter.Name);
 
@@ -261,18 +274,31 @@ internal class DynamicHttpApiConvention : IApplicationModelConvention
         return new(routeTemplateBuilder.ToString()) { Name = routeAttribute.Name ?? httpMethodAttribute.Name, Order = routeAttribute.Order };
     }
 
+    /// <summary>
+    /// 从方法的接口处识别出 <see cref="HttpMethodAttribute"/> 特性。
+    /// </summary>
+    /// <param name="action"></param>
+    /// <returns></returns>
     private HttpMethodAttribute? FindHttpMethodFromAction(ActionModel action)
     {
         MethodInfo? actionMethod = FindInterfaceMethod(action);
 
         if (actionMethod is null)
         {
-            throw new InvalidOperationException($"找不到 {action.ActionName} 方法");
+            //Action，有这个方法，但接口没有这个方法，会报错。
+            //throw new InvalidOperationException($"找不到 {action.ActionName} 方法");
+
+            return default;
         }
 
         return actionMethod.GetCustomAttributes<HttpMethodAttribute>().OrderBy(m => m.Order).FirstOrDefault();
     }
 
+    /// <summary>
+    /// 从 action 中识别出符合接口的方法。
+    /// </summary>
+    /// <param name="action"></param>
+    /// <returns></returns>
     private MethodInfo? FindInterfaceMethod(ActionModel action)
     {
         var allmethods = _interfaceAsControllerType.GetMethods().Concat(_interfaceAsControllerType.GetInterfaces().SelectMany(m => m.GetMethods())).Distinct();

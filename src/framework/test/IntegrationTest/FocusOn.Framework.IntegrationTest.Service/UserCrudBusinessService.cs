@@ -7,11 +7,13 @@ using FocusOn.Framework.Business.Contract.Identity.DTO;
 using FocusOn.Framework.Business.Service.Identity.Services;
 
 namespace FocusOn.Framework.IntegrationTest.Service;
-[Authorize]
-public class UserCrudBusinessService : IdentityUserCrudBusinessService<IdentityDbContext, User, Guid, IdentityUserDetailOutput<Guid>, IdentityUserListOutput, IdentityUserListSearchInput, IdentityUserCreateInput>, IUserCrudBusinessService, IRemotingService
+public class UserCrudBusinessService : IdentityUserCrudBusinessService<IdentityDbContext, User, Guid, IdentityUserDetailOutput<Guid>, IdentityUserListOutput, IdentityUserListSearchInput, IdentityUserCreateInput>, IUserCrudBusinessService
 {
-    public UserCrudBusinessService(IServiceProvider serviceProvider) : base(serviceProvider)
+    private readonly IRoleCrudBusinessService _roleCrudBusinessService;
+
+    public UserCrudBusinessService(IServiceProvider serviceProvider, IRoleCrudBusinessService roleCrudBusinessService) : base(serviceProvider)
     {
+        this._roleCrudBusinessService = roleCrudBusinessService;
     }
 
     [Authorize]

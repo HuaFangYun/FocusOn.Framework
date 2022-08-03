@@ -121,7 +121,7 @@ internal class DynamicHttpInterceptor<TService> : IAsyncInterceptor
                                 name = property.Name;
                             }
 
-                            value = property.GetValue(property);
+                            value = property.GetValue(value);
                             queryBuilder.AppendFormat("{0}={1}", name, value);
                         }
                     }

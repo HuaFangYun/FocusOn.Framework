@@ -24,4 +24,8 @@ public static class TaskExtensions
     /// <typeparam name="TResult">结果类型。</typeparam>
     /// <param name="result">要转换的结果。</param>
     public static ValueTask<TResult> ToValueTask<TResult>(this TResult result) => new(result);
+
+    public static Task<TResult> ToResultTask<TResult>(this TResult result) => Task.FromResult(result);
+    public static Task ToExceptionTask(this Exception exception) => Task.FromException(exception);
+    public static Task ToCancelTask(this CancellationToken cancellationToken) => Task.FromCanceled(cancellationToken);
 }

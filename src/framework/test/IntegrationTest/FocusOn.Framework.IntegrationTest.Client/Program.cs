@@ -40,7 +40,7 @@ Console.WriteLine(createResult.Errors.JoinString(","));
 Console.WriteLine("Get data - UID:{0}，UserName:{1}", createResult.Data.Id, createResult.Data.UserName);
 Console.WriteLine();
 Console.WriteLine("--------Get List----------");
-var result = await userService.GetListAsync();
+var result = await userService.GetListAsync(new FocusOn.Framework.Business.Contract.Identity.DTO.IdentityUserListSearchInput { UserName = "123" });
 
 Console.WriteLine(result.Succeed);
 foreach (var item in result.Data.Items)

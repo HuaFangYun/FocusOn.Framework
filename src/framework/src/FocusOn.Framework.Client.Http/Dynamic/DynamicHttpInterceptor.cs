@@ -34,7 +34,7 @@ internal class DynamicHttpInterceptor<TService> : IAsyncInterceptor
     /// <summary>
     /// 通过调用的方法，组装要发送的请求消息。
     /// </summary>
-    /// <param name="method"></param>
+    /// <param name="invocation"></param>
     /// <returns></returns>
     /// <exception cref="ArgumentNullException"></exception>
     HttpRequestMessage CreateRequestMessage(IInvocation invocation)
@@ -121,8 +121,11 @@ internal class DynamicHttpInterceptor<TService> : IAsyncInterceptor
                                 name = property.Name;
                             }
 
-                            value = property.GetValue(value);
-                            queryBuilder.AppendFormat("{0}={1}", name, value);
+                            var propertyValue = property.GetValue(value);
+                            if (propertyValue is not null)
+                            {
+                                queryBuilder.AppendFormat("{0}={1}", name, propertyValue);
+                            }
                         }
                     }
                     else

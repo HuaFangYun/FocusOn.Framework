@@ -23,7 +23,7 @@ builder.Services.AddFocusOn(configure =>
     configure.AddDynamicWebApi(typeof(UserCrudBusinessService).Assembly).AddCurrentPrincipalAccessor();
     configure.Services.AddDbContext<IdentityDbContext>(options => options.UseInMemoryDatabase("db"));
 
-    configure.AddCors();
+    configure.AddAnyCors();
 });
 
 var app = builder.Build();

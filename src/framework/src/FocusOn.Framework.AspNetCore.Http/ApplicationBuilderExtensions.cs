@@ -33,5 +33,5 @@ public static class ApplicationBuilderExtensions
     /// </summary>
     /// <param name="app"></param>
     /// <returns></returns>
-    public static IApplicationBuilder UseAnyCors(this IApplicationBuilder app) => app.UseCors(HttpUtility.CORS_POLICY_NAME_ANY);
+    public static IApplicationBuilder UseAnyCors(this IApplicationBuilder app) => app.UseCors(HttpUtility.CORS_POLICY_FOR_ANY);
 }

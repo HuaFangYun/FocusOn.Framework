@@ -57,15 +57,15 @@ public static class FocusOnDependencyInjectionExtensions
     }
 
     /// <summary>
-    /// 添加对 AllowAnyHeader, AllowAnyMethod, AllowAnyOrigin 任意跨域的服务。并在中间件部分调用 <c>UseAnyCors</c> 方法应用。
+    /// 添加对 AllowAnyHeader, AllowAnyMethod, AllowAnyOrigin 任意跨域的服务。并在中间件部分调用 <c>UseAnyCors</c> 方法应用该策略。
     /// </summary>
     /// <param name="builder"></param>
     /// <returns></returns>
-    public static FocusOnBuilder AddCorsAny(this FocusOnBuilder builder)
+    public static FocusOnBuilder AddAnyCors(this FocusOnBuilder builder)
     {
         builder.Services.AddCors(options =>
         {
-            options.AddPolicy(HttpUtility.CORS_POLICY_NAME_ANY, cors => cors.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
+            options.AddPolicy(HttpUtility.CORS_POLICY_FOR_ANY, cors => cors.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
         });
         return builder;
     }

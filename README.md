@@ -1,90 +1,66 @@
 # FocusOn.Framework
-基于契约的轻量化前后端全栈应用框架。
+基于契约的自动化前后端分离的全栈应用框架。
 
 # 优势
-* 让开发者聚焦于前后端的应用开发，而不是框架
-* TA 是很轻量级的，只有前后端三层
-* 基于契约，前后端共用一个方法声明，避免重复定义
-* 自动化处理，后端 API 和前端的 HTTP Client 由底层框架处理，无需操心
-* 集成了 `AutoMapper` 来处理对象映射
-
-# 劣势
-* 仅支持 EF
-* 仅支持 HTTP WEB API
-* 目标是企业级应用
+* **自动化** WEB API 和 HTTP 前端
+* 基于契约，统一前后端逻辑
+* 基于业务，快速上手
+* 学习成本低，几乎基于原生
+* 模块化开发，随时集成
 
 
 # 快速上手
 
-1. 定义契约
+1. 定义契约和模型
 ```cs
-public interface IUserBusinessService : ICrudBusinessService<Guid, GetUserOutput, GetUserListOutput, UserCreateInput, UserUpdateInput>
+[Route("api/users")]
+public interface IUserBusinessService : ICrudBusinessService<Guid, GetUserOutput, GetUserListOutput, UserCreateInput, UserUpdateInput>, IRemotingService //集成该接口实现自动化 WEB API
 {
-    Task<OutputResult<GetSingleUserOutput>> GetByNameAsync(string userName);
+    [Get("by-name/{userName}")]
+    Task<Return<GetSingleUserOutput>> GetByNameAsync(string userName);
 }
 ```
 
-2. 直接上手 Controller
+2. 实现业务逻辑
 ```cs
-[Route("users")]
-public class UserApiController : CrudApiControllerBase<UserDbContext, Guid, GetUserOutput, GetUserListOutput, UserCreateInput, UserUpdateInput> , IUserBusinessService
+public class UserBusinessService : CrudBusinessService<UserDbContext, Guid, GetUserOutput, GetUserListOutput, UserCreateInput, UserUpdateInput> , IUserBusinessService
 {
-    [HttpGet("by-name/{userName}")]
-    public async Task<OutputResult<GetSingleUserOutput>> GetByNameAsync(string userName)
+    [Authorize]
+    public async Task<Return<GetSingleUserOutput>> GetByNameAsync(string userName)
     {
         var user = Query.SingleOrDefault(m=>m.UserName == userName);
         if(user is null)
         {
-            return OutputResult<GetSingleUserOutput>.Failed("User is not found");
+            return Return<GetSingleUserOutput>.Failed("User is not found");
         }
 
         var model = Mapper.Map<User, GetSingleUserOutput>(user);
-        return OutputResult<GetSingleUserOutput>.Success(model);
+        return Return<GetSingleUserOutput>.Success(model);
     }
 }
 ```
 
-`Program.cs` 中
+在 API 项目的 `Program.cs` 中
 ```cs
-builder.Services.AddFocusOn(configure =>
+builder.Services.AddFocusOn(framework =>
 {
-    configure.AddFramework(framework =>{
-        framework.AddSwagger(); //可选
-        framework.AddAutoMapper(typeof(Program).Assembly);
-    });
+    framework.AddSwagger(); //可选
+    framework.AddAutoMapper(typeof(Program).Assembly);
+
+    //自动化 WEB API
+    framework.AddDynamicWebApi(typeof(IUserBusinessService).Assembly);
 });
 ```
 
-3. 前端代理实现
-```cs
-public class UserHttpApiClientProxy : CrudHttpApiClientProxy<User, Guid, GetUserOutput, GetUserListOutput, UserCreateInput, UserUpdateInput>, IUserBusinessService
-{
-    public UserHttpApiClientProxy(IServiceProvider serviceProvider):base(serviceProvider)
-    {
-
-    }
-
-    protected override string RootPath => "users";
-
-    public async Task<OutputResult<GetSingleUserOutput>> GetByNameAsync(string userName)
-    {
-        var url = GetRequestUri($"by-name/{name}");
-        var result = await Client.GetAsync(url);
-        return await HandleOutputResultAsync<User>(result);
-    }
-}
-```
-
-在客户端层（例如 Blazor)，配置 Service
+3. 在客户端层（例如 Blazor, Mvc 等)，配置 Service
 ```cs
 builder.Service.AddFocusOn(configure =>
 {
-    configure.AddHttpClient(options => options.BaseAddress = builder.HostEnvironment.BaseAddress);
-    configure.AddHttpProxy<IUserBusinessService, UserHttpApiClientProxy>();
+    configure.AddDynamicHttpProxy(typeof(IUserBusinessService).Assembly, options => options.BaseAddress = new("{API 地址}"));
 });
 ```
 
-在客户都使用 `IUserBusinessService` 调用
+使用 `IUserBusinessService`
 ```cs
 var _userService = ServiceProfider.GetService<IUserBusinessService>();
 
